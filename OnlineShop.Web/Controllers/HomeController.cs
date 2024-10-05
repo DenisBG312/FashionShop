@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using OnlineShop.Web.ViewModels;
 using System.Diagnostics;
 using OnlineShop.Web.Models;
 

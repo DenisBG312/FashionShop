@@ -1,0 +1,44 @@
+﻿@model OnlineShop.Data.Models.Order
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<h1>Order Details for Order ID: @Model.Id</h1>
+
+<p>
+    <strong>Order Date:</strong> @Model.OrderDate.ToString("d")<br />
+    <strong>Total Amount:</strong> @Model.TotalAmount.ToString("C")<br />
+    <strong>Status:</strong> @(Model.IsCompleted ? "Completed" : "Pending")
+</p>
+
+<h2>Ordered Products</h2>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Product Name</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+        <th>Total Price</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var orderProduct in Model.OrderProducts)
+    {
+        <tr>
+            <td>@orderProduct.Product.Name</td>
+            <td>@orderProduct.Quantity</td>
+            <td>@orderProduct.UnitPrice.ToString("C")</td>
+            <td>@orderProduct.TotalPrice.ToString("C")</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@if (!Model.IsCompleted)
+{
+    <form asp-controller="Payment" asp-action="Create" method="post">
+        <input type="hidden" name="OrderId" value="@Model.Id" />
+        <a asp-controller="Payment" asp-action="Create" asp-route-orderId="@Model.Id" class="btn btn-primary">Proceed to Payment</a>
+    </form>
+}
