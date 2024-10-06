@@ -38,7 +38,7 @@ namespace OnlineShop.Data.Configuration
                     PaymentMethod = PaymentMethod.DebitCard,
                     Amount = 300.10m,
                     PaymentDate = new DateTime(2024, 12, 9),
-                    Status = Status.Canceled,
+                    Status = Status.Cancelled,
                     OrderId = 2
                 }
 

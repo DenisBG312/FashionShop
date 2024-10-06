@@ -9,12 +9,11 @@ namespace OnlineShop.Web.ViewModels.Order
         [Required(ErrorMessage = "Please select a product.")]
         public int ProductId { get; set; }
 
-        // Dropdown list for products
-        public SelectList Products { get; set; } = null!;
-
         // Property for quantity
         [Required(ErrorMessage = "Please enter a quantity.")]
         [Range(1, 100, ErrorMessage = "Quantity must be between 1 and 100.")]
         public int Quantity { get; set; }
+        public List<SelectListItem> Products { get; set; } = new List<SelectListItem>();
+        public List<OrderProductInputModel> OrderProducts { get; set; } = new List<OrderProductInputModel>();
     }
 }

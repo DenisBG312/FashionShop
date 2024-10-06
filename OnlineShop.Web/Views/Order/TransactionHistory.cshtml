@@ -1,0 +1,32 @@
+﻿@model OnlineShop.Web.ViewModels.Order.OrderTransactionHistoryViewModel
+
+@{
+    ViewData["Title"] = "Transaction History for Order ID: " + Model.OrderId;
+}
+
+<h1>Transaction History for Order Number: @Model.CustomOrderNumber</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Payment Method</th>
+        <th>Amount</th>
+        <th>Payment Date</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var payment in Model.Payments)
+    {
+        <tr>
+            <td>@payment.PaymentMethod</td>
+            <td>@payment.Amount.ToString("C")</td>
+            <td>@payment.PaymentDate.ToString("g")</td>
+            <td>@payment.Status</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<a asp-controller="Order" asp-action="Details" asp-route-id="@Model.OrderId" class="btn btn-secondary">Back to Order Details <i class="fa-solid fa-arrow-left"></i></a>
+<a asp-action="ExportToPdf" asp-route-orderId="@Model.OrderId" class="btn btn-primary">Export to PDF <i class="fa-solid fa-file-pdf"></i></a>

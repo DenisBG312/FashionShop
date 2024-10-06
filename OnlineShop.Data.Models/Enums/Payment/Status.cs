@@ -10,6 +10,6 @@ namespace OnlineShop.Data.Models.Enums.Payment
     {
         Pending,
         Completed,
-        Canceled
+        Cancelled
     }
 }

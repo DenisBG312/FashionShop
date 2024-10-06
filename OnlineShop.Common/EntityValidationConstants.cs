@@ -16,9 +16,12 @@ namespace OnlineShop.Common
 
         public static class Product
         {
+            public const int NameMinLength = 3;
             public const int NameMaxLength = 100;
             public const int AmountMinValue = 0;
             public const int AmountMaxValue = 999999;
+            public const int StockQuantityMinValue = 0;
+            public const int StockQuantityMaxValue = int.MaxValue;
         }
 
         public static class OrderProduct

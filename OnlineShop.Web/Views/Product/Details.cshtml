@@ -1,0 +1,26 @@
+﻿@model OnlineShop.Web.ViewModels.Product.ProductDetailsViewModel
+
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+<h2>Product Details</h2>
+
+<div class="card">
+    <div class="card-body">
+        <h3 class="card-title">@Model.Name</h3>
+        <p class="card-text"><strong>Description:</strong> @Model.Description</p>
+        <p class="card-text"><strong>Price:</strong> @Model.Price.ToString("C")</p>
+
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <p class="card-text">
+                <img src="@Model.ImageUrl" alt="@Model.Name" style="width: 300px; height: 300px; object-fit: cover;" />
+            </p>
+        }
+
+        <p class="card-text"><strong>Stock Quantity:</strong> @Model.StockQuantity</p>
+    </div>
+</div>
+
+<a asp-action="Index" class="btn btn-primary mt-3">Back to List</a>
