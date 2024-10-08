@@ -6,71 +6,93 @@
     ViewData["Title"] = "Shopping Cart";
 }
 
-<h2>Shopping Cart</h2>
+<div class="container py-5">
+    <h2 class="text-center mb-5">Your Shopping Cart</h2>
 
-@if (Model.ShoppingCartProducts != null && Model.ShoppingCartProducts.Any())
-{
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Product</th>
-                <th>Quantity</th>
-                <th>Unit Price</th>
-                <th>Total Price</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.ShoppingCartProducts)
-            {
-                <tr>
-                    <td>@item.Product.Name</td>
-                    <td>
-                        <form asp-action="UpdateQuantity" method="post">
-                            <input type="hidden" name="shoppingCartId" value="@item.ShoppingCartId" />
-                            <input type="hidden" name="productId" value="@item.ProductId" />
-                            <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control" style="width: 70px;" />
-                            <button type="submit" class="btn btn-primary btn-sm mt-2">Update</button>
-                        </form>
-                    </td>
-                    <td>@item.Product.Price.ToString("C")</td>
-                    <td>@((item.Product.Price * item.Quantity).ToString("C"))</td>
-                    <td>
-                        <form asp-action="RemoveFromCart" method="post">
-                            <input type="hidden" name="shoppingCartId" value="@item.ShoppingCartId" />
-                            <input type="hidden" name="productId" value="@item.ProductId" />
-                            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <div class="row">
-        <div class="col-md-6">
-            <h4>Total: @Model.Amount.ToString("C")</h4>
-        </div>
-        <div class="col-md-6 text-right">
-            <form asp-action="PlaceOrder" method="post">
-                <input type="hidden" name="shoppingCartId" value="@Model.Id" />
-
-                <div class="form-group">
-                    <label for="paymentMethod">Payment Method</label>
-                    <select id="paymentMethod" name="paymentMethod" class="form-control">
-                        @foreach (var method in Enum.GetValues(typeof(OnlineShop.Data.Models.Enums.Payment.PaymentMethod)).Cast<OnlineShop.Data.Models.Enums.Payment.PaymentMethod>())
+    @if (Model.ShoppingCartProducts != null && Model.ShoppingCartProducts.Any())
+    {
+        <div class="card shadow-lg">
+            <div class="card-body">
+                <table class="table table-borderless align-middle text-center">
+                    <thead class="bg-light text-uppercase">
+                        <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Unit Price</th>
+                            <th scope="col">Total Price</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ShoppingCartProducts)
                         {
-                            <option value="@method">@EnumHelper.GetDisplayName(method)</option>
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="@item.Product.ImageUrl" alt="@item.Product.Name" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;" />
+                                        <span class="ms-3">@item.Product.Name</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <form asp-action="UpdateQuantity" method="post" class="d-inline-block">
+                                            <input type="hidden" name="shoppingCartId" value="@item.ShoppingCartId" />
+                                            <input type="hidden" name="productId" value="@item.ProductId" />
+                                            <div class="input-group">
+                                                <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control text-center" style="width: 70px;" />
+                                                <button type="submit" class="btn btn-primary btn-sm ms-2">Update</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </td>
+                                <td>@item.Product.Price.ToString("C")</td>
+                                <td>@((item.Product.Price * item.Quantity).ToString("C"))</td>
+                                <td>
+                                    <form asp-action="RemoveFromCart" method="post">
+                                        <input type="hidden" name="shoppingCartId" value="@item.ShoppingCartId" />
+                                        <input type="hidden" name="productId" value="@item.ProductId" />
+                                        <button type="submit" class="btn btn-danger btn-sm">
+                                            <i class="bi bi-trash"></i> Remove
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
                         }
-                    </select>
-                </div>
-
-                <button type="submit" class="btn btn-success mt-3">Place an Order</button>
-            </form>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-}
-else
-{
-    <p>Your cart is empty.</p>
-}
+
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <h4>Total: <strong>@Model.Amount.ToString("C")</strong></h4>
+            </div>
+            <div class="col-md-6 text-end">
+                <form asp-action="PlaceOrder" method="post">
+                    <input type="hidden" name="shoppingCartId" value="@Model.Id" />
+
+                    <div class="form-group mb-3">
+                        <label for="paymentMethod" class="form-label">Select Payment Method</label>
+                        <select id="paymentMethod" name="paymentMethod" class="form-control form-select">
+                            @foreach (var method in Enum.GetValues(typeof(OnlineShop.Data.Models.Enums.Payment.PaymentMethod)).Cast<OnlineShop.Data.Models.Enums.Payment.PaymentMethod>())
+                            {
+                                <option value="@method">@EnumHelper.GetDisplayName(method)</option>
+                            }
+                            }
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-lg px-4">
+                        <i class="bi bi-check-circle"></i> Place an Order
+                    </button>
+                </form>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center mt-5" role="alert">
+            <strong>Your cart is empty!</strong> Start adding products to your cart now.
+        </div>
+    }
+</div>

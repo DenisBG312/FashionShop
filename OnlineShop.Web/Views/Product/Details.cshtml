@@ -4,23 +4,43 @@
     ViewData["Title"] = "Product Details";
 }
 
-<h2>Product Details</h2>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Product Details</h2>
 
-<div class="card">
-    <div class="card-body">
-        <h3 class="card-title">@Model.Name</h3>
-        <p class="card-text"><strong>Description:</strong> @Model.Description</p>
-        <p class="card-text"><strong>Price:</strong> @Model.Price.ToString("C")</p>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">@Model.Name</h4>
+                </div>
 
-        @if (!string.IsNullOrEmpty(Model.ImageUrl))
-        {
-            <p class="card-text">
-                <img src="@Model.ImageUrl" alt="@Model.Name" style="width: 300px; height: 300px; object-fit: cover;" />
-            </p>
-        }
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="card-text"><strong>Description:</strong> @Model.Description</p>
+                            <p class="card-text"><strong>Price:</strong> @Model.Price.ToString("C")</p>
+                            <p class="card-text"><strong>Stock Quantity:</strong> @Model.StockQuantity</p>
+                        </div>
 
-        <p class="card-text"><strong>Stock Quantity:</strong> @Model.StockQuantity</p>
+                        <div class="col-md-6 text-center">
+                            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                            {
+                                <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded" style="max-height: 300px; object-fit: cover;" />
+                            }
+                            else
+                            {
+                                <p class="text-muted">No image available</p>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer text-center">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-<a asp-action="Index" class="btn btn-primary mt-3">Back to List</a>

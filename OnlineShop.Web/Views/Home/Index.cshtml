@@ -2,7 +2,110 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4">Welcome to Our E-Commerce Shop!</h1>
+        <p class="lead">Your one-stop shop for all your needs.</p>
+        <p>
+            Explore our <a href="/Product" class="link-primary">products</a> and enjoy amazing deals every day!
+        </p>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Wide Selection</h5>
+                    <p class="card-text">Choose from a wide range of products across various categories.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="/Product" class="btn btn-primary">Shop Now</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Best Prices</h5>
+                    <p class="card-text">Get the best deals and discounts on all your favorite items.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="/Deals" class="btn btn-primary">View Deals</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Fast Shipping</h5>
+                    <p class="card-text">Enjoy fast and reliable shipping on all your orders.</p>
+                </div>
+                <div class="card-footer">
+                    <a href="/ShippingInfo" class="btn btn-primary">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <h2 class="mt-5">Why Choose Us?</h2>
+        <p class="lead">At Our E-Commerce Shop, we prioritize customer satisfaction and quality. Here are a few reasons to shop with us:</p>
+        <ul class="list-unstyled">
+            <li><i class="fa-solid fa-check-circle"></i> Excellent Customer Service</li>
+            <li><i class="fa-solid fa-check-circle"></i> Secure Payment Options</li>
+            <li><i class="fa-solid fa-check-circle"></i> Easy Returns and Exchanges</li>
+            <li><i class="fa-solid fa-check-circle"></i> Regular Promotions and Discounts</li>
+        </ul>
+    </div>
 </div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .container {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .card {
+        border-radius: 0.5rem;
+        transition: transform 0.2s;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .lead {
+        font-size: 1.25rem;
+        font-weight: 300;
+    }
+
+    .list-unstyled {
+        margin-top: 20px;
+    }
+
+        .list-unstyled li {
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+    .fa-check-circle {
+        color: #28a745;
+        margin-right: 10px;
+    }
+</style>

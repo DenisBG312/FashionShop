@@ -21,8 +21,10 @@ namespace OnlineShop.Data.Models
         [Required]
         public decimal TotalAmount { get; set; }
 
+        [Required]
+        public bool IsCompleted { get; set; } = false;
+
         public ICollection<Payment> Payments { get; set; } = new HashSet<Payment>();
         public ICollection<OrderProduct> OrderProducts { get; set; } = new HashSet<OrderProduct>();
-        public bool IsCompleted => Payments.Sum(p => p.Amount) >= TotalAmount;
     }
 }

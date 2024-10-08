@@ -71,7 +71,7 @@ namespace OnlineShop.Web.Controllers
             var userOrders = await _context.Orders
                 .Where(o => o.UserId == userId)
                 .OrderBy(o => o.Id)
-                .Include(order => order.OrderProducts)
+                .Include(o => o.OrderProducts)
                 .ToListAsync();
 
             int userOrderNumber = userOrders.FindIndex(o => o.Id == order.Id) + 1;
@@ -83,7 +83,12 @@ namespace OnlineShop.Web.Controllers
                 OrderDate = order.OrderDate,
                 TotalAmount = order.OrderProducts.Sum(op => op.UnitPrice * op.Quantity),
                 IsCompleted = order.IsCompleted,
-                OrderProducts = order.OrderProducts
+                OrderProducts = order.OrderProducts.Select(op => new OrderProductViewModel
+                {
+                    ProductName = op.Product.Name,
+                    Quantity = op.Quantity,
+                    UnitPrice = op.UnitPrice
+                }).ToList()
             };
 
             return View(viewModel);
@@ -132,6 +137,25 @@ namespace OnlineShop.Web.Controllers
             };
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> FinalizeOrder(int id)
+        {
+            var order = await _context.Orders.FindAsync(id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            // Set IsCompleted to true or add your logic here
+            order.IsCompleted = true;
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Thank you for your order! Your order has been finalized. \u2705";
+
+           return Json(new { success = true, message = "Your order has been finalized!" });
         }
 
         public IActionResult ExportToPdf(int orderId)

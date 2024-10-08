@@ -25,14 +25,16 @@ namespace OnlineShop.Data.Configuration
                     Id = 1,
                     UserId = "2a2d1de5-de58-4b33-a40e-71770a2b9479",
                     OrderDate = DateTime.Now,
-                    TotalAmount = 150.00m
+                    TotalAmount = 150.00m,
+                    IsCompleted = false
                 },
                 new Order
                 {
                     Id = 2,
                     UserId = "2a2d1de5-de58-4b33-a40e-71770a2b9479",
                     OrderDate = DateTime.Now.AddDays(-1),
-                    TotalAmount = 75.50m
+                    TotalAmount = 75.50m,
+                    IsCompleted = true
                 }
             };
         }

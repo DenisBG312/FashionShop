@@ -16,12 +16,12 @@
                         <h5 class="card-title">@product.Name</h5>
                         <p class="card-text">Price: @product.Price.ToString("C")</p>
                         <p class="card-text">Stock: @product.StockQuantity</p>
-                        <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="btn btn-primary">View Details</a>
+                        <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="btn btn-primary">View Details <i class="fa-solid fa-circle-info"></i></a>
 
                         <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post" class="mt-2">
                             <input type="hidden" name="productId" value="@product.Id" />
                             <input type="hidden" name="quantity" value="1" />
-                            <button type="submit" class="btn btn-success">Add to Cart</button>
+                            <button type="submit" class="btn btn-success">Add to Cart <i class="fa-solid fa-cart-shopping"></i></button>
                         </form>
                     </div>
                 </div>

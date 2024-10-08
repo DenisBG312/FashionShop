@@ -4,34 +4,38 @@
     ViewData["Title"] = "My Orders";
 }
 
-<h1>My Orders</h1>
+<h1 class="mb-4">My Orders</h1>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>Order Date</th>
-            <th>Total Amount</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var order in Model)
-        {
-            <tr>
-                <td>@order.CustomOrderNumber</td>
-                <td>@order.OrderDate.ToString("d")</td>
-                <td>@order.TotalAmount.ToString("C")</td>
-                <td>@(order.IsCompleted ? "Completed" : "Pending")</td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-primary">View <i class="fa-solid fa-eye"></i></a>
-                    <a href="javascript:void(0);" onclick="confirmDelete(@order.OrderId)" class="btn btn-danger">Delete <i class="fa-solid fa-trash"></i></a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="row">
+    @foreach (var order in Model)
+    {
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm border-light" style="background-color: #e7f3fe;">
+                <!-- Light blue card background color -->
+                <div class="card-body text-dark">
+                    <!-- Change text color to dark -->
+                    <h5 class="card-title">Order #@order.CustomOrderNumber</h5>
+                    <p class="card-text">
+                        <strong>Order Date:</strong> @order.OrderDate.ToString("MMMM dd, yyyy")<br />
+                        <strong>Total Amount:</strong> @order.TotalAmount.ToString("C")<br />
+                        <strong>Status:</strong>
+                        <span class="badge @(order.IsCompleted ? "badge-success" : "badge-warning")" style="background-color: @(order.IsCompleted ? "#28a745" : "#ffc107"); color: white;">
+                            @(order.IsCompleted ? "Completed" : "Pending")
+                        </span>
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a asp-action="Details" asp-route-id="@order.OrderId" class="btn" style="background-color: #007bff; color: white;">
+                            View Details <i class="fa-solid fa-eye"></i>
+                        </a>
+                        <a href="javascript:void(0);" onclick="confirmDelete(@order.OrderId)" class="btn" style="background-color: #dc3545; color: white;">
+                            Delete <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>

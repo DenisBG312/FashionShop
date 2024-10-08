@@ -37,7 +37,7 @@ namespace OnlineShop.Data.Configuration
                     Price = 75.00m,
                     ImageUrl = "https://parfium.bg/3095-large_default/versace-eros-toaletna-voda-za-myje.jpg",
                     StockQuantity = 50
-                },
+                }
             };
         }
     }

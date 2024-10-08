@@ -1,71 +1,94 @@
 ﻿@model OnlineShop.Web.ViewModels.Order.OrderDetailsViewModel
 
 @{
-    ViewData["Title"] = "Order Details";
+    ViewData["Title"] = $"Order Details - Order #{Model.OrderId}";
 }
 
-<h1>Order Details for Order ID: @Model.CustomOrderNumber</h1>
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Order Details</h2>
 
-<p>
-    <strong>Order Date:</strong> @Model.OrderDate.ToString("d")<br />
-    <strong>Total Amount:</strong> $ @Model.TotalAmount.ToString("F2")<br />
-    <strong>Status:</strong> @(Model.IsCompleted ? "Completed" : "Pending")
-</p>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 
-<h2>Ordered Products</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Product Name</th>
-            <th>Quantity</th>
-            <th>Unit Price</th>
-            <th>Total Price</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var orderProduct in Model.OrderProducts)
-        {
-            <tr>
-                <td>@orderProduct.Product.Name</td>
-                <td>@orderProduct.Quantity</td>
-                <td>@orderProduct.UnitPrice.ToString("C")</td>
-                <td>@((orderProduct.UnitPrice * orderProduct.Quantity).ToString("C"))</td> <!-- Calculate total price -->
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5>Order Number: #@Model.CustomOrderNumber</h5>
+                </div>
 
-@if (!Model.IsCompleted)
-{
-    <form asp-controller="Payment" asp-action="Create" method="post">
-        <input type="hidden" name="OrderId" value="@Model.OrderId" />
-        <a asp-controller="Payment" asp-action="Create" asp-route-orderId="@Model.OrderId" class="btn btn-primary">Proceed to Payment <i class="fa-solid fa-credit-card"></i></a>
-    </form>
-}
+                <div class="card-body">
+                    <p><strong>Order Date:</strong> @Model.OrderDate.ToShortDateString()</p>
+                    <p><strong>Total Amount:</strong> @Model.TotalAmount.ToString("C")</p>
+                    <p>
+                        <strong>Status:</strong>
+                        <span class="badge @(Model.IsCompleted ? "bg-success" : "bg-warning")">
+                            @(Model.IsCompleted ? "Completed" : "Pending")
+                        </span>
+                    </p>
 
-<!-- Button to view transaction history -->
-<a asp-controller="Order" asp-action="TransactionHistory" asp-route-id="@Model.OrderId" class="btn btn-info mt-3">View Transaction History <i class="fa-solid fa-clock-rotate-left"></i></a>
+                    <hr />
 
-@if (TempData["PaymentSuccess"] != null)
-{
-    <script type="text/javascript">
-        Swal.fire({
-            title: 'Payment Successful!',
-            text: 'Your payment was completed successfully.',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        });
-    </script>
-}
+                    <h5 class="mb-3">Products Ordered</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th class="text-center">Quantity</th>
+                                    <th class="text-end">Unit Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.OrderProducts != null && Model.OrderProducts.Any())
+                                {
+                                    foreach (var product in Model.OrderProducts)
+                                    {
+                                        <tr>
+                                            <td>@product.ProductName</td>
+                                            <td class="text-center">@product.Quantity</td>
+                                            <td class="text-end">@product.UnitPrice.ToString("C")</td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="3" class="text-center">No products found for this order.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-@if (TempData["PaymentCancelled"] != null)
-{
-    <script type="text/javascript">
-        Swal.fire({
-            title: 'Payment Cancelled!',
-            text: 'Your payment has been cancelled.',
-            icon: 'warning',
-            confirmButtonText: 'OK'
-        });
-    </script>
-}
+                <div class="card-footer d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to Orders
+                    </a>
+                    <div>
+                        @if (!Model.IsCompleted)
+                        {
+                            <form asp-action="FinalizeOrder" asp-route-id="@Model.OrderId" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-check-circle"></i> Finalize Order
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a asp-action="TransactionHistory" asp-route-id="@Model.OrderId" class="btn btn-info text-white me-2">
+                                <i class="bi bi-receipt"></i> Transaction History
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
