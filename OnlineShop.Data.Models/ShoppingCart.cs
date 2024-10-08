@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace OnlineShop.Data.Models
 {
-    public class Order
+    public class ShoppingCart
     {
         [Key]
         public int Id { get; set; }
@@ -17,12 +17,13 @@ namespace OnlineShop.Data.Models
         public string UserId { get; set; } = null!;
         [ForeignKey(nameof(UserId))]
         public IdentityUser User { get; set; } = null!;
-        public DateTime OrderDate { get; set; } = DateTime.Now;
         [Required]
-        public decimal TotalAmount { get; set; }
-
-        public ICollection<Payment> Payments { get; set; } = new HashSet<Payment>();
-        public ICollection<OrderProduct> OrderProducts { get; set; } = new HashSet<OrderProduct>();
-        public bool IsCompleted => Payments.Sum(p => p.Amount) >= TotalAmount;
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Amount { get; set; }
+        [Required]
+        public DateTime PaymentDate { get; set; } = DateTime.Now;
+        [Required]
+        public string Status { get; set; } = "Active";
+        public ICollection<ShoppingCartProduct> ShoppingCartProducts { get; set; } = new HashSet<ShoppingCartProduct>();
     }
 }

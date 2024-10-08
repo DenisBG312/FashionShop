@@ -20,6 +20,8 @@ namespace OnlineShop.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderProduct> OrdersProducts { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<ShoppingCartProduct> ShoppingCartsProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

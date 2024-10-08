@@ -8,11 +8,14 @@ using System.Security.Claims;
 using OnlineShop.Web.ViewModels.Transaction;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OnlineShop.Web.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
+
         private readonly ApplicationDbContext _context;
 
         public OrderController(ApplicationDbContext context)
@@ -49,88 +52,6 @@ namespace OnlineShop.Web.Controllers
             return View(orders);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Create()
-        {
-            // Get the list of products from the database
-            var products = await _context.Products.ToListAsync();
-
-            var productSelectList = products.Select(p => new SelectListItem
-            {
-                Value = p.Id.ToString(),
-                Text = p.Name
-            }).ToList();
-
-            var viewModel = new CreateOrderViewModel
-            {
-                Products = productSelectList
-            };
-
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateOrderViewModel model)
-        {
-            ModelState.Remove("Quantity");
-
-            if (!ModelState.IsValid)
-            {
-                // Return the view with the model if invalid
-                return View(model);
-            }
-
-            var order = new Order
-            {
-                OrderDate = DateTime.Now,
-                UserId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                OrderProducts = new List<OrderProduct>()
-            };
-
-            // Variable to calculate total amount
-            decimal totalAmount = 0;
-
-            foreach (var orderProduct in model.OrderProducts)
-            {
-                if (orderProduct.Quantity > 0)
-                {
-                    // Retrieve the product from the database
-                    var product = await _context.Products.FindAsync(orderProduct.ProductId);
-                    if (product == null || product.StockQuantity < orderProduct.Quantity)
-                    {
-                        // Handle insufficient stock case
-                        ModelState.AddModelError("", $"Not enough stock for {product?.Name ?? "product"}.");
-                        return View(model);
-                    }
-
-                    // Calculate total price for the current product
-                    decimal productTotalPrice = product.Price * orderProduct.Quantity;
-
-                    // Add to the total amount
-                    totalAmount += productTotalPrice;
-
-                    // Add the product to the order
-                    order.OrderProducts.Add(new OrderProduct
-                    {
-                        ProductId = orderProduct.ProductId,
-                        Quantity = orderProduct.Quantity,
-                        UnitPrice = product.Price // Set unit price for each order product
-                    });
-
-                    // Decrease the product stock quantity
-                    product.StockQuantity -= orderProduct.Quantity;
-                }
-            }
-
-            // Set the total amount for the order
-            order.TotalAmount = totalAmount;
-
-            // Add the order to the context
-            _context.Orders.Add(order);
-            await _context.SaveChangesAsync(); // Save changes to update the database
-
-            return RedirectToAction("Index"); // Redirect to orders index or another view
-        }
 
         public async Task<IActionResult> Details(int id)
         {

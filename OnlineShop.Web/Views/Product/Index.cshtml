@@ -17,6 +17,12 @@
                         <p class="card-text">Price: @product.Price.ToString("C")</p>
                         <p class="card-text">Stock: @product.StockQuantity</p>
                         <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="btn btn-primary">View Details</a>
+
+                        <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post" class="mt-2">
+                            <input type="hidden" name="productId" value="@product.Id" />
+                            <input type="hidden" name="quantity" value="1" />
+                            <button type="submit" class="btn btn-success">Add to Cart</button>
+                        </form>
                     </div>
                 </div>
             </div>

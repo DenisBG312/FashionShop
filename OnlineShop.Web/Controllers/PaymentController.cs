@@ -51,6 +51,7 @@ namespace OnlineShop.Web.Controllers
         {
             var order = await _context.Orders
                 .Include(o => o.Payments)
+                .Include(o => o.OrderProducts)
                 .FirstOrDefaultAsync(o => o.Id == model.OrderId);
 
             if (order == null)
@@ -59,10 +60,17 @@ namespace OnlineShop.Web.Controllers
             }
 
             // Calculate the remaining amount for the order
-            model.TotalAmount = order.TotalAmount - order.Payments.Sum(p => p.Amount);
+            var remainingAmount = order.TotalAmount - order.Payments.Sum(p => p.Amount);
+
+            if (remainingAmount <= 0)
+            {
+                TempData["PaymentError"] = "This order is already fully paid.";
+                return RedirectToAction("Details", "Order", new { id = order.Id });
+            }
 
             if (ModelState.IsValid)
             {
+                // Create a new payment
                 var payment = new Payment
                 {
                     OrderId = model.OrderId,
@@ -73,6 +81,17 @@ namespace OnlineShop.Web.Controllers
                 };
 
                 _context.Payments.Add(payment);
+
+                // Reduce stock for each product in the order
+                foreach (var orderProduct in order.OrderProducts)
+                {
+                    var product = await _context.Products.FindAsync(orderProduct.ProductId);
+                    if (product != null)
+                    {
+                        product.StockQuantity -= orderProduct.Quantity; // Decrease stock
+                    }
+                }
+
                 await _context.SaveChangesAsync();
 
                 // Set a flag to show the success message in the view
@@ -85,7 +104,7 @@ namespace OnlineShop.Web.Controllers
             return View(new CreatePaymentViewModel
             {
                 OrderId = model.OrderId,
-                TotalAmount = model.TotalAmount,
+                TotalAmount = remainingAmount,
                 PaymentMethod = model.PaymentMethod // Retain the selected payment method
             });
         }

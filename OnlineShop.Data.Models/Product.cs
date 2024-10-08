@@ -31,5 +31,6 @@ namespace OnlineShop.Data.Models
         public int StockQuantity { get; set; }
 
         public ICollection<OrderProduct> OrderProducts { get; set; } = new HashSet<OrderProduct>();
+        public ICollection<ShoppingCartProduct> ShoppingCartProducts { get; set; } = new HashSet<ShoppingCartProduct>();
     }
 }

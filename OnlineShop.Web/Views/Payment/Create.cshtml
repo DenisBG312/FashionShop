@@ -6,18 +6,6 @@
 
 <h1>Create Payment</h1>
 
-@if (TempData["PaymentSuccess"] != null)
-{
-    <script type="text/javascript">
-        Swal.fire({
-            title: 'Payment Successful!',
-            text: 'Your payment was completed successfully.',
-            icon: 'success',
-            confirmButtonText: 'OK'
-        });
-    </script>
-}
-
 <form asp-action="Create" method="post">
     <input type="hidden" asp-for="OrderId" />
     <input type="hidden" asp-for="TotalAmount" />

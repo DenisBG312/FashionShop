@@ -23,14 +23,14 @@ namespace OnlineShop.Data.Configuration
                 new Order
                 {
                     Id = 1,
-                    UserId = "87210245-f98d-4842-bc01-63518f34b45d",
+                    UserId = "2a2d1de5-de58-4b33-a40e-71770a2b9479",
                     OrderDate = DateTime.Now,
                     TotalAmount = 150.00m
                 },
                 new Order
                 {
                     Id = 2,
-                    UserId = "87210245-f98d-4842-bc01-63518f34b45d",
+                    UserId = "2a2d1de5-de58-4b33-a40e-71770a2b9479",
                     OrderDate = DateTime.Now.AddDays(-1),
                     TotalAmount = 75.50m
                 }
