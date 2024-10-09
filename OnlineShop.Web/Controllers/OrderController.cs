@@ -155,7 +155,7 @@ namespace OnlineShop.Web.Controllers
 
             TempData["SuccessMessage"] = "Thank you for your order! Your order has been finalized. \u2705";
 
-           return Json(new { success = true, message = "Your order has been finalized!" });
+            return RedirectToAction("Details", new { id }); // Redirect to the order details page
         }
 
         public IActionResult ExportToPdf(int orderId)
