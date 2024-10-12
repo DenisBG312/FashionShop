@@ -23,20 +23,24 @@ namespace OnlineShop.Data.Configuration
                 new Product
                 {
                     Id = 1,
-                    Name = "iPhone 15 Pro Max",
-                    Description = "One of the fastest phones ever created",
+                    Name = "Nike Air Max Plus",
+                    Description = "One of the best nike models ever created",
                     Price = 1500.00m,
-                    ImageUrl = "https://api.technopolis.bg/medias/Product-details-main-502118.jpg?context=bWFzdGVyfHJvb3R8MjE5ODA1fGltYWdlL2pwZWd8YUROaUwyZzVZUzh6TkRFME1UUTVORGt3TWpneE5DOVFjbTlrZFdOMExXUmxkR0ZwYkhNdGJXRnBibDgxTURJeE1UZ3VhbkJufGRkNDUwZDJhOWEyZDg0MGMxMDJiZjdjYjMzZWM0ODhkMjBlNmNkYzUzOWJhNWRhMDI1MWYwMTJmMTU1NGM5NWY",
-                    StockQuantity = 100
+                    ImageUrl = "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/66d8f65e-6ecd-414c-bd03-e50a996f7de0/NIKE+AIR+MAX+PLUS.png",
+                    StockQuantity = 100,
+                    GenderId = 1,
+                    ClothingTypeId = 3
                 },
                 new Product
                 {
                     Id = 2,
-                    Name = "Versace Eros",
-                    Description = "One of the greatest parfumes ever created",
+                    Name = "Trapstar Shooters Hooded Puffer Black",
+                    Description = "One of the greatest puffers ever created",
                     Price = 75.00m,
-                    ImageUrl = "https://parfium.bg/3095-large_default/versace-eros-toaletna-voda-za-myje.jpg",
-                    StockQuantity = 50
+                    ImageUrl = "https://images.stockx.com/images/Trapstar-Shooters-Hooded-Puffer-Black-Reflective.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&trim=color&updated_at=1673460322",
+                    StockQuantity = 50,
+                    GenderId = 2,
+                    ClothingTypeId = 2
                 }
             };
         }

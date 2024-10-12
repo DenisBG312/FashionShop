@@ -31,5 +31,17 @@ namespace OnlineShop.Common
             public const int AmountMinValue = 0;
             public const int AmountMaxValue = 999999;
         }
+
+        public static class Gender
+        {
+            public const int NameMinLength = 3;
+            public const int NameMaxLength = 100;
+        }
+
+        public static class ClothingType
+        {
+            public const int NameMinLength = 3;
+            public const int NameMaxLength = 100;
+        }
     }
 }

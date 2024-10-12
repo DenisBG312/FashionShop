@@ -62,8 +62,8 @@ namespace OnlineShop.Web.Data.Migrations
                 columns: new[] { "Id", "OrderDate", "TotalAmount", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 10, 5, 15, 24, 49, 194, DateTimeKind.Local).AddTicks(3170), 150.00m, "2a2d1de5-de58-4b33-a40e-71770a2b9479" },
-                    { 2, new DateTime(2024, 10, 4, 15, 24, 49, 194, DateTimeKind.Local).AddTicks(3178), 75.50m, "2a2d1de5-de58-4b33-a40e-71770a2b9479" }
+                    { 1, new DateTime(2024, 10, 5, 15, 24, 49, 194, DateTimeKind.Local).AddTicks(3170), 150.00m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" },
+                    { 2, new DateTime(2024, 10, 4, 15, 24, 49, 194, DateTimeKind.Local).AddTicks(3178), 75.50m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" }
                 });
 
             migrationBuilder.InsertData(

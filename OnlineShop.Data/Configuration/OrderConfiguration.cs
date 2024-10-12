@@ -23,7 +23,7 @@ namespace OnlineShop.Data.Configuration
                 new Order
                 {
                     Id = 1,
-                    UserId = "2a2d1de5-de58-4b33-a40e-71770a2b9479",
+                    UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
                     OrderDate = DateTime.Now,
                     TotalAmount = 150.00m,
                     IsCompleted = false
@@ -31,7 +31,7 @@ namespace OnlineShop.Data.Configuration
                 new Order
                 {
                     Id = 2,
-                    UserId = "2a2d1de5-de58-4b33-a40e-71770a2b9479",
+                    UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
                     OrderDate = DateTime.Now.AddDays(-1),
                     TotalAmount = 75.50m,
                     IsCompleted = true

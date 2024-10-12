@@ -25,5 +25,7 @@ namespace OnlineShop.Data.Models
         [Required]
         public string Status { get; set; } = "Active";
         public ICollection<ShoppingCartProduct> ShoppingCartProducts { get; set; } = new HashSet<ShoppingCartProduct>();
+
+
     }
 }

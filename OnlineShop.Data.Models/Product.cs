@@ -29,6 +29,14 @@ namespace OnlineShop.Data.Models
 
         [Required]
         public int StockQuantity { get; set; }
+        [Required]
+        public int GenderId { get; set; }
+        [ForeignKey(nameof(GenderId))]
+        public Gender Gender { get; set; } = null!;
+        [Required]
+        public int ClothingTypeId { get; set; }
+        [ForeignKey(nameof(ClothingTypeId))]
+        public ClothingType ClothingType { get; set; } = null!;
 
         public ICollection<OrderProduct> OrderProducts { get; set; } = new HashSet<OrderProduct>();
         public ICollection<ShoppingCartProduct> ShoppingCartProducts { get; set; } = new HashSet<ShoppingCartProduct>();

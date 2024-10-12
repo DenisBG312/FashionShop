@@ -23,21 +23,21 @@ namespace OnlineShop.Web.Data.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "IsCompleted", "OrderDate", "UserId" },
-                values: new object[] { false, new DateTime(2024, 10, 8, 21, 7, 48, 399, DateTimeKind.Local).AddTicks(2371), "2a2d1de5-de58-4b33-a40e-71770a2b9479" });
+                values: new object[] { false, new DateTime(2024, 10, 8, 21, 7, 48, 399, DateTimeKind.Local).AddTicks(2371), "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
 
             migrationBuilder.UpdateData(
                 table: "Orders",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "IsCompleted", "OrderDate", "UserId" },
-                values: new object[] { true, new DateTime(2024, 10, 7, 21, 7, 48, 399, DateTimeKind.Local).AddTicks(2379), "2a2d1de5-de58-4b33-a40e-71770a2b9479" });
+                values: new object[] { true, new DateTime(2024, 10, 7, 21, 7, 48, 399, DateTimeKind.Local).AddTicks(2379), "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
 
             migrationBuilder.UpdateData(
                 table: "ShoppingCarts",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "PaymentDate", "UserId" },
-                values: new object[] { new DateTime(2024, 10, 8, 21, 7, 48, 399, DateTimeKind.Local).AddTicks(8355), "2a2d1de5-de58-4b33-a40e-71770a2b9479" });
+                values: new object[] { new DateTime(2024, 10, 8, 21, 7, 48, 399, DateTimeKind.Local).AddTicks(8355), "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
         }
 
         /// <inheritdoc />
@@ -52,21 +52,21 @@ namespace OnlineShop.Web.Data.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "OrderDate", "UserId" },
-                values: new object[] { new DateTime(2024, 10, 8, 19, 29, 29, 752, DateTimeKind.Local).AddTicks(7641), "1bcd7ed2-50a3-44b6-b5ec-9ebcc7494376" });
+                values: new object[] { new DateTime(2024, 10, 8, 19, 29, 29, 752, DateTimeKind.Local).AddTicks(7641), "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
 
             migrationBuilder.UpdateData(
                 table: "Orders",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "OrderDate", "UserId" },
-                values: new object[] { new DateTime(2024, 10, 7, 19, 29, 29, 752, DateTimeKind.Local).AddTicks(7649), "1bcd7ed2-50a3-44b6-b5ec-9ebcc7494376" });
+                values: new object[] { new DateTime(2024, 10, 7, 19, 29, 29, 752, DateTimeKind.Local).AddTicks(7649), "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
 
             migrationBuilder.UpdateData(
                 table: "ShoppingCarts",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "PaymentDate", "UserId" },
-                values: new object[] { new DateTime(2024, 10, 8, 19, 29, 29, 753, DateTimeKind.Local).AddTicks(3580), "1bcd7ed2-50a3-44b6-b5ec-9ebcc7494376" });
+                values: new object[] { new DateTime(2024, 10, 8, 19, 29, 29, 753, DateTimeKind.Local).AddTicks(3580), "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
         }
     }
 }
