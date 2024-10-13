@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using OnlineShop.Common;
 
 namespace OnlineShop.Data.Models
@@ -37,6 +38,9 @@ namespace OnlineShop.Data.Models
         public int ClothingTypeId { get; set; }
         [ForeignKey(nameof(ClothingTypeId))]
         public ClothingType ClothingType { get; set; } = null!;
+        public string? UserId { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public IdentityUser User { get; set; }
 
         public ICollection<OrderProduct> OrderProducts { get; set; } = new HashSet<OrderProduct>();
         public ICollection<ShoppingCartProduct> ShoppingCartProducts { get; set; } = new HashSet<ShoppingCartProduct>();

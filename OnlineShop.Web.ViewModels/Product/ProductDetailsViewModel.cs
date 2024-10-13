@@ -21,5 +21,7 @@ namespace OnlineShop.Web.ViewModels.Product
         public int StockQuantity { get; set; }
         public string Gender { get; set; } = null!;
         public string ClothingType { get; set; } = null!;
+        public string? PostedBy { get; set; }
+        public string UserId { get; set; } = null!;
     }
 }

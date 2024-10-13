@@ -9,19 +9,20 @@ using OnlineShop.Web.ViewModels.Transaction;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
 using Microsoft.AspNetCore.Authorization;
+using iTextSharp.text.pdf.draw;
 
 namespace OnlineShop.Web.Controllers
 {
     [Authorize]
     public class OrderController : Controller
     {
+
         private readonly ApplicationDbContext _context;
 
         public OrderController(ApplicationDbContext context)
         {
             _context = context;
         }
-
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -47,11 +48,12 @@ namespace OnlineShop.Web.Controllers
                     Amount = p.Amount,
                     PaymentDate = p.PaymentDate,
                     Status = p.Status.ToString()
-                }).ToList()
+                })// Ensure this property exists in your Order model
             }).ToList();
 
             return View(orders);
         }
+
 
         public async Task<IActionResult> Details(int id)
         {
@@ -153,6 +155,48 @@ namespace OnlineShop.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> FinalizeOrder(int id)
+        {
+            var order = await _context.Orders
+                .Include(op => op.OrderProducts)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            foreach (var orderProduct in order.OrderProducts)
+            {
+                var product = await _context.Products.FindAsync(orderProduct.ProductId);
+                if (product == null || product.StockQuantity < orderProduct.Quantity)
+                {
+                    TempData["ErrorMessage"] = "Insufficient stock for one or more products in the order.";
+                    return RedirectToAction("Details", new { id });
+                }
+            }
+
+            foreach (var orderProduct in order.OrderProducts)
+            {
+                var product = await _context.Products.FindAsync(orderProduct.ProductId);
+                if (product != null)
+                {
+                    product.StockQuantity -= orderProduct.Quantity;
+                }
+            }
+
+
+            // Set IsCompleted to true or add your logic here
+            order.IsCompleted = true;
+            await _context.SaveChangesAsync();
+
+            TempData["SuccessMessage"] = "Thank you for your order! Your order has been finalized. \u2705";
+
+            return RedirectToAction("Details", new { id }); // Redirect to the order details page
+        }
+
+
         public async Task<IActionResult> TransactionHistory(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -182,52 +226,11 @@ namespace OnlineShop.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> FinalizeOrder(int id)
-        {
-            var order = await _context.Orders
-                .Include(op => op.OrderProducts)
-                .FirstOrDefaultAsync(o => o.Id == id);
-
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            // Check stock quantities
-            foreach (var orderProduct in order.OrderProducts)
-            {
-                var product = await _context.Products.FindAsync(orderProduct.ProductId);
-                if (product == null || product.StockQuantity < orderProduct.Quantity)
-                {
-                    TempData["ErrorMessage"] = "Insufficient stock for one or more products in the order.";
-                    return RedirectToAction("Details", new { id });
-                }
-            }
-
-            // Deduct stock quantities
-            foreach (var orderProduct in order.OrderProducts)
-            {
-                var product = await _context.Products.FindAsync(orderProduct.ProductId);
-                if (product != null)
-                {
-                    product.StockQuantity -= orderProduct.Quantity; // Deduct the quantity
-                }
-            }
-
-            // Set IsCompleted to true
-            order.IsCompleted = true;
-            await _context.SaveChangesAsync();
-
-            TempData["SuccessMessage"] = "Thank you for your order! Your order has been finalized. \u2705";
-
-            return RedirectToAction("Details", new { id }); // Redirect to the order details page
-        }
-
         public IActionResult ExportToPdf(int orderId)
         {
             var order = _context.Orders
                 .Include(o => o.Payments)
+                .Include(o => o.User) // Make sure to include the User navigation property
                 .FirstOrDefault(o => o.Id == orderId);
 
             if (order == null)
@@ -237,37 +240,114 @@ namespace OnlineShop.Web.Controllers
 
             using (var stream = new MemoryStream())
             {
-                var document = new Document();
+                var document = new Document(PageSize.A4, 50, 50, 25, 25);
                 PdfWriter.GetInstance(document, stream);
                 document.Open();
 
-                // Add content to the PDF
-                document.Add(new Paragraph($"Transaction History for Order Number: {order.Id}"));
-                document.Add(new Paragraph($"Order Date: {order.OrderDate}"));
-                document.Add(new Paragraph($"Total Amount: {order.TotalAmount:C}"));
-                document.Add(new Paragraph("\n"));
+                // Add title with styling
+                var titleFont = FontFactory.GetFont("Arial", 22, Font.BOLD, BaseColor.BLUE);
+                var title = new Paragraph($"Transaction History for Order Number: {order.Id}", titleFont)
+                {
+                    Alignment = Element.ALIGN_CENTER,
+                    SpacingAfter = 20 // Space after title
+                };
+                document.Add(title);
+
+                // Add order details
+                var detailsFont = FontFactory.GetFont("Arial", 12, Font.NORMAL, BaseColor.BLACK);
+                document.Add(new Paragraph($"Buyer: {order.User.UserName}", detailsFont));
+                document.Add(new Paragraph($"Order Date: {order.OrderDate:dd MMMM yyyy}", detailsFont));
+                document.Add(new Paragraph($"Total Amount: {order.TotalAmount:C}", detailsFont));
+                document.Add(new Paragraph("\n", detailsFont)); // Space
+
+                // Add divider
+                document.Add(new Chunk(new LineSeparator(1f, 100f, BaseColor.BLACK, Element.ALIGN_CENTER, 1))); // Horizontal line
 
                 // Create a table for transactions
-                var table = new PdfPTable(4);
-                table.AddCell("Payment Method");
-                table.AddCell("Amount");
-                table.AddCell("Payment Date");
-                table.AddCell("Status");
+                var table = new PdfPTable(4)
+                {
+                    WidthPercentage = 100,
+                    SpacingBefore = 20,
+                    SpacingAfter = 20,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
 
+                // Set table headers with style
+                var headerFont = FontFactory.GetFont("Arial", 12, Font.BOLD, BaseColor.WHITE);
+                var cellFont = FontFactory.GetFont("Arial", 12, Font.NORMAL, BaseColor.BLACK);
+
+                table.AddCell(CreateCell("Payment Method", headerFont, BaseColor.DARK_GRAY));
+                table.AddCell(CreateCell("Amount", headerFont, BaseColor.DARK_GRAY));
+                table.AddCell(CreateCell("Payment Date", headerFont, BaseColor.DARK_GRAY));
+                table.AddCell(CreateCell("Status", headerFont, BaseColor.DARK_GRAY));
+
+                // Populate table rows
                 foreach (var payment in order.Payments)
                 {
-                    table.AddCell(payment.PaymentMethod.ToString());
-                    table.AddCell(payment.Amount.ToString("C"));
-                    table.AddCell(payment.PaymentDate.ToString());
-                    table.AddCell(payment.Status.ToString());
+                    table.AddCell(CreateCell(payment.PaymentMethod.ToString(), cellFont, BaseColor.WHITE));
+                    table.AddCell(CreateCell(payment.Amount.ToString("C"), cellFont, BaseColor.WHITE));
+                    table.AddCell(CreateCell(payment.PaymentDate.ToString("dd MMMM yyyy"), cellFont, BaseColor.WHITE));
+                    table.AddCell(CreateCell(payment.Status.ToString(), cellFont, BaseColor.WHITE));
                 }
 
                 document.Add(table);
+
+                // Add divider
+                document.Add(new Chunk(new LineSeparator(1f, 100f, BaseColor.BLACK, Element.ALIGN_CENTER, 1))); // Horizontal line
+
+                // Add logo at the bottom center
+                string logoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "your_logo.png"); // Update with your logo path
+                if (System.IO.File.Exists(logoPath))
+                {
+                    var logo = iTextSharp.text.Image.GetInstance(logoPath);
+                    logo.ScaleToFit(140f, 120f);
+                    logo.Alignment = Element.ALIGN_CENTER;
+                    document.Add(new Paragraph("\n")); // Space before the logo
+                    document.Add(logo);
+                }
+
+                // Add signature row
+                var signatureFont = FontFactory.GetFont("Arial", 14, Font.BOLD, BaseColor.BLACK);
+                var signatureRow = new Paragraph("Owner of Website / SEO Signature:", signatureFont)
+                {
+                    Alignment = Element.ALIGN_LEFT,
+                    SpacingAfter = 5 // Space after signature row
+                };
+                document.Add(signatureRow);
+
+                // Add signature image
+                string signaturePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "signature.png"); // Update with your signature path
+                if (System.IO.File.Exists(signaturePath))
+                {
+                    var signature = iTextSharp.text.Image.GetInstance(signaturePath);
+                    signature.ScaleToFit(200f, 100f);
+                    signature.Alignment = Element.ALIGN_LEFT; // Align the signature to the left
+                    document.Add(new Paragraph("\n")); // Add space before the signature
+                    document.Add(signature);
+                }
+
+                // Close document
                 document.Close();
 
                 var fileName = $"TransactionHistory_{order.Id}.pdf";
                 return File(stream.ToArray(), "application/pdf", fileName);
             }
         }
+
+        // Helper method to create styled cells with borders
+        private PdfPCell CreateCell(string text, Font font, BaseColor backgroundColor)
+        {
+            var cell = new PdfPCell(new Phrase(text, font))
+            {
+                BackgroundColor = backgroundColor,
+                Padding = 10,
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                Border = PdfPCell.BOX, // Add borders to cells
+                BorderColor = BaseColor.GRAY // Color of borders
+            };
+            return cell;
+        }
+
+
     }
 }

@@ -5,7 +5,7 @@
 }
 
 <div class="container mt-5">
-    <h2 class="mb-4 text-center">Order Details</h2>
+    <h2 class="mb-4 text-center text-dark">Order Details</h2>
 
     @if (TempData["SuccessMessage"] != null)
     {
@@ -17,14 +17,14 @@
 
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h5>Order Number: #@Model.CustomOrderNumber</h5>
+            <div class="card shadow border-0 rounded-3">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Order Number: #@Model.CustomOrderNumber</h5>
                 </div>
 
                 <div class="card-body">
-                    <p><strong>Order Date:</strong> @Model.OrderDate.ToShortDateString()</p>
-                    <p><strong>Total Amount:</strong> @Model.TotalAmount.ToString("C")</p>
+                    <p><strong>Order Date:</strong> <span class="text-muted">@Model.OrderDate.ToShortDateString()</span></p>
+                    <p><strong>Total Amount:</strong> <span class="text-success fw-bold">@Model.TotalAmount.ToString("C")</span></p>
                     <p>
                         <strong>Status:</strong>
                         <span class="badge rounded-pill @(Model.IsCompleted ? "bg-success" : Model.IsCancelled ? "bg-danger" : "bg-warning")" style="font-size: 0.9rem;">
@@ -36,7 +36,7 @@
 
                     <h5 class="mb-3">Products Ordered</h5>
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
+                        <table class="table table-bordered">
                             <thead class="table-dark">
                                 <tr>
                                     <th>Product Name</th>
@@ -67,8 +67,8 @@
                     </div>
                 </div>
 
-                <div class="card-footer d-flex justify-content-between">
-                    <a asp-action="Index" class="btn btn-secondary">
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-left"></i> Back to Orders
                     </a>
                     <div>
@@ -93,7 +93,7 @@
 
                             @if (Model.IsCompleted)
                             {
-                                <a asp-action="TransactionHistory" asp-route-id="@Model.OrderId" class="btn btn-info text-white me-2">
+                                <a asp-action="TransactionHistory" asp-route-id="@Model.OrderId" class="btn btn-info text-white">
                                     <i class="bi bi-receipt"></i> Transaction History
                                 </a>
                             }
@@ -104,3 +104,48 @@
         </div>
     </div>
 </div>
+
+<style>
+    body {
+        background-color: #f4f4f4; /* Soft background color */
+    }
+
+    .card {
+        border-radius: 10px;
+        background: white; /* White background for cards */
+        transition: transform 0.2s; /* Smooth scaling effect */
+    }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+        }
+
+    .card-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        background-color: #343a40; /* Dark header */
+    }
+
+    .table {
+        border-radius: 10px;
+        overflow: hidden; /* Ensure rounded corners on the table */
+    }
+
+        .table th, .table td {
+            padding: 12px;
+            vertical-align: middle;
+        }
+
+    .btn {
+        padding: 10px 20px; /* Increase button size */
+    }
+
+    .badge {
+        padding: 0.5em 1em; /* Padding for badges */
+    }
+
+    /* Style for alert messages */
+    .alert {
+        border-radius: 5px;
+    }
+</style>

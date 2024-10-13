@@ -29,7 +29,8 @@ namespace OnlineShop.Data.Configuration
                     ImageUrl = "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/66d8f65e-6ecd-414c-bd03-e50a996f7de0/NIKE+AIR+MAX+PLUS.png",
                     StockQuantity = 100,
                     GenderId = 1,
-                    ClothingTypeId = 3
+                    ClothingTypeId = 3,
+                    UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                 },
                 new Product
                 {
@@ -40,7 +41,8 @@ namespace OnlineShop.Data.Configuration
                     ImageUrl = "https://images.stockx.com/images/Trapstar-Shooters-Hooded-Puffer-Black-Reflective.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&trim=color&updated_at=1673460322",
                     StockQuantity = 50,
                     GenderId = 2,
-                    ClothingTypeId = 2
+                    ClothingTypeId = 2,
+                    UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                 }
             };
         }

@@ -3,23 +3,22 @@
 }
 
 <div class="container mt-5">
-    <div class="text-center mb-5">
-        <h1 class="display-4">Welcome to Our E-Commerce Shop!</h1>
-        <p class="lead">Your one-stop shop for all your needs.</p>
-        <p>
-            Explore our <a href="/Product" class="link-primary">products</a> and enjoy amazing deals every day!
-        </p>
+    <div class="hero text-center mb-5">
+        <h1 class="display-3">Welcome to Our E-Commerce Shop!</h1>
+        <p class="hero-subtitle lead">Your one-stop shop for all your needs, from essentials to luxury items.</p>
+        <a href="/Product" class="btn btn-lg btn-primary hero-button">Explore Products</a>
     </div>
 
-    <div class="row text-center">
+    <div class="row text-center feature-section">
         <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
                 <div class="card-body">
+                    <i class="fa-solid fa-boxes fa-3x mb-3"></i>
                     <h5 class="card-title">Wide Selection</h5>
                     <p class="card-text">Choose from a wide range of products across various categories.</p>
                 </div>
                 <div class="card-footer">
-                    <a href="/Product" class="btn btn-primary">Shop Now</a>
+                    <a href="/Product" class="btn btn-outline-primary">Shop Now</a>
                 </div>
             </div>
         </div>
@@ -27,11 +26,12 @@
         <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
                 <div class="card-body">
+                    <i class="fa-solid fa-tag fa-3x mb-3"></i>
                     <h5 class="card-title">Best Prices</h5>
                     <p class="card-text">Get the best deals and discounts on all your favorite items.</p>
                 </div>
                 <div class="card-footer">
-                    <a href="/Deals" class="btn btn-primary">View Deals</a>
+                    <a href="/Deals" class="btn btn-outline-primary">View Deals</a>
                 </div>
             </div>
         </div>
@@ -39,20 +39,21 @@
         <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
                 <div class="card-body">
+                    <i class="fa-solid fa-truck fa-3x mb-3"></i>
                     <h5 class="card-title">Fast Shipping</h5>
                     <p class="card-text">Enjoy fast and reliable shipping on all your orders.</p>
                 </div>
                 <div class="card-footer">
-                    <a href="/ShippingInfo" class="btn btn-primary">Learn More</a>
+                    <a href="/ShippingInfo" class="btn btn-outline-primary">Learn More</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="text-center">
-        <h2 class="mt-5">Why Choose Us?</h2>
+    <div class="text-center mt-5">
+        <h2>Why Choose Us?</h2>
         <p class="lead">At Our E-Commerce Shop, we prioritize customer satisfaction and quality. Here are a few reasons to shop with us:</p>
-        <ul class="list-unstyled">
+        <ul class="list-unstyled reasons-list">
             <li><i class="fa-solid fa-check-circle"></i> Excellent Customer Service</li>
             <li><i class="fa-solid fa-check-circle"></i> Secure Payment Options</li>
             <li><i class="fa-solid fa-check-circle"></i> Easy Returns and Exchanges</li>
@@ -64,48 +65,84 @@
 <style>
     body {
         background-color: #f8f9fa;
+        font-family: 'Inter', sans-serif;
     }
 
     .container {
-        max-width: 960px;
+        max-width: 1140px;
         margin: 0 auto;
-        padding: 20px;
     }
 
-    .card {
-        border-radius: 0.5rem;
-        transition: transform 0.2s;
+    .hero {
+        padding: 50px 0;
+        background: linear-gradient(to right, #007bff, #6610f2);
+        color: white;
+        border-radius: 10px;
     }
 
-        .card:hover {
-            transform: scale(1.05);
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
         }
 
-    .btn-primary {
-        background-color: #007bff;
-        border: none;
-    }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-
-    .lead {
-        font-size: 1.25rem;
+    .hero-subtitle {
+        font-size: 1.5rem;
         font-weight: 300;
     }
 
-    .list-unstyled {
+    .hero-button {
         margin-top: 20px;
+        padding: 10px 30px;
+        font-size: 1.2rem;
+        border-radius: 30px;
     }
 
-        .list-unstyled li {
-            font-size: 1rem;
-            margin-bottom: 10px;
+    .feature-section .card {
+        transition: all 0.3s ease-in-out;
+        border: none;
+        border-radius: 1rem;
+    }
+
+    .feature-section .card-body i {
+        color: #007bff;
+        margin-bottom: 15px;
+    }
+
+    .feature-section .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-outline-primary {
+        border: 2px solid #007bff;
+        color: #007bff;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: white;
         }
 
-    .fa-check-circle {
+    .reasons-list li {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+
+    .reasons-list i {
         color: #28a745;
         margin-right: 10px;
+    }
+
+    h2 {
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    p.lead {
+        font-size: 1.3rem;
     }
 </style>
