@@ -180,6 +180,26 @@ namespace OnlineShop.Web.Controllers
 
             if (shoppingCart != null && shoppingCart.ShoppingCartProducts.Any())
             {
+                var insufficientStockMessages = new List<string>(); // List to collect error messages
+
+                // Check stock quantities before proceeding
+                foreach (var cartProduct in shoppingCart.ShoppingCartProducts)
+                {
+                    var product = _context.Products.Find(cartProduct.ProductId);
+                    if (product == null || product.StockQuantity < cartProduct.Quantity)
+                    {
+                        // Collect error messages for each product with insufficient stock
+                        insufficientStockMessages.Add($"Insufficient stock for {cartProduct.Product.Name}. Available: {product?.StockQuantity ?? 0}.");
+                    }
+                }
+
+                // If there are any stock issues, return the messages to the view
+                if (insufficientStockMessages.Any())
+                {
+                    TempData["ErrorMessages"] = string.Join("<br />", insufficientStockMessages); // Join messages with line breaks
+                    return RedirectToAction("Index", "ShoppingCart", new { shoppingCartId }); // Keep user on the shopping cart page
+                }
+
                 // Calculate total amount from the shopping cart
                 decimal totalAmount = shoppingCart.ShoppingCartProducts.Sum(scp => scp.Quantity * scp.Product.Price);
 
@@ -221,9 +241,16 @@ namespace OnlineShop.Web.Controllers
                     };
 
                     _context.OrdersProducts.Add(orderProduct);
+
+                    // Reduce stock quantity
+                    var product = _context.Products.Find(cartProduct.ProductId);
+                    if (product != null)
+                    {
+                        product.StockQuantity -= cartProduct.Quantity;
+                    }
                 }
 
-                _context.SaveChanges(); // Save order products
+                _context.SaveChanges(); // Save order products and stock changes
 
                 // Clear the shopping cart
                 _context.ShoppingCartsProducts.RemoveRange(shoppingCart.ShoppingCartProducts);
@@ -236,7 +263,8 @@ namespace OnlineShop.Web.Controllers
             }
 
             // Handle cases where the shopping cart is empty or doesn't exist
-            return RedirectToAction("Index", "Home");
+            TempData["ErrorMessage"] = "Your shopping cart is empty.";
+            return RedirectToAction("Index", "ShoppingCart", new { shoppingCartId });
         }
 
     }

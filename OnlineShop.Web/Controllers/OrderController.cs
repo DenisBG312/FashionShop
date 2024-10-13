@@ -15,13 +15,13 @@ namespace OnlineShop.Web.Controllers
     [Authorize]
     public class OrderController : Controller
     {
-
         private readonly ApplicationDbContext _context;
 
         public OrderController(ApplicationDbContext context)
         {
             _context = context;
         }
+
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -47,12 +47,11 @@ namespace OnlineShop.Web.Controllers
                     Amount = p.Amount,
                     PaymentDate = p.PaymentDate,
                     Status = p.Status.ToString()
-                })// Ensure this property exists in your Order model
+                }).ToList()
             }).ToList();
 
             return View(orders);
         }
-
 
         public async Task<IActionResult> Details(int id)
         {
@@ -154,7 +153,6 @@ namespace OnlineShop.Web.Controllers
             return RedirectToAction("Index");
         }
 
-
         public async Task<IActionResult> TransactionHistory(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -187,14 +185,37 @@ namespace OnlineShop.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> FinalizeOrder(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders
+                .Include(op => op.OrderProducts)
+                .FirstOrDefaultAsync(o => o.Id == id);
 
             if (order == null)
             {
                 return NotFound();
             }
 
-            // Set IsCompleted to true or add your logic here
+            // Check stock quantities
+            foreach (var orderProduct in order.OrderProducts)
+            {
+                var product = await _context.Products.FindAsync(orderProduct.ProductId);
+                if (product == null || product.StockQuantity < orderProduct.Quantity)
+                {
+                    TempData["ErrorMessage"] = "Insufficient stock for one or more products in the order.";
+                    return RedirectToAction("Details", new { id });
+                }
+            }
+
+            // Deduct stock quantities
+            foreach (var orderProduct in order.OrderProducts)
+            {
+                var product = await _context.Products.FindAsync(orderProduct.ProductId);
+                if (product != null)
+                {
+                    product.StockQuantity -= orderProduct.Quantity; // Deduct the quantity
+                }
+            }
+
+            // Set IsCompleted to true
             order.IsCompleted = true;
             await _context.SaveChangesAsync();
 
