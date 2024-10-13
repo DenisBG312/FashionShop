@@ -9,23 +9,44 @@
 
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-dark text-white text-center">
                     <h4 class="mb-0">@Model.Name</h4>
                 </div>
 
-                <div class="card-body">
+                <div class="card-body p-4">
                     <div class="row">
+                        <!-- Product Information -->
                         <div class="col-md-6">
-                            <p class="card-text"><strong>Description:</strong> @Model.Description</p>
-                            <p class="card-text"><strong>Price:</strong> @Model.Price.ToString("C")</p>
-                            <p class="card-text"><strong>Stock Quantity:</strong> @Model.StockQuantity</p>
+                            <ul class="list-unstyled">
+                                <li><strong>Description:</strong> @Model.Description</li>
+                                <li><strong>Stock Quantity:</strong> @Model.StockQuantity</li>
+                                <li><strong>Gender:</strong> @Model.Gender</li>
+                                <li><strong>Clothing Type:</strong> @Model.ClothingType</li>
+
+                                <!-- Highlighted Price -->
+                                <li class="mt-3">
+                                    <strong>Price:</strong>
+                                    <span class="text-success fw-bold" style="font-size: 1.5rem;">
+                                        @Model.Price.ToString("C")
+                                    </span>
+                                </li>
+                                
+                                <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post" class="mt-3">
+                                    <input type="hidden" name="productId" value="@Model.Id" />
+                                    <input type="hidden" name="quantity" value="1" />
+                                    <button type="submit" class="btn btn-success rounded-pill px-4">
+                                        Add to Cart <i class="fa-solid fa-cart-shopping"></i>
+                                    </button>
+                                </form>
+                            </ul>
                         </div>
 
-                        <div class="col-md-6 text-center">
+                        <!-- Product Image -->
+                        <div class="col-md-6 text-center d-flex align-items-center justify-content-center">
                             @if (!string.IsNullOrEmpty(Model.ImageUrl))
                             {
-                                <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded" style="max-height: 300px; object-fit: cover;" />
+                                <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded shadow-sm" style="max-height: 300px; object-fit: cover; border: 2px solid #e1e1e1;" />
                             }
                             else
                             {
@@ -35,8 +56,9 @@
                     </div>
                 </div>
 
-                <div class="card-footer text-center">
-                    <a asp-action="Index" class="btn btn-secondary">
+                <!-- Footer with Back Button -->
+                <div class="card-footer text-center bg-light py-3">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-left"></i> Back to List
                     </a>
                 </div>

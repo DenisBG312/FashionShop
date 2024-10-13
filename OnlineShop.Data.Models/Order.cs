@@ -24,6 +24,9 @@ namespace OnlineShop.Data.Models
         [Required]
         public bool IsCompleted { get; set; } = false;
 
+        [Required]
+        public bool IsCancelled { get; set; }
+
         public ICollection<Payment> Payments { get; set; } = new HashSet<Payment>();
         public ICollection<OrderProduct> OrderProducts { get; set; } = new HashSet<OrderProduct>();
     }

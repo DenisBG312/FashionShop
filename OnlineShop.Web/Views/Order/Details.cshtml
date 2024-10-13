@@ -27,8 +27,8 @@
                     <p><strong>Total Amount:</strong> @Model.TotalAmount.ToString("C")</p>
                     <p>
                         <strong>Status:</strong>
-                        <span class="badge @(Model.IsCompleted ? "bg-success" : "bg-warning")">
-                            @(Model.IsCompleted ? "Completed" : "Pending")
+                        <span class="badge rounded-pill @(Model.IsCompleted ? "bg-success" : Model.IsCancelled ? "bg-danger" : "bg-warning")" style="font-size: 0.9rem;">
+                            @(Model.IsCompleted ? "Completed" : Model.IsCancelled ? "Cancelled" : "Pending")
                         </span>
                     </p>
 
@@ -72,19 +72,31 @@
                         <i class="bi bi-arrow-left"></i> Back to Orders
                     </a>
                     <div>
-                        @if (!Model.IsCompleted)
+                        @if (Model.IsCancelled)
                         {
-                            <form asp-action="FinalizeOrder" asp-route-id="@Model.OrderId" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-success">
-                                    <i class="bi bi-check-circle"></i> Finalize Order
+                            <form asp-action="Reactivate" asp-route-id="@Model.OrderId" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-warning">
+                                    <i class="bi bi-arrow-clockwise"></i> Reactivate Order
                                 </button>
                             </form>
                         }
                         else
                         {
-                            <a asp-action="TransactionHistory" asp-route-id="@Model.OrderId" class="btn btn-info text-white me-2">
-                                <i class="bi bi-receipt"></i> Transaction History
-                            </a>
+                            if (!Model.IsCompleted)
+                            {
+                                <form asp-action="FinalizeOrder" asp-route-id="@Model.OrderId" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="bi bi-check-circle"></i> Finalize Order
+                                    </button>
+                                </form>
+                            }
+
+                            @if (Model.IsCompleted)
+                            {
+                                <a asp-action="TransactionHistory" asp-route-id="@Model.OrderId" class="btn btn-info text-white me-2">
+                                    <i class="bi bi-receipt"></i> Transaction History
+                                </a>
+                            }
                         }
                     </div>
                 </div>

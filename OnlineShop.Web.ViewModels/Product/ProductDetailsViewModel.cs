@@ -19,5 +19,7 @@ namespace OnlineShop.Web.ViewModels.Product
         public string? ImageUrl { get; set; }
 
         public int StockQuantity { get; set; }
+        public string Gender { get; set; } = null!;
+        public string ClothingType { get; set; } = null!;
     }
 }

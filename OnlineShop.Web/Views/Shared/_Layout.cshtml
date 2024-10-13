@@ -4,7 +4,6 @@
     string footerYear = (ReleaseYear == currentYear) ? $"{currentYear}" : $"{ReleaseYear} - {currentYear}";
 }
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,12 +36,42 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="ShoppingCart" asp-action="Index">My Shopping Cart <i class="fa-solid fa-cart-shopping"></i></a>
                         </li>
-                    </ul>
-                    <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">My Orders <i class="fa-solid fa-list"></i></a>
                         </li>
                     </ul>
+                    <div class="form-inline my-2 my-lg-0 d-flex align-items-center">
+                        <!-- Buttons for selecting gender -->
+                        <div class="btn-group me-3" role="group" aria-label="Gender selection">
+                            <a class="btn btn-outline-primary @(Context.Request.Query["genderId"] == "1" ? "active" : "")"
+                               href="@Url.Action("Index", "Product", new { genderId = "1", clothingTypeId = Context.Request.Query["clothingTypeId"] })">
+                                Male
+                            </a>
+                            <a class="btn btn-outline-primary @(Context.Request.Query["genderId"] == "2" ? "active" : "")"
+                               href="@Url.Action("Index", "Product", new { genderId = "2", clothingTypeId = Context.Request.Query["clothingTypeId"] })">
+                                Female
+                            </a>
+                            <a class="btn btn-outline-primary @(Context.Request.Query["genderId"] == "3" ? "active" : "")"
+                               href="@Url.Action("Index", "Product", new { genderId = "3", clothingTypeId = Context.Request.Query["clothingTypeId"] })">
+                                Kids
+                            </a>
+                        </div>
+
+                        <!-- Dropdown for clothing types -->
+                        <select class="form-select me-2" onchange="location = this.value;">
+                            <option disabled selected>Select Clothing Type</option>
+                            <option value="@Url.Action("Index", "Product", new { genderId = Context.Request.Query["genderId"], clothingTypeId = "1" })">T-Shirts</option>
+                            <option value="@Url.Action("Index", "Product", new { genderId = Context.Request.Query["genderId"], clothingTypeId = "2" })">Jackets</option>
+                            <option value="@Url.Action("Index", "Product", new { genderId = Context.Request.Query["genderId"], clothingTypeId = "3" })">Shoes</option>
+                            <option value="@Url.Action("Index", "Product", new { genderId = Context.Request.Query["genderId"], clothingTypeId = "4" })">Jeans</option>
+                            <option value="@Url.Action("Index", "Product", new { genderId = Context.Request.Query["genderId"], clothingTypeId = "5" })">Shirts</option>
+                            <option value="@Url.Action("Index", "Product", new { genderId = Context.Request.Query["genderId"], clothingTypeId = "6" })">Shorts</option>
+                        </select>
+                    </div>
+                    <form class="d-flex" method="get" action="@Url.Action("Index", "Product")">
+                        <input class="form-control me-2" type="search" placeholder="Search" name="searchTerm" value="@Context.Request.Query["searchTerm"]" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -64,7 +93,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

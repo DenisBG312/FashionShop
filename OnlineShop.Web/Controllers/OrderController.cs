@@ -40,6 +40,7 @@ namespace OnlineShop.Web.Controllers
                 OrderDate = order.OrderDate,
                 TotalAmount = order.OrderProducts.Sum(op => op.UnitPrice * op.Quantity), // Calculate total amount
                 IsCompleted = order.IsCompleted,
+                IsCancelled = order.IsCancelled,
                 Transactions = order.Payments.Select(p => new TransactionViewModel
                 {
                     PaymentMethod = p.PaymentMethod.ToString(),
@@ -83,6 +84,7 @@ namespace OnlineShop.Web.Controllers
                 OrderDate = order.OrderDate,
                 TotalAmount = order.OrderProducts.Sum(op => op.UnitPrice * op.Quantity),
                 IsCompleted = order.IsCompleted,
+                IsCancelled = order.IsCancelled,
                 OrderProducts = order.OrderProducts.Select(op => new OrderProductViewModel
                 {
                     ProductName = op.Product.Name,
@@ -92,6 +94,28 @@ namespace OnlineShop.Web.Controllers
             };
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Reactivate(int id)
+        {
+            var order = await _context.Orders.FindAsync(id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            // Reactivate the order
+            if (order.IsCancelled)
+            {
+                order.IsCancelled = false;
+                order.IsCompleted = false;
+                await _context.SaveChangesAsync();
+            }
+
+            TempData["SuccessMessage"] = "Order reactivated successfully.";
+            return RedirectToAction("Details", new { id });
         }
 
         [HttpPost]
@@ -109,6 +133,27 @@ namespace OnlineShop.Web.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            var order = await _context.Orders.FindAsync(id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            // Ensure the order is not completed before cancelling
+            if (!order.IsCompleted && !order.IsCancelled)
+            {
+                order.IsCancelled = true; // Set the order as cancelled
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index");
+        }
+
 
         public async Task<IActionResult> TransactionHistory(int id)
         {

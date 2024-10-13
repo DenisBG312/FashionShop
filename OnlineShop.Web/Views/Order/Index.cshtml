@@ -4,64 +4,70 @@
     ViewData["Title"] = "My Orders";
 }
 
-<h1 class="mb-4">My Orders</h1>
+<div class="container mt-5">
+    <h1 class="text-center mb-4">My Orders</h1>
 
-<div class="row">
-    @foreach (var order in Model)
-    {
-        <div class="col-md-6 mb-4">
-            <div class="card shadow-sm border-light" style="background-color: #e7f3fe;">
-                <!-- Light blue card background color -->
-                <div class="card-body text-dark">
-                    <!-- Change text color to dark -->
-                    <h5 class="card-title">Order #@order.CustomOrderNumber</h5>
-                    <p class="card-text">
-                        <strong>Order Date:</strong> @order.OrderDate.ToString("MMMM dd, yyyy")<br />
-                        <strong>Total Amount:</strong> @order.TotalAmount.ToString("C")<br />
-                        <strong>Status:</strong>
-                        <span class="badge @(order.IsCompleted ? "badge-success" : "badge-warning")" style="background-color: @(order.IsCompleted ? "#28a745" : "#ffc107"); color: white;">
-                            @(order.IsCompleted ? "Completed" : "Pending")
-                        </span>
-                    </p>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <a asp-action="Details" asp-route-id="@order.OrderId" class="btn" style="background-color: #007bff; color: white;">
-                            View Details <i class="fa-solid fa-eye"></i>
-                        </a>
-                        <a href="javascript:void(0);" onclick="confirmDelete(@order.OrderId)" class="btn" style="background-color: #dc3545; color: white;">
-                            Delete <i class="fa-solid fa-trash"></i>
-                        </a>
+    <!-- Set 2 cards per row across all screen sizes -->
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        @foreach (var order in Model)
+        {
+            <div class="col">
+                <div class="card shadow-sm border-0 rounded h-100" style="background-color: #f9f9f9;">
+                    <!-- Consistent shadow and neutral background -->
+                    <div class="card-body text-center">
+                        <h5 class="card-title mb-3">Order #@order.CustomOrderNumber</h5>
+
+                        <p class="card-text mb-4">
+                            <strong>Order Date:</strong> @order.OrderDate.ToString("MMMM dd, yyyy")<br />
+                            <strong>Total Amount:</strong>
+                            <span class="text-success fw-bold">@order.TotalAmount.ToString("C")</span> <!-- Eye-catching total -->
+                            <br />
+                            <strong>Status:</strong>
+                            <span class="badge rounded-pill @(order.IsCompleted ? "bg-success" : order.IsCancelled ? "bg-danger" : "bg-warning")" style="font-size: 0.9rem;">
+                                @(order.IsCompleted ? "Completed" : order.IsCancelled ? "Cancelled" : "Pending")
+                            </span>
+                        </p>
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-primary px-4">
+                                View Details <i class="fa-solid fa-eye"></i>
+                            </a>
+                            @if (!order.IsCancelled && !order.IsCompleted)
+                            {
+                                <a href="javascript:void(0);" onclick="confirmCancel(@order.OrderId)" class="btn btn-danger px-4">
+                                    Cancel <i class="fa-solid fa-ban"></i>
+                                </a>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    }
+        }
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function confirmDelete(orderId) {
+    function confirmCancel(orderId) {
         Swal.fire({
             title: 'Are you sure?',
-            text: "You won't be able to revert this!",
+            text: "This will cancel your order.",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
+            confirmButtonText: 'Yes, cancel it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // Create a form to send the POST request
                 const form = document.createElement('form');
-                form.method = 'POST'; // Set method to POST
-                form.action = '/Order/Delete'; // Set the correct URL
+                form.method = 'POST';
+                form.action = '/Order/Cancel'; // Adjust the action to cancel instead of delete
 
-                // Create a hidden input for the order ID
                 const input = document.createElement('input');
                 input.type = 'hidden';
-                input.name = 'id'; // Name should match your action parameter
+                input.name = 'id';
                 input.value = orderId;
 
-                // Append the input to the form and submit
                 form.appendChild(input);
                 document.body.appendChild(form);
                 form.submit();
