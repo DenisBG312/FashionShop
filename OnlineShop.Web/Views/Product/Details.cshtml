@@ -81,4 +81,57 @@
             </div>
         </div>
     </div>
+
+    <!-- Reviews Section -->
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <h3 class="text-center">Customer Reviews</h3>
+
+            @if (Model.Reviews != null && Model.Reviews.Any())
+            {
+                @foreach (var review in Model.Reviews)
+                {
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Rating: @review.Rating/5</h5>
+                            <p class="card-text">@review.Comment</p>
+                            <p class="card-text">
+                                <small class="text-muted">Reviewed by @review.User.UserName on @review.ReviewDate.ToShortDateString()</small>
+                            </p>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <p>No reviews yet. Be the first to review this product!</p>
+            }
+
+            <!-- Review Form -->
+            @if (User.Identity.IsAuthenticated)
+            {
+                <form asp-action="SubmitReview" method="post">
+                    <div class="form-group">
+                        <label for="rating">Rating</label>
+                        <select id="rating" name="rating" class="form-control">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Comment</label>
+                        <textarea id="comment" name="comment" class="form-control"></textarea>
+                    </div>
+                    <input type="hidden" name="productId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-primary mt-3">Submit Review</button>
+                </form>
+            }
+            else
+            {
+                <p>Please <a href="/Account/Login">log in</a> to leave a review.</p>
+            }
+        </div>
+    </div>
 </div>

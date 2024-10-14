@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using OnlineShop.Data.Models.Enums
-@model OnlineShop.Data.Models.ShoppingCart
+
 
 @{
     ViewData["Title"] = "Shopping Cart";
@@ -16,11 +16,11 @@
         </div>
     }
 
-    @if (Model.ShoppingCartProducts != null && Model.ShoppingCartProducts.Any())
+    @if (Model.ShoppingCartProducts != null && Model.ShoppingCartProducts.Count > 0)
     {
         <div class="card shadow-lg">
-            <div class="card-body">
-                <table class="table table-borderless align-middle text-center">
+            <div class="card-body p-0">
+                <table class="table table-responsive-md table-borderless align-middle text-center">
                     <thead class="bg-light text-uppercase">
                         <tr>
                             <th scope="col">Product</th>
@@ -35,9 +35,9 @@
                         {
                             <tr>
                                 <td>
-                                    <div class="d-flex align-items-center">
-                                        <img src="@item.Product.ImageUrl" alt="@item.Product.Name" class="img-thumbnail" style="width: 80px; height: 80px; object-fit: cover;" />
-                                        <span class="ms-3">@item.Product.Name</span>
+                                    <div class="d-flex align-items-center flex-column flex-md-row">
+                                        <img src="@item.Product.ImageUrl" alt="@item.Product.Name" class="img-thumbnail mb-2 mb-md-0" style="width: 80px; height: 80px; object-fit: cover;" />
+                                        <span class="ms-md-3">@item.Product.Name</span>
                                     </div>
                                 </td>
                                 <td>
@@ -71,10 +71,10 @@
         </div>
 
         <div class="row mt-4">
-            <div class="col-md-6">
+            <div class="col-md-6 col-12">
                 <h4>Total: <strong class="text-success">@Model.Amount.ToString("C")</strong></h4>
             </div>
-            <div class="col-md-6 text-end">
+            <div class="col-md-6 col-12 text-md-end text-center">
                 <form asp-action="PlaceOrder" method="post">
                     <input type="hidden" name="shoppingCartId" value="@Model.Id" />
 

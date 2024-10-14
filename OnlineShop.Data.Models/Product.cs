@@ -44,5 +44,7 @@ namespace OnlineShop.Data.Models
 
         public ICollection<OrderProduct> OrderProducts { get; set; } = new HashSet<OrderProduct>();
         public ICollection<ShoppingCartProduct> ShoppingCartProducts { get; set; } = new HashSet<ShoppingCartProduct>();
+
+        public ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
     }
 }

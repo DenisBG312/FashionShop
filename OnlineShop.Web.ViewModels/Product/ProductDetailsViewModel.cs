@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OnlineShop.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,5 +24,6 @@ namespace OnlineShop.Web.ViewModels.Product
         public string ClothingType { get; set; } = null!;
         public string? PostedBy { get; set; }
         public string UserId { get; set; } = null!;
+        public List<Review> Reviews { get; set; }
     }
 }

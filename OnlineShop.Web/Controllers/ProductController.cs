@@ -168,6 +168,26 @@ namespace OnlineShop.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SubmitReview(int productId, int rating, string comment)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var review = new Review
+            {
+                ProductId = productId,
+                UserId = userId,
+                Rating = rating,
+                Comment = comment,
+                ReviewDate = DateTime.Now
+            };
+
+            await _context.Reviews.AddAsync(review);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = productId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ProductEditViewModel model)
         {
             if (id != model.Id)
@@ -250,7 +270,9 @@ namespace OnlineShop.Web.Controllers
                 .Products
                 .Include(p => p.Gender)
                 .Include(p => p.ClothingType)
-                .Include(product => product.User)
+                .Include(p => p.User)
+                .Include(p => p.Reviews)
+                .ThenInclude(r => r.User)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null)
@@ -269,7 +291,8 @@ namespace OnlineShop.Web.Controllers
                 Gender = product.Gender.Name,
                 ClothingType = product.ClothingType.Name,
                 PostedBy = product.User?.UserName,
-                UserId = product.UserId
+                UserId = product.UserId,
+                Reviews = product.Reviews.ToList() // Ensure reviews are passed to the view model
             };
 
             return View(productDetailsViewModel);
