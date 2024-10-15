@@ -241,13 +241,6 @@ namespace OnlineShop.Web.Controllers
                     };
 
                     _context.OrdersProducts.Add(orderProduct);
-
-                    // Reduce stock quantity
-                    var product = _context.Products.Find(cartProduct.ProductId);
-                    if (product != null)
-                    {
-                        product.StockQuantity -= cartProduct.Quantity;
-                    }
                 }
 
                 _context.SaveChanges(); // Save order products and stock changes
