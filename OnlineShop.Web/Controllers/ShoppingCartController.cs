@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
@@ -37,6 +38,7 @@ namespace OnlineShop.Web.Controllers
             return View(cart);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult AddToCart(int productId, int quantity)
         {

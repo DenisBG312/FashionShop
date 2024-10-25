@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Data.Models;
+using OnlineShop.Services.Data.Interfaces;
 using OnlineShop.Web.ViewModels.Product;
 
 
@@ -16,35 +17,20 @@ namespace OnlineShop.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IProductService _productService;
 
-        public ProductController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public ProductController(ApplicationDbContext context, UserManager<IdentityUser> userManager, IProductService productService)
         {
             _context = context;
             _userManager = userManager;
+            _productService = productService;
         }
 
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Index(int? genderId, int? clothingTypeId, string searchTerm)
         {
-            var productsQuery = _context.Products.AsQueryable();
-
-            if (genderId.HasValue)
-            {
-                productsQuery = productsQuery.Where(p => p.GenderId == genderId.Value);
-            }
-
-            if (clothingTypeId.HasValue)
-            {
-                productsQuery = productsQuery.Where(p => p.ClothingTypeId == clothingTypeId.Value);
-            }
-
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                productsQuery = productsQuery.Where(p => p.Name.Contains(searchTerm));
-            }
-
-            var products = await productsQuery.ToListAsync();
+            var products = await _productService.GetProductsAsync(genderId, clothingTypeId, searchTerm);
 
             return View(products);
         }
@@ -270,6 +256,7 @@ namespace OnlineShop.Web.Controllers
                 .Products
                 .Include(p => p.Gender)
                 .Include(p => p.ClothingType)
+                .Include(product => product.Reviews)
                 .Include(p => p.User)
                 .Include(p => p.Reviews)
                 .ThenInclude(r => r.User)
