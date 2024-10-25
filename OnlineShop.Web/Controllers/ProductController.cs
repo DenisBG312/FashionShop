@@ -38,22 +38,11 @@ namespace OnlineShop.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var genders = await _context.Genders.ToListAsync();
-            var clothingTypes = await _context.ClothingTypes.ToListAsync();
 
             var viewModel = new CreateProductViewModel
             {
-                Genders = genders.Select(g => new SelectListItem
-                {
-                    Value = g.Id.ToString(),
-                    Text = g.Name
-                }).ToList(),
-
-                ClothingTypes = clothingTypes.Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = c.Name
-                }).ToList()
+                Genders = await RepopulateGenders(),
+                ClothingTypes = await RepopulateClothingTypes()
             };
 
             return View(viewModel);
@@ -67,42 +56,13 @@ namespace OnlineShop.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                // Repopulate Genders and ClothingTypes if the model state is invalid
-                product.Genders = await _context.Genders
-                    .Select(g => new SelectListItem
-                    {
-                        Value = g.Id.ToString(),
-                        Text = g.Name
-                    }).ToListAsync();
-
-                product.ClothingTypes = await _context.ClothingTypes
-                    .Select(c => new SelectListItem
-                    {
-                        Value = c.Id.ToString(),
-                        Text = c.Name
-                    }).ToListAsync();
+                product.Genders = await RepopulateGenders();
+                product.ClothingTypes = await RepopulateClothingTypes();
 
                 return View(product);
             }
 
-            // Get the logged-in user's ID
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            // Create a new Product entity with the submitted data
-            Product productEntity = new Product()
-            {
-                Name = product.Name,
-                StockQuantity = product.StockQuantity,
-                Description = product.Description,
-                ImageUrl = product.ImageUrl,
-                Price = product.Price,
-                GenderId = product.GenderId,
-                ClothingTypeId = product.ClothingTypeId,
-                UserId = userId // Set the user who posted the product
-            };
-
-            await _context.Products.AddAsync(productEntity);
-            await _context.SaveChangesAsync();
+            await _productService.CreateProductAsync(product, GetUserId()!);
 
             return RedirectToAction(nameof(Index));
         }
@@ -283,6 +243,37 @@ namespace OnlineShop.Web.Controllers
             };
 
             return View(productDetailsViewModel);
+        }
+
+        private async Task<List<SelectListItem>> RepopulateGenders()
+        {
+            var genders = await _context.Genders.ToListAsync();
+
+            var repGenders = genders.Select(g => new SelectListItem()
+            {
+                Value = g.Id.ToString(),
+                Text = g.Name
+            }).ToList();
+
+            return repGenders;
+        }
+
+        private async Task<List<SelectListItem>> RepopulateClothingTypes()
+        {
+            var clothingTypes = await _context.ClothingTypes.ToListAsync();
+
+            var repClothingTypes = clothingTypes.Select(g => new SelectListItem()
+            {
+                Value = g.Id.ToString(),
+                Text = g.Name
+            }).ToList();
+
+            return repClothingTypes;
+        }
+
+        private string? GetUserId()
+        {
+            return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }
     }
 }

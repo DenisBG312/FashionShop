@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Data.Models;
 using OnlineShop.Services.Data.Interfaces;
+using OnlineShop.Web.ViewModels.Product;
 
 namespace OnlineShop.Services.Data
 {
@@ -38,6 +39,24 @@ namespace OnlineShop.Services.Data
             }
 
             return await productsQuery.ToListAsync();
+        }
+
+        public async Task CreateProductAsync(CreateProductViewModel product, string userId)
+        {
+            var newProduct = new Product
+            {
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                StockQuantity = product.StockQuantity,
+                ImageUrl = product.ImageUrl,
+                GenderId = product.GenderId,
+                ClothingTypeId = product.ClothingTypeId,
+                UserId = userId
+            };
+
+            await _context.Products.AddAsync(newProduct);
+            await _context.SaveChangesAsync();
         }
     }
 }
