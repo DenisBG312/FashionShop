@@ -83,6 +83,37 @@ namespace OnlineShop.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, ProductEditViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return BadRequest();
+            }
+
+            ModelState.Remove(nameof(model.Genders));
+            ModelState.Remove(nameof(model.ClothingTypes));
+
+            if (!ModelState.IsValid)
+            {
+                model.Genders = await RepopulateGenders();
+                model.ClothingTypes = await RepopulateClothingTypes();
+                return View(model);
+            }
+
+            var userId = _userManager.GetUserId(User);
+
+            var success = await _productService.UpdateProductAsync(model, userId);
+
+            if (!success)
+            {
+                return Forbid();
+            }
+
+            return RedirectToAction("Details", new { id = model.Id });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> SubmitReview(int productId, int rating, string comment)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -99,77 +130,6 @@ namespace OnlineShop.Web.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Details", new { id = productId });
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ProductEditViewModel model)
-        {
-            if (id != model.Id)
-            {
-                return BadRequest();
-            }
-
-            var product = await _context.Products.FindAsync(id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            // Check if the current user is the owner
-            if (product.UserId != _userManager.GetUserId(User))
-            {
-                return Forbid();
-            }
-
-            ModelState.Remove("Genders");
-            ModelState.Remove("ClothingTypes");
-
-            if (ModelState.IsValid)
-            {
-                product.Name = model.Name;
-                product.Description = model.Description;
-                product.Price = model.Price;
-                product.StockQuantity = model.StockQuantity;
-                product.GenderId = model.GenderId;
-                product.ClothingTypeId = model.ClothingTypeId;
-                product.ImageUrl = model.ImageUrl;
-
-                try
-                {
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction("Details", new { id = product.Id });
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-            }
-
-            // Repopulate Genders and ClothingTypes if the model state is invalid
-            model.Genders = await _context.Genders
-                .Select(g => new SelectListItem
-                {
-                    Value = g.Id.ToString(),
-                    Text = g.Name
-                }).ToListAsync();
-
-            model.ClothingTypes = await _context.ClothingTypes
-                .Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = c.Name
-                }).ToListAsync();
-
-            return View(model);
         }
 
         private bool ProductExists(int id)
@@ -214,7 +174,7 @@ namespace OnlineShop.Web.Controllers
             return View(productDetailsViewModel);
         }
 
-        private async Task<List<SelectListItem>> RepopulateGenders()
+        public async Task<List<SelectListItem>> RepopulateGenders()
         {
             var genders = await _context.Genders.ToListAsync();
 
@@ -227,7 +187,7 @@ namespace OnlineShop.Web.Controllers
             return repGenders;
         }
 
-        private async Task<List<SelectListItem>> RepopulateClothingTypes()
+        public async Task<List<SelectListItem>> RepopulateClothingTypes()
         {
             var clothingTypes = await _context.ClothingTypes.ToListAsync();
 
@@ -240,7 +200,7 @@ namespace OnlineShop.Web.Controllers
             return repClothingTypes;
         }
 
-        private string? GetUserId()
+        public string? GetUserId()
         {
             return User.FindFirstValue(ClaimTypes.NameIdentifier);
         }

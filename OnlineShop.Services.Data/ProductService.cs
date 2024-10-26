@@ -92,6 +92,30 @@ namespace OnlineShop.Services.Data
             return productEditViewModel;
         }
 
+        public async Task<bool> UpdateProductAsync(ProductEditViewModel product, string userId)
+        {
+            var productEntity = await _context.Products
+                .Where(p => p.Id == product.Id && p.UserId == userId)
+                .FirstOrDefaultAsync();
+
+            if (productEntity == null)
+            {
+                return false;
+            }
+
+            productEntity.Name = product.Name;
+            productEntity.Description = product.Description;
+            productEntity.Price = product.Price;
+            productEntity.StockQuantity = product.StockQuantity;
+            productEntity.GenderId = product.GenderId;
+            productEntity.ClothingTypeId = product.ClothingTypeId;
+            productEntity.ImageUrl = product.ImageUrl;
+
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
 
         public async Task<List<SelectListItem>> GetGendersAsync()
         {
