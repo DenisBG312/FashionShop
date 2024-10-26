@@ -70,46 +70,15 @@ namespace OnlineShop.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var userId = _userManager.GetUserId(User);
+            var product = await _productService.GetEditProductViewModelAsync(id, userId!);
 
             if (product == null)
             {
                 return NotFound();
             }
 
-            // Check if the current user is the owner
-            if (product.UserId != _userManager.GetUserId(User))
-            {
-                return Forbid();
-            }
-
-            // Populate the dropdowns
-            var genders = await _context.Genders.ToListAsync();
-            var clothingTypes = await _context.ClothingTypes.ToListAsync();
-
-            var model = new ProductEditViewModel
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                StockQuantity = product.StockQuantity,
-                GenderId = product.GenderId,
-                ClothingTypeId = product.ClothingTypeId,
-                ImageUrl = product.ImageUrl,
-                Genders = genders.Select(g => new SelectListItem
-                {
-                    Value = g.Id.ToString(),
-                    Text = g.Name
-                }).ToList(),
-                ClothingTypes = clothingTypes.Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = c.Name
-                }).ToList()
-            };
-
-            return View(model);
+            return View(product);
         }
 
         [HttpPost]
