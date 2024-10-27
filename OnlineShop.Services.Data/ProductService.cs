@@ -12,22 +12,21 @@ using OnlineShop.Services.Data.Interfaces;
 using OnlineShop.Web.ViewModels.Product;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
+using OnlineShop.Data.Repository;
 
 namespace OnlineShop.Services.Data
 {
     public class ProductService : IProductService
     {
-        private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly BaseRepository<Product, int> _productRepository;
 
-        public ProductService(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public ProductService(BaseRepository<Product, int> productRepository)
         {
-            _context = context;
-            _userManager = userManager;
+            _productRepository = productRepository;
         }
         public async Task<IEnumerable<Product>> GetProductsAsync(int? genderId, int? clothingTypeId, string searchTerm)
         {
-            var productsQuery = _context.Products.AsQueryable();
+            var productsQuery = await _productRepository.GetAllAsync();
 
             if (genderId.HasValue)
             {
@@ -44,97 +43,112 @@ namespace OnlineShop.Services.Data
                 productsQuery = productsQuery.Where(p => p.Name.Contains(searchTerm));
             }
 
-            return await productsQuery.ToListAsync();
+            return productsQuery.ToList();
         }
 
-        public async Task CreateProductAsync(CreateProductViewModel product, string userId)
+        public Task CreateProductAsync(CreateProductViewModel product, string userId)
         {
-            var newProduct = new Product
-            {
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                StockQuantity = product.StockQuantity,
-                ImageUrl = product.ImageUrl,
-                GenderId = product.GenderId,
-                ClothingTypeId = product.ClothingTypeId,
-                UserId = userId
-            };
-
-            await _context.Products.AddAsync(newProduct);
-            await _context.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
-        public async Task<ProductEditViewModel?> GetEditProductViewModelAsync(int productId, string userId)
+        public Task<ProductEditViewModel?> GetEditProductViewModelAsync(int productId, string userId)
         {
-            var product = await _context.Products
-                .Include(p => p.Gender)
-                .Include(p => p.ClothingType)
-                .Where(p => p.Id == productId && p.UserId == userId)
-                .FirstOrDefaultAsync(p => p.Id == productId);
-
-            if (product == null) return null;
-
-            var productEditViewModel = new ProductEditViewModel
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                StockQuantity = product.StockQuantity,
-                ImageUrl = product.ImageUrl,
-                GenderId = product.GenderId,
-                ClothingTypeId = product.ClothingTypeId,
-                Genders = await GetGendersAsync(),
-                ClothingTypes = await GetClothingTypesAsync()
-            };
-
-            return productEditViewModel;
+            throw new NotImplementedException();
         }
 
-        public async Task<bool> UpdateProductAsync(ProductEditViewModel product, string userId)
+        public Task<bool> UpdateProductAsync(ProductEditViewModel product, string userId)
         {
-            var productEntity = await _context.Products
-                .Where(p => p.Id == product.Id && p.UserId == userId)
-                .FirstOrDefaultAsync();
-
-            if (productEntity == null)
-            {
-                return false;
-            }
-
-            productEntity.Name = product.Name;
-            productEntity.Description = product.Description;
-            productEntity.Price = product.Price;
-            productEntity.StockQuantity = product.StockQuantity;
-            productEntity.GenderId = product.GenderId;
-            productEntity.ClothingTypeId = product.ClothingTypeId;
-            productEntity.ImageUrl = product.ImageUrl;
-
-            await _context.SaveChangesAsync();
-
-            return true;
+            throw new NotImplementedException();
         }
 
+        //public async Task CreateProductAsync(CreateProductViewModel product, string userId)
+        //{
+        //    var newProduct = new Product
+        //    {
+        //        Name = product.Name,
+        //        Description = product.Description,
+        //        Price = product.Price,
+        //        StockQuantity = product.StockQuantity,
+        //        ImageUrl = product.ImageUrl,
+        //        GenderId = product.GenderId,
+        //        ClothingTypeId = product.ClothingTypeId,
+        //        UserId = userId
+        //    };
 
-        public async Task<List<SelectListItem>> GetGendersAsync()
-        {
-            return await _context.Genders
-                .Select(g => new SelectListItem
-                {
-                    Value = g.Id.ToString(),
-                    Text = g.Name
-                }).ToListAsync();
-        }
+        //    await _context.Products.AddAsync(newProduct);
+        //    await _context.SaveChangesAsync();
+        //}
 
-        public async Task<List<SelectListItem>> GetClothingTypesAsync()
-        {
-            return await _context.ClothingTypes
-                .Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = c.Name
-                }).ToListAsync();
-        }
+        //public async Task<ProductEditViewModel?> GetEditProductViewModelAsync(int productId, string userId)
+        //{
+        //    var product = await _context.Products
+        //        .Include(p => p.Gender)
+        //        .Include(p => p.ClothingType)
+        //        .Where(p => p.Id == productId && p.UserId == userId)
+        //        .FirstOrDefaultAsync(p => p.Id == productId);
+
+        //    if (product == null) return null;
+
+        //    var productEditViewModel = new ProductEditViewModel
+        //    {
+        //        Id = product.Id,
+        //        Name = product.Name,
+        //        Description = product.Description,
+        //        Price = product.Price,
+        //        StockQuantity = product.StockQuantity,
+        //        ImageUrl = product.ImageUrl,
+        //        GenderId = product.GenderId,
+        //        ClothingTypeId = product.ClothingTypeId,
+        //        Genders = await GetGendersAsync(),
+        //        ClothingTypes = await GetClothingTypesAsync()
+        //    };
+
+        //    return productEditViewModel;
+        //}
+
+        //public async Task<bool> UpdateProductAsync(ProductEditViewModel product, string userId)
+        //{
+        //    var productEntity = await _context.Products
+        //        .Where(p => p.Id == product.Id && p.UserId == userId)
+        //        .FirstOrDefaultAsync();
+
+        //    if (productEntity == null)
+        //    {
+        //        return false;
+        //    }
+
+        //    productEntity.Name = product.Name;
+        //    productEntity.Description = product.Description;
+        //    productEntity.Price = product.Price;
+        //    productEntity.StockQuantity = product.StockQuantity;
+        //    productEntity.GenderId = product.GenderId;
+        //    productEntity.ClothingTypeId = product.ClothingTypeId;
+        //    productEntity.ImageUrl = product.ImageUrl;
+
+        //    await _context.SaveChangesAsync();
+
+        //    return true;
+        //}
+
+
+        //public async Task<List<SelectListItem>> GetGendersAsync()
+        //{
+        //    return await _context.Genders
+        //        .Select(g => new SelectListItem
+        //        {
+        //            Value = g.Id.ToString(),
+        //            Text = g.Name
+        //        }).ToListAsync();
+        //}
+
+        //public async Task<List<SelectListItem>> GetClothingTypesAsync()
+        //{
+        //    return await _context.ClothingTypes
+        //        .Select(c => new SelectListItem
+        //        {
+        //            Value = c.Id.ToString(),
+        //            Text = c.Name
+        //        }).ToListAsync();
+        //}
     }
 }

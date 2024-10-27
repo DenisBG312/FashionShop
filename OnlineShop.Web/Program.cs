@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Data.Models;
+using OnlineShop.Data.Repository;
 using OnlineShop.Data.Repository.Interfaces;
 using OnlineShop.Services.Data;
 using OnlineShop.Services.Data.Interfaces;
@@ -19,9 +20,12 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<IRepository<Product, int>, Base>()
+builder.Services.AddScoped(typeof(BaseRepository<,>));
+builder.Services.AddScoped<IRepository<Product, int>, BaseRepository<Product, int>>();
+builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 

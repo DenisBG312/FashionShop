@@ -21,57 +21,107 @@ namespace OnlineShop.Data.Repository
         }
         public TType GetById(TId id)
         {
-            throw new NotImplementedException();
+            TType entity = dbSet
+                .Find(id);
+
+            return entity;
         }
 
-        public Task<TType> GetByIdAsync(TId id)
+        public async Task<TType> GetByIdAsync(TId id)
         {
-            throw new NotImplementedException();
+            TType entity = await dbSet
+                .FindAsync(id);
+
+            return entity;
         }
 
         public IEnumerable<TType> GetAll()
         {
-            throw new NotImplementedException();
+            return this.dbSet.ToArray();
         }
 
-        public Task<IEnumerable<TType>> GetAllAsync()
+        public async Task<IEnumerable<TType>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await this.dbSet.ToArrayAsync();
         }
 
         public IQueryable<TType> GetAllAttached()
         {
-            throw new NotImplementedException();
+            return this.dbSet.AsQueryable();
         }
 
         public void Add(TType item)
         {
-            throw new NotImplementedException();
+            dbSet.Add(item);
+            _context.SaveChanges();
         }
 
-        public Task AddAsync(TType item)
+        public async Task AddAsync(TType item)
         {
-            throw new NotImplementedException();
+            await dbSet.AddAsync(item);
+            await _context.SaveChangesAsync();
         }
 
         public bool Delete(TId id)
         {
-            throw new NotImplementedException();
+            TType entity = GetById(id);
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            dbSet.Remove(entity);
+            _context.SaveChanges();
+
+            return true;
         }
 
-        public Task<bool> DeleteAsync(TId id)
+        public async Task<bool> DeleteAsync(TId id)
         {
-            throw new NotImplementedException();
+            TType entity = await GetByIdAsync(id);
+
+            if (entity == null)
+            {
+                return false;
+            }
+
+            dbSet.Remove(entity);
+            await _context.SaveChangesAsync();  
+
+            return true;
         }
 
         public bool Update(TType item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                dbSet.Attach(item);
+                _context.Entry(item).State = EntityState.Modified;
+                _context.SaveChanges();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
 
-        public Task<bool> UpdateAsync(TType item)
+        public async Task<bool> UpdateAsync(TType item)
         {
-            throw new NotImplementedException();
+            try
+            {
+                dbSet.Attach(item);
+                _context.Entry(item).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
     }
 }
