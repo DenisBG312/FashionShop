@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using OnlineShop.Data.Models;
 using OnlineShop.Data.Repository.Interfaces;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 namespace OnlineShop.Data.Repository
 {
     public class BaseRepository<TType, TId> : IRepository<TType, TId> 
@@ -122,6 +123,26 @@ namespace OnlineShop.Data.Repository
             {
                 return false;
             }
+        }
+
+        public async Task<List<SelectListItem>> GetGendersAsync()
+        {
+            return await _context.Genders
+                .Select(g => new SelectListItem
+                {
+                    Value = g.Id.ToString(),
+                    Text = g.Name
+                }).ToListAsync();
+        }
+
+        public async Task<List<SelectListItem>> GetClothingTypesAsync()
+        {
+            return await _context.ClothingTypes
+                .Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                }).ToListAsync();
         }
     }
 }

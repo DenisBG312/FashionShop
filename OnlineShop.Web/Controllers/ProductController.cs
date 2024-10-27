@@ -30,7 +30,8 @@ namespace OnlineShop.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int? genderId, int? clothingTypeId, string searchTerm)
         {
-            var products = await _productService.GetProductsAsync(genderId, clothingTypeId, searchTerm);
+            var products = 
+                await _productService.GetProductsAsync(genderId, clothingTypeId, searchTerm);
 
             return View(products);
         }
