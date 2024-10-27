@@ -42,8 +42,8 @@ namespace OnlineShop.Web.Controllers
 
             var viewModel = new CreateProductViewModel
             {
-                Genders = await RepopulateGenders(),
-                ClothingTypes = await RepopulateClothingTypes()
+                Genders = await _productService.GetGendersAsync(),
+                ClothingTypes = await _productService.GetClothingTypesAsync()
             };
 
             return View(viewModel);
@@ -57,8 +57,8 @@ namespace OnlineShop.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                product.Genders = await RepopulateGenders();
-                product.ClothingTypes = await RepopulateClothingTypes();
+                product.Genders = await _productService.GetGendersAsync();
+                product.ClothingTypes = await _productService.GetClothingTypesAsync();
 
                 return View(product);
             }
@@ -96,8 +96,8 @@ namespace OnlineShop.Web.Controllers
 
             if (!ModelState.IsValid)
             {
-                model.Genders = await RepopulateGenders();
-                model.ClothingTypes = await RepopulateClothingTypes();
+                model.Genders = await _productService.GetGendersAsync();
+                model.ClothingTypes = await _productService.GetClothingTypesAsync();
                 return View(model);
             }
 
@@ -173,32 +173,6 @@ namespace OnlineShop.Web.Controllers
             };
 
             return View(productDetailsViewModel);
-        }
-
-        public async Task<List<SelectListItem>> RepopulateGenders()
-        {
-            var genders = await _context.Genders.ToListAsync();
-
-            var repGenders = genders.Select(g => new SelectListItem()
-            {
-                Value = g.Id.ToString(),
-                Text = g.Name
-            }).ToList();
-
-            return repGenders;
-        }
-
-        public async Task<List<SelectListItem>> RepopulateClothingTypes()
-        {
-            var clothingTypes = await _context.ClothingTypes.ToListAsync();
-
-            var repClothingTypes = clothingTypes.Select(g => new SelectListItem()
-            {
-                Value = g.Id.ToString(),
-                Text = g.Name
-            }).ToList();
-
-            return repClothingTypes;
         }
 
         public string? GetUserId()

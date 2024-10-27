@@ -19,12 +19,10 @@ namespace OnlineShop.Services.Data
     public class ProductService : IProductService
     {
         private readonly BaseRepository<Product, int> _productRepository;
-        private readonly ApplicationDbContext _context;
 
-        public ProductService(BaseRepository<Product, int> productRepository, ApplicationDbContext context)
+        public ProductService(BaseRepository<Product, int> productRepository)
         {
             _productRepository = productRepository;
-            _context = context;
         }
         public async Task<IEnumerable<Product>> GetProductsAsync(int? genderId, int? clothingTypeId, string searchTerm)
         {
@@ -108,6 +106,16 @@ namespace OnlineShop.Services.Data
             await _productRepository.UpdateAsync(productEntity);
 
             return true;
+        }
+
+        public async Task<List<SelectListItem>> GetGendersAsync()
+        {
+            return await _productRepository.GetGendersAsync();
+        }
+
+        public async Task<List<SelectListItem>> GetClothingTypesAsync()
+        {
+            return await _productRepository.GetClothingTypesAsync();
         }
     }
 }

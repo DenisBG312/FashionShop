@@ -7,6 +7,7 @@ using OnlineShop.Data.Repository.Interfaces;
 using OnlineShop.Services.Data;
 using OnlineShop.Services.Data.Interfaces;
 using OnlineShop.Web.Data;
+using OnlineShop.Web.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,8 +23,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped(typeof(BaseRepository<,>));
-builder.Services.AddScoped<IRepository<Product, int>, BaseRepository<Product, int>>();
-builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.RegisterUserDefinedServices(typeof(IProductService).Assembly);
 
 builder.Services.AddControllersWithViews();
 
