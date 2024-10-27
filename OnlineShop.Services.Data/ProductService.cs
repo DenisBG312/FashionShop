@@ -20,13 +20,17 @@ namespace OnlineShop.Services.Data
     {
         private readonly BaseRepository<Product, int> _productRepository;
         private readonly BaseRepository<Review, int> _reviewRepository;
+        private readonly BaseRepository<ClothingType, int> _clothingTypeRepository;
+        private readonly BaseRepository<Gender, int> _genderRepository;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public ProductService(BaseRepository<Product, int> productRepository, BaseRepository<Review, int> reviewRepository, UserManager<IdentityUser> userManager)
+        public ProductService(BaseRepository<Product, int> productRepository, BaseRepository<Review, int> reviewRepository, UserManager<IdentityUser> userManager, BaseRepository<Gender, int> genderRepository, BaseRepository<ClothingType, int> clothingTypeRepository)
         {
             _productRepository = productRepository;
             _reviewRepository = reviewRepository;
             _userManager = userManager;
+            _genderRepository = genderRepository;
+            _clothingTypeRepository = clothingTypeRepository;
         }
         public async Task<IEnumerable<Product>> GetProductsAsync(int? genderId, int? clothingTypeId, string searchTerm)
         {
@@ -84,8 +88,8 @@ namespace OnlineShop.Services.Data
                 ImageUrl = product.ImageUrl,
                 GenderId = product.GenderId,
                 ClothingTypeId = product.ClothingTypeId,
-                Genders = await _productRepository.GetGendersAsync(),
-                ClothingTypes = await _productRepository.GetClothingTypesAsync()
+                Genders = await GetGendersAsync(),
+                ClothingTypes = await GetClothingTypesAsync()
             };
 
             return productEditViewModel;
@@ -116,12 +120,22 @@ namespace OnlineShop.Services.Data
 
         public async Task<List<SelectListItem>> GetGendersAsync()
         {
-            return await _productRepository.GetGendersAsync();
+            var genders = await _genderRepository.GetAllAsync();
+            return genders.Select(g => new SelectListItem
+            {
+                Value = g.Id.ToString(),
+                Text = g.Name
+            }).ToList();
         }
 
         public async Task<List<SelectListItem>> GetClothingTypesAsync()
         {
-            return await _productRepository.GetClothingTypesAsync();
+            var clothingTypes = await _clothingTypeRepository.GetAllAsync();
+            return clothingTypes.Select(g => new SelectListItem()
+                {
+                    Value = g.Id.ToString(),
+                    Text = g.Name
+                }).ToList();
         }
 
         public async Task SubmitReview(int productId, string userId, int rating, string comment)

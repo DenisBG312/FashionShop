@@ -128,25 +128,5 @@ namespace OnlineShop.Data.Repository
         {
             return _context.SaveChanges();
         }
-
-        public async Task<List<SelectListItem>> GetGendersAsync()
-        {
-            return await _context.Genders
-                .Select(g => new SelectListItem
-                {
-                    Value = g.Id.ToString(),
-                    Text = g.Name
-                }).ToListAsync();
-        }
-
-        public async Task<List<SelectListItem>> GetClothingTypesAsync()
-        {
-            return await _context.ClothingTypes
-                .Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(),
-                    Text = c.Name
-                }).ToListAsync();
-        }
     }
 }
