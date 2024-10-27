@@ -11,6 +11,7 @@ using iTextSharp.text;
 using Microsoft.AspNetCore.Authorization;
 using iTextSharp.text.pdf.draw;
 using OnlineShop.Data.Models.Enums.Payment;
+using OnlineShop.Services.Data.Interfaces;
 
 namespace OnlineShop.Web.Controllers
 {
@@ -19,40 +20,19 @@ namespace OnlineShop.Web.Controllers
     {
 
         private readonly ApplicationDbContext _context;
+        private readonly IOrderService _orderService;
 
-        public OrderController(ApplicationDbContext context)
+        public OrderController(ApplicationDbContext context, IOrderService orderService)
         {
             _context = context;
+            _orderService = orderService;
         }
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var orders = await _orderService.GetAllOrders(userId);
 
-            var userOrders = await _context.Orders
-                .Where(o => o.UserId == userId)
-                .OrderBy(o => o.Id)
-                .Include(o => o.OrderProducts)
-                .Include(o => o.Payments)
-                .ToListAsync();
-
-            var orders = userOrders.Select((order, index) => new OrderIndexViewModel
-            {
-                OrderId = order.Id,
-                CustomOrderNumber = index + 1, // Custom order number logic based on the index
-                OrderDate = order.OrderDate,
-                TotalAmount = order.OrderProducts.Sum(op => op.UnitPrice * op.Quantity), // Calculate total amount
-                IsCompleted = order.IsCompleted,
-                IsCancelled = order.IsCancelled,
-                Transactions = order.Payments.Select(p => new TransactionViewModel
-                {
-                    PaymentMethod = p.PaymentMethod.ToString(),
-                    Amount = p.Amount,
-                    PaymentDate = p.PaymentDate,
-                    Status = p.Status.ToString()
-                })// Ensure this property exists in your Order model
-            }).ToList();
-
-            return View(orders);
+            return View(orders.ToList());
         }
 
 
