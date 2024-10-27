@@ -11,6 +11,12 @@ using OnlineShop.Data.Repository;
 using OnlineShop.Services.Data.Interfaces;
 using OnlineShop.Web.ViewModels.Order;
 using OnlineShop.Web.ViewModels.Transaction;
+using System.Drawing.Printing;
+using System.Xml.Linq;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.text.pdf.draw;
+using Document = System.Reflection.Metadata.Document;
 
 namespace OnlineShop.Services.Data
 {
@@ -195,6 +201,131 @@ namespace OnlineShop.Services.Data
             };
 
             return viewModel;
+        }
+
+        public async Task<byte[]> GenerateOrderTransactionPdfAsync(int orderId)
+        {
+            var order = await _orderRepository.GetAllAttached()
+                .Include(o => o.Payments)
+                .Include(o => o.User)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                return null;
+            }
+
+            using (var stream = new MemoryStream())
+            {
+                var document = new iTextSharp.text.Document(PageSize.A4, 40, 40, 40, 40);
+                PdfWriter.GetInstance(document, stream);
+                document.Open();
+
+                var headerFont = FontFactory.GetFont("Arial", 24, Font.BOLD, BaseColor.DARK_GRAY);
+                var header = new Paragraph($"Order #{order.Id} Transaction History", headerFont)
+                {
+                    Alignment = Element.ALIGN_CENTER,
+                    SpacingAfter = 15
+                };
+                document.Add(header);
+
+                var separator = new LineSeparator(1f, 100f, new BaseColor(220, 220, 220), Element.ALIGN_CENTER, -2);
+                document.Add(new Chunk(separator));
+
+                var infoFont = FontFactory.GetFont("Arial", 12, Font.NORMAL, BaseColor.DARK_GRAY);
+                var infoParagraph = new Paragraph($@"
+    Buyer: {order.User.UserName}
+    Order Date: {order.OrderDate:dd MMMM yyyy}
+    Total Amount: {order.TotalAmount:C}
+", infoFont)
+                {
+                    SpacingAfter = 15
+                };
+                document.Add(infoParagraph);
+
+                var table = new PdfPTable(4)
+                {
+                    WidthPercentage = 100,
+                    SpacingBefore = 20,
+                    SpacingAfter = 20,
+                    HorizontalAlignment = Element.ALIGN_LEFT
+                };
+                table.SetWidths(new float[] { 3f, 2f, 2f, 2f });
+
+                var headerCellFont = FontFactory.GetFont("Arial", 12, Font.BOLD, BaseColor.WHITE);
+                var headerCellColor = new BaseColor(100, 149, 237);
+
+                table.AddCell(CreateStyledCell("Payment Method", headerCellFont, headerCellColor));
+                table.AddCell(CreateStyledCell("Amount", headerCellFont, headerCellColor));
+                table.AddCell(CreateStyledCell("Payment Date", headerCellFont, headerCellColor));
+                table.AddCell(CreateStyledCell("Status", headerCellFont, headerCellColor));
+
+                var rowCellFont = FontFactory.GetFont("Arial", 11, Font.NORMAL, BaseColor.BLACK);
+                foreach (var payment in order.Payments)
+                {
+                    table.AddCell(CreateStyledCell(SplitCamelCase(payment.PaymentMethod.ToString()), rowCellFont,
+                        BaseColor.WHITE));
+                    table.AddCell(CreateStyledCell(payment.Amount.ToString("C"), rowCellFont, BaseColor.WHITE));
+                    table.AddCell(CreateStyledCell(payment.PaymentDate.ToString("dd MMMM yyyy"), rowCellFont,
+                        BaseColor.WHITE));
+                    table.AddCell(CreateStyledCell(SplitCamelCase(payment.Status.ToString()), rowCellFont,
+                        BaseColor.WHITE));
+                }
+
+                document.Add(table);
+
+                AddSignatureAndLogo(document);
+
+                document.Close();
+                return stream.ToArray();
+            }
+        }
+
+        private void AddSignatureAndLogo(iTextSharp.text.Document document)
+        {
+            var signatureFont = FontFactory.GetFont("Arial", 14, Font.BOLD, BaseColor.BLACK);
+            var signatureParagraph = new Paragraph("Owner of Website / SEO Signature:", signatureFont)
+            {
+                SpacingBefore = 20,
+                Alignment = Element.ALIGN_LEFT
+            };
+            document.Add(signatureParagraph);
+
+            string signaturePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "signature.png");
+            if (File.Exists(signaturePath))
+            {
+                var signature = Image.GetInstance(signaturePath);
+                signature.ScaleToFit(150f, 75f);
+                signature.Alignment = Element.ALIGN_LEFT;
+                document.Add(signature);
+            }
+
+            string logoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "your_logo.png");
+            if (File.Exists(logoPath))
+            {
+                var logo = Image.GetInstance(logoPath);
+                logo.ScaleToFit(100f, 50f);
+                logo.Alignment = Element.ALIGN_CENTER;
+                document.Add(logo);
+            }
+        }
+
+        private PdfPCell CreateStyledCell(string text, Font font, BaseColor backgroundColor)
+        {
+            var cell = new PdfPCell(new Phrase(text, font))
+            {
+                BackgroundColor = backgroundColor,
+                Padding = 10,
+                HorizontalAlignment = Element.ALIGN_CENTER,
+                BorderColor = new BaseColor(220, 220, 220),
+                BorderWidth = 0.5f
+            };
+            return cell;
+        }
+
+        private string SplitCamelCase(string input)
+        {
+            return System.Text.RegularExpressions.Regex.Replace(input, "(\\B[A-Z])", " $1");
         }
     }
 }

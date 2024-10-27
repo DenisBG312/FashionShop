@@ -15,5 +15,6 @@ namespace OnlineShop.Services.Data.Interfaces
         Task<bool> CancelOrder(int orderId);
         Task<bool> FinalizeOrder(int orderId);
         Task<OrderTransactionHistoryViewModel> GetTransactionHistoryAsync(int orderId, string userId);
+        Task<byte[]> GenerateOrderTransactionPdfAsync(int orderId);
     }
 }
