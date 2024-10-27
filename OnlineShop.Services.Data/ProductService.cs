@@ -46,9 +46,21 @@ namespace OnlineShop.Services.Data
             return productsQuery.ToList();
         }
 
-        public Task CreateProductAsync(CreateProductViewModel product, string userId)
+        public async Task CreateProductAsync(CreateProductViewModel product, string userId)
         {
-            throw new NotImplementedException();
+            var newProduct = new Product
+            {
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                StockQuantity = product.StockQuantity,
+                ImageUrl = product.ImageUrl,
+                GenderId = product.GenderId,
+                ClothingTypeId = product.ClothingTypeId,
+                UserId = userId
+            };
+
+            await _productRepository.AddAsync(newProduct);
         }
 
         public Task<ProductEditViewModel?> GetEditProductViewModelAsync(int productId, string userId)
@@ -60,24 +72,6 @@ namespace OnlineShop.Services.Data
         {
             throw new NotImplementedException();
         }
-
-        //public async Task CreateProductAsync(CreateProductViewModel product, string userId)
-        //{
-        //    var newProduct = new Product
-        //    {
-        //        Name = product.Name,
-        //        Description = product.Description,
-        //        Price = product.Price,
-        //        StockQuantity = product.StockQuantity,
-        //        ImageUrl = product.ImageUrl,
-        //        GenderId = product.GenderId,
-        //        ClothingTypeId = product.ClothingTypeId,
-        //        UserId = userId
-        //    };
-
-        //    await _context.Products.AddAsync(newProduct);
-        //    await _context.SaveChangesAsync();
-        //}
 
         //public async Task<ProductEditViewModel?> GetEditProductViewModelAsync(int productId, string userId)
         //{
