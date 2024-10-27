@@ -1,4 +1,6 @@
-﻿@model IEnumerable<OnlineShop.Data.Models.Product>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using X.PagedList.Mvc.Core
+@model IEnumerable<OnlineShop.Data.Models.Product>
 
 @{
     ViewData["Title"] = "Products";
@@ -85,3 +87,17 @@
         }
     </div>
 </div>
+
+<nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
+    @Html.PagedListPager((X.PagedList.IPagedList?)Model, page => Url.Action("Index", new { page }),
+        new PagedListRenderOptions
+        {
+            UlElementClasses = new[] { "pagination" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" },
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+            DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded
+        })
+</nav>

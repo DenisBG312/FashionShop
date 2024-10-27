@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using iTextSharp.text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using OnlineShop.Data;
 using OnlineShop.Data.Models;
 using OnlineShop.Services.Data.Interfaces;
 using OnlineShop.Web.ViewModels.Product;
+using X.PagedList.Extensions;
 
 
 namespace OnlineShop.Web.Controllers
@@ -17,6 +19,7 @@ namespace OnlineShop.Web.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IProductService _productService;
+        private const int pageSize = 6;
 
         public ProductController(UserManager<IdentityUser> userManager, IProductService productService)
         {
@@ -24,14 +27,16 @@ namespace OnlineShop.Web.Controllers
             _productService = productService;
         }
 
-        [AllowAnonymous]
-        [HttpGet]
-        public async Task<IActionResult> Index(int? genderId, int? clothingTypeId, string searchTerm)
+        public async Task<IActionResult> Index(int? genderId, int? clothingTypeId, string searchTerm, int page = 1)
         {
-            var products = 
-                await _productService.GetProductsAsync(genderId, clothingTypeId, searchTerm);
+            var products = await _productService.GetProductsAsync(genderId, clothingTypeId, searchTerm);
 
-            return View(products);
+            var pagedProducts = products.ToPagedList(page, pageSize); // Ensure to use ToPagedList
+
+            ViewBag.GenderId = genderId; // Pass genderId to the view
+            ViewBag.ClothingTypeId = clothingTypeId; // Pass clothingTypeId to the view
+
+            return View(pagedProducts);
         }
 
         [HttpGet]

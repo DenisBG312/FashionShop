@@ -11,6 +11,7 @@ using Payment = OnlineShop.Data.Models.Payment;
 
 namespace OnlineShop.Web.Controllers
 {
+    [Authorize]
     public class ShoppingCartController : Controller
     {
         private ApplicationDbContext _context;

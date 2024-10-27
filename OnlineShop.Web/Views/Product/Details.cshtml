@@ -1,137 +1,111 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject UserManager<IdentityUser> UserManager
-@model OnlineShop.Web.ViewModels.Product.ProductDetailsViewModel
+﻿@model OnlineShop.Web.ViewModels.Product.ProductDetailsViewModel
 
 @{
-    ViewData["Title"] = "Product Details";
+    ViewData["Title"] = @Model.Name;
 }
 
-<div class="container mt-5">
-    <h2 class="text-center mb-4">Product Details</h2>
 
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-lg border-0">
-                <div class="card-header bg-dark text-white text-center">
-                    <h4 class="mb-0">@Model.Name</h4>
+<!-- Product section-->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="row gx-4 gx-lg-5 align-items-center">
+            <!-- Product Image -->
+            <div class="col-md-6">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img class="card-img-top mb-5 mb-md-0" src="@Model.ImageUrl" alt="@Model.Name" style="max-height: 700px; object-fit: cover;" />
+                }
+                else
+                {
+                    <p class="text-muted">No image available</p>
+                }
+            </div>
+            <div class="col-md-6">
+                <div class="small mb-1">SKU: @Model.Id</div>
+                <h1 class="display-5 fw-bolder">@Model.Name</h1>
+                <div class="fs-5 mb-5">
+                    <span class="text-success fw-bold" style="font-size: 1.5rem;">
+                        @Model.Price.ToString("C")
+                    </span>
                 </div>
-
-                <div class="card-body p-4">
-                    <div class="row">
-                        <!-- Product Information -->
-                        <div class="col-md-6">
-                            <ul class="list-unstyled">
-                                @if (!string.IsNullOrEmpty(Model.PostedBy))
-                                {
-                                    <li><strong>Posted By:</strong> @Model.PostedBy</li>
-                                }
-                                else
-                                {
-                                    <li>This product doesn't have a user owner!</li>
-                                }
-                                <li><strong>Description:</strong> @Model.Description</li>
-                                <li><strong>Stock Quantity:</strong> @Model.StockQuantity</li>
-                                <li><strong>Gender:</strong> @Model.Gender</li>
-                                <li><strong>Clothing Type:</strong> @Model.ClothingType</li>
-
-                                <!-- Highlighted Price -->
-                                <li class="mt-3">
-                                    <strong>Price:</strong>
-                                    <span class="text-success fw-bold" style="font-size: 1.5rem;">
-                                        @Model.Price.ToString("C")
-                                    </span>
-                                </li>
-
-                                <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post" class="mt-3">
-                                    <input type="hidden" name="productId" value="@Model.Id" />
-                                    <input type="hidden" name="quantity" value="1" />
-                                    <button type="submit" class="btn btn-success rounded-pill px-4">
-                                        Add to Cart <i class="fa-solid fa-cart-shopping"></i>
-                                    </button>
-                                </form>
-                            </ul>
-                        </div>
-
-                        <!-- Product Image -->
-                        <div class="col-md-6 text-center d-flex align-items-center justify-content-center">
-                            @if (!string.IsNullOrEmpty(Model.ImageUrl))
-                            {
-                                <img src="@Model.ImageUrl" alt="@Model.Name" class="img-fluid rounded shadow-sm" style="max-height: 300px; object-fit: cover; border: 2px solid #e1e1e1;" />
-                            }
-                            else
-                            {
-                                <p class="text-muted">No image available</p>
-                            }
-                        </div>
-                    </div>
+                <p class="lead">@Model.Description</p>
+                <div class="d-flex">
+                    <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post" class="me-3">
+                        <input type="hidden" name="productId" value="@Model.Id" />
+                        <input type="hidden" name="quantity" value="1" />
+                        <button type="submit" class="btn btn-outline-dark flex-shrink-0">
+                            <i class="bi-cart-fill me-1"></i>
+                            Add to Cart
+                        </button>
+                    </form>
                 </div>
-
-                <!-- Footer with Back and Edit Button -->
-                <div class="card-footer text-center bg-light py-3">
-                    <a asp-action="Index" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-left"></i> Back to List
-                    </a>
-
-                    @* Check if the logged-in user is the owner *@
-                    @if (User.Identity.IsAuthenticated && UserManager.GetUserId(User) == Model.UserId)
+                <ul class="list-unstyled mt-3">
+                    @if (!string.IsNullOrEmpty(Model.PostedBy))
                     {
-                        <a href="@Url.Action("Edit", "Product", new { id = Model.Id })" class="btn btn-primary">Edit</a>
+                        <li><strong>Posted By:</strong> @Model.PostedBy</li>
                     }
-                </div>
+                    else
+                    {
+                        <li>This product doesn't have a user owner!</li>
+                    }
+                    <li><strong>Stock Quantity:</strong> @Model.StockQuantity</li>
+                    <li><strong>Gender:</strong> @Model.Gender</li>
+                    <li><strong>Clothing Type:</strong> @Model.ClothingType</li>
+                </ul>
             </div>
         </div>
     </div>
+</section>
 
-    <!-- Reviews Section -->
-    <div class="row justify-content-center mt-5">
-        <div class="col-md-8">
-            <h3 class="text-center">Customer Reviews</h3>
+<!-- Related items section-->
+<section class="py-5 bg-light">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h2 class="fw-bolder mb-4">Customer Reviews</h2>
 
-            @if (Model.Reviews != null && Model.Reviews.Any())
+        @if (Model.Reviews != null && Model.Reviews.Any())
+        {
+            foreach (var review in Model.Reviews)
             {
-                @foreach (var review in Model.Reviews)
-                {
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5 class="card-title">Rating: @review.Rating/5</h5>
-                            <p class="card-text">@review.Comment</p>
-                            <p class="card-text">
-                                <small class="text-muted">Reviewed by @review.User.UserName on @review.ReviewDate.ToShortDateString()</small>
-                            </p>
-                        </div>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Rating: @review.Rating/5</h5>
+                        <p class="card-text">@review.Comment</p>
+                        <p class="card-text">
+                            <small class="text-muted">Reviewed by @review.User.UserName on @review.ReviewDate.ToShortDateString()</small>
+                        </p>
                     </div>
-                }
+                </div>
             }
-            else
-            {
-                <p>No reviews yet. Be the first to review this product!</p>
-            }
+        }
+        else
+        {
+            <p>No reviews yet. Be the first to review this product!</p>
+        }
 
-            <!-- Review Form -->
-            @if (User.Identity.IsAuthenticated)
-            {
-                <form asp-action="SubmitReview" method="post">
-                    <div class="form-group">
-                        <label for="rating">Rating</label>
-                        <select id="rating" name="rating" class="form-control">
-                            @for (int i = 1; i <= 5; i++)
-                            {
-                                <option value="@i">@i</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="comment">Comment</label>
-                        <textarea id="comment" name="comment" class="form-control"></textarea>
-                    </div>
-                    <input type="hidden" name="productId" value="@Model.Id" />
-                    <button type="submit" class="btn btn-primary mt-3">Submit Review</button>
-                </form>
-            }
-            else
-            {
-                <p>Please <a asp-area="Identity" asp-page="/Account/Login">log in</a> to leave a review.</p>
-            }
-        </div>
+        <!-- Review Form -->
+        @if (User.Identity.IsAuthenticated)
+        {
+            <form asp-action="SubmitReview" method="post">
+                <div class="form-group">
+                    <label for="rating">Rating</label>
+                    <select id="rating" name="rating" class="form-control">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="comment">Comment</label>
+                    <textarea id="comment" name="comment" class="form-control"></textarea>
+                </div>
+                <input type="hidden" name="productId" value="@Model.Id" />
+                <button type="submit" class="btn btn-primary mt-3">Submit Review</button>
+            </form>
+        }
+        else
+        {
+            <p>Please <a asp-area="Identity" asp-page="/Account/Login">log in</a> to leave a review.</p>
+        }
     </div>
-</div>
+</section>
