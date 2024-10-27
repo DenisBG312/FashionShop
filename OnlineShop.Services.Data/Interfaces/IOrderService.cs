@@ -14,5 +14,6 @@ namespace OnlineShop.Services.Data.Interfaces
         Task<bool> ReactivateOrder(int orderId);
         Task<bool> CancelOrder(int orderId);
         Task<bool> FinalizeOrder(int orderId);
+        Task<OrderTransactionHistoryViewModel> GetTransactionHistoryAsync(int orderId, string userId);
     }
 }

@@ -167,5 +167,34 @@ namespace OnlineShop.Services.Data
             await _orderRepository.SaveChangesAsync();
             return true;
         }
+
+        public async Task<OrderTransactionHistoryViewModel> GetTransactionHistoryAsync(int orderId, string userId)
+        {
+            var order = await _orderRepository.GetAllAttached()
+                .Where(o => o.UserId == userId && o.Id == orderId)
+                .Include(o => o.Payments)
+                .FirstOrDefaultAsync();
+
+            if (order == null)
+            {
+                return null;
+            }
+
+            var userOrders = await _orderRepository.GetAllAttached()
+                .Where(o => o.UserId == userId)
+                .OrderBy(o => o.Id)
+                .ToListAsync();
+
+            int customOrderNumber = userOrders.FindIndex(o => o.Id == order.Id) + 1;
+
+            var viewModel = new OrderTransactionHistoryViewModel
+            {
+                OrderId = order.Id,
+                CustomOrderNumber = customOrderNumber,
+                Payments = order.Payments.ToList()
+            };
+
+            return viewModel;
+        }
     }
 }

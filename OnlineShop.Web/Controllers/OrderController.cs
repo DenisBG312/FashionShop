@@ -96,28 +96,12 @@ namespace OnlineShop.Web.Controllers
         public async Task<IActionResult> TransactionHistory(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var viewModel = await _orderService.GetTransactionHistoryAsync(id, userId);
 
-            var userOrders = await _context.Orders
-                .Where(o => o.UserId == userId)
-                .OrderBy(o => o.Id)
-                .Include(o => o.Payments)
-                .ToListAsync();
-
-            var order = userOrders.FirstOrDefault(o => o.Id == id);
-
-            if (order == null)
+            if (viewModel == null)
             {
                 return NotFound();
             }
-
-            int customOrderNumber = userOrders.FindIndex(o => o.Id == order.Id) + 1;
-
-            var viewModel = new OrderTransactionHistoryViewModel
-            {
-                OrderId = order.Id,
-                CustomOrderNumber = customOrderNumber,
-                Payments = order.Payments.ToList() // Directly assign the payments
-            };
 
             return View(viewModel);
         }
