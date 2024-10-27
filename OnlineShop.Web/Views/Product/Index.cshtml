@@ -2,10 +2,46 @@
 
 @{
     ViewData["Title"] = "Products";
+    var genderId = ViewContext.HttpContext.Request.Query["genderId"].ToString();
+    var clothingTypeId = ViewContext.HttpContext.Request.Query["clothingTypeId"].ToString();
 }
 
 <div class="container my-5">
     <h1 class="text-center mb-5">Our Products</h1>
+
+    <!-- Filtering Options -->
+    <div class="row mb-4 text-center">
+        <!-- Center the row -->
+        <div class="col-md-4">
+            <h5>Filter by Gender:</h5>
+            <div class="d-flex justify-content-center flex-wrap">
+                <!-- Center buttons -->
+                <a href="@Url.Action("Index", "Product", new { genderId = "1", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "1" ? "active" : "")">Men</a>
+                <a href="@Url.Action("Index", "Product", new { genderId = "2", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "2" ? "active" : "")">Women</a>
+                <a href="@Url.Action("Index", "Product", new { genderId = "3", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "3" ? "active" : "")">Kids</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <h5>Filter by Clothing Type:</h5>
+            <div class="d-flex justify-content-center flex-wrap">
+                <!-- Center buttons -->
+                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "1" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "1" ? "active" : "")">T-Shirts</a>
+                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "2" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "2" ? "active" : "")">Jackets</a>
+                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "3" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "3" ? "active" : "")">Shoes</a>
+                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "4" })" class="btn btn-outline-primary me-2 mt-2 @(clothingTypeId == "4" ? "active" : "")">Jeans</a>
+                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "5" })" class="btn btn-outline-primary me-2 mt-2 @(clothingTypeId == "5" ? "active" : "")">Shirts</a>
+                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "6" })" class="btn btn-outline-primary me-2 mt-2 @(clothingTypeId == "6" ? "active" : "")">Shorts</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <!-- Single Reset Button -->
+            <h5>&nbsp;</h5> <!-- Just for spacing -->
+            <div class="d-flex justify-content-center">
+                <!-- Center the reset button -->
+                <a href="@Url.Action("Index", "Product", new { genderId = "", clothingTypeId = "" })" class="btn btn-outline-secondary">Reset Filters</a>
+            </div>
+        </div>
+    </div>
 
     <!-- Product Grid -->
     <div class="row g-4">

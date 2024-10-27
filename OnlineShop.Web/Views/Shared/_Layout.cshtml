@@ -10,73 +10,51 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - OnlineShop.Web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/bootswatchTheme.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/OnlineShop.Web.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">OnlineShop.Web</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <a href="@Url.Action("Index", "Home")">
+                    <img src="~/images/logo.png" style="max-width: 80px; height: auto;"> <!-- Logo -->
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between ml-auto">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home <i class="fa-solid fa-house"></i></a>
+                            <a class="nav-link ms-5" asp-area="" asp-controller="Home" asp-action="Index">Home <i class="fa-solid fa-house"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products <i class="fa-solid fa-shirt"></i></a>
+                            <a class="nav-link" asp-area="" asp-controller="Product" asp-action="Index">Products <i class="fa-solid fa-shirt"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ShoppingCart" asp-action="Index">My Shopping Cart <i class="fa-solid fa-cart-shopping"></i></a>
+                            <a class="nav-link" asp-area="" asp-controller="ShoppingCart" asp-action="Index">My Shopping Cart <i class="fa-solid fa-cart-shopping"></i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">My Orders <i class="fa-solid fa-list"></i></a>
+                            <a class="nav-link" asp-area="" asp-controller="Order" asp-action="Index">My Orders <i class="fa-solid fa-list"></i></a>
                         </li>
+                        <!-- Clothing Types and For Who dropdowns here... -->
                     </ul>
-                    <div class="form-inline my-2 my-lg-0 d-flex align-items-center">
-                        <!-- Buttons for selecting gender -->
-                        <div class="btn-group me-3" role="group" aria-label="Gender selection">
-                            <a class="btn btn-outline-primary @(Context.Request.Query["genderId"] == "1" ? "active" : "")"
-                               href="@Url.Action("Index", "Product", new { genderId = "1", clothingTypeId = Context.Request.Query["clothingTypeId"] })">
-                                Male
-                            </a>
-                            <a class="btn btn-outline-primary @(Context.Request.Query["genderId"] == "2" ? "active" : "")"
-                               href="@Url.Action("Index", "Product", new { genderId = "2", clothingTypeId = Context.Request.Query["clothingTypeId"] })">
-                                Female
-                            </a>
-                            <a class="btn btn-outline-primary @(Context.Request.Query["genderId"] == "3" ? "active" : "")"
-                               href="@Url.Action("Index", "Product", new { genderId = "3", clothingTypeId = Context.Request.Query["clothingTypeId"] })">
-                                Kids
-                            </a>
-                        </div>
 
-                        <!-- Dropdown for clothing types -->
-                        <select class="form-select me-2" onchange="location = this.value;">
-                            <option disabled selected>Select Clothing Type</option>
-                            <option value="@Url.Action("Index", "Product", new { genderId = Context.Request.Query["genderId"], clothingTypeId = "1" })">T-Shirts</option>
-                            <option value="@Url.Action("Index", "Product", new { genderId = Context.Request.Query["genderId"], clothingTypeId = "2" })">Jackets</option>
-                            <option value="@Url.Action("Index", "Product", new { genderId = Context.Request.Query["genderId"], clothingTypeId = "3" })">Shoes</option>
-                            <option value="@Url.Action("Index", "Product", new { genderId = Context.Request.Query["genderId"], clothingTypeId = "4" })">Jeans</option>
-                            <option value="@Url.Action("Index", "Product", new { genderId = Context.Request.Query["genderId"], clothingTypeId = "5" })">Shirts</option>
-                            <option value="@Url.Action("Index", "Product", new { genderId = Context.Request.Query["genderId"], clothingTypeId = "6" })">Shorts</option>
-                        </select>
+                    <div class="d-flex">
+                        <a class="btn btn-outline-danger me-2" href="@Url.Action("Index", "Product")">Reset Filters</a>
+
+                        <form class="d-flex me-2" method="get" action="@Url.Action("Index", "Product")">
+                            <div class="input-group">
+                                <input class="form-control" type="search" placeholder="Search by brand" name="searchTerm" value="@Context.Request.Query["searchTerm"]" aria-label="Search">
+                                <button class="btn btn-outline-white" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            </div>
+                        </form>
+
+                        <!-- Add login partial here -->
+                        <partial name="_LoginPartial" />
                     </div>
-                    <form class="d-flex" method="get" action="@Url.Action("Index", "Product")">
-                        <div class="input-group">
-                            <input class="form-control" type="search" placeholder="Search by brand" name="searchTerm" value="@Context.Request.Query["searchTerm"]" aria-label="Search">
-                            <button class="btn btn-outline-dark" type="submit">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </button>
-                        </div>
-                    </form>
-                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
