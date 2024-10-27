@@ -141,7 +141,11 @@ namespace OnlineShop.Services.Data
 
         public async Task<ProductDetailsViewModel?> ViewDetailsAboutProductAsync(int id, string userId)
         {
-            var product = await _productRepository.GetByIdAsync(id);
+            var product = await _productRepository.GetAllAttached()
+                .Include(p => p.Gender)
+                .Include(p => p.ClothingType)
+                .Include(p => p.User)
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -159,9 +163,9 @@ namespace OnlineShop.Services.Data
                 Price = product.Price,
                 ImageUrl = product.ImageUrl,
                 StockQuantity = product.StockQuantity,
-                Gender = product.GenderId.ToString(),
-                ClothingType = product.ClothingTypeId.ToString(),
-                PostedBy = user.UserName,
+                Gender = product.Gender.Name,
+                ClothingType = product.ClothingType.Name,
+                PostedBy = product.User?.UserName,
                 Reviews = reviews.Where(r => r.ProductId == id).ToList(),
                 UserId = product.UserId
             };
