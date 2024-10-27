@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data.Models;
+using OnlineShop.Data.Models.Enums.Payment;
 using OnlineShop.Data.Repository;
 using OnlineShop.Services.Data.Interfaces;
 using OnlineShop.Web.ViewModels.Order;
@@ -128,6 +129,43 @@ namespace OnlineShop.Services.Data
             }
 
             return false;
+        }
+
+        public async Task<bool> FinalizeOrder(int orderId)
+        {
+            var order = await _orderRepository.GetAllAttached()
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .Include(o => o.Payments)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                return false;
+            }
+
+            foreach (var orderProduct in order.OrderProducts)
+            {
+                if (orderProduct.Product == null || orderProduct.Product.StockQuantity < orderProduct.Quantity)
+                {
+                    return false;
+                }
+            }
+
+            foreach (var orderProduct in order.OrderProducts)
+            {
+                orderProduct.Product.StockQuantity -= orderProduct.Quantity;
+            }
+
+            order.IsCompleted = true;
+            foreach (var payment in order.Payments)
+            {
+                payment.Status = Status.Completed;
+            }
+
+            await _orderRepository.UpdateAsync(order);
+            await _orderRepository.SaveChangesAsync();
+            return true;
         }
     }
 }

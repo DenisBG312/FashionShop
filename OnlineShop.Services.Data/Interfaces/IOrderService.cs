@@ -13,5 +13,6 @@ namespace OnlineShop.Services.Data.Interfaces
         Task<OrderDetailsViewModel?> GetOrderDetails(int orderId);
         Task<bool> ReactivateOrder(int orderId);
         Task<bool> CancelOrder(int orderId);
+        Task<bool> FinalizeOrder(int orderId);
     }
 }

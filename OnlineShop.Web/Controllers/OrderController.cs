@@ -79,47 +79,13 @@ namespace OnlineShop.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> FinalizeOrder(int id)
         {
-            var order = await _context.Orders
-                .Include(op => op.OrderProducts)
-                .Include(o => o.Payments) // Include payments
-                .FirstOrDefaultAsync(o => o.Id == id);
+            var success = await _orderService.FinalizeOrder(id);
 
-            if (order == null)
+            if (!success)
             {
-                return NotFound();
+                TempData["ErrorMessage"] = "Insufficient stock for one or more products in the order.";
+                return RedirectToAction("Details", new { id });
             }
-
-            // Check if there is enough stock for each product
-            foreach (var orderProduct in order.OrderProducts)
-            {
-                var product = await _context.Products.FindAsync(orderProduct.ProductId);
-                if (product == null || product.StockQuantity < orderProduct.Quantity)
-                {
-                    TempData["ErrorMessage"] = "Insufficient stock for one or more products in the order.";
-                    return RedirectToAction("Details", new { id });
-                }
-            }
-
-            // Reduce stock for each product in the order
-            foreach (var orderProduct in order.OrderProducts)
-            {
-                var product = await _context.Products.FindAsync(orderProduct.ProductId);
-                if (product != null)
-                {
-                    product.StockQuantity -= orderProduct.Quantity;
-                }
-            }
-
-            // Mark order as completed
-            order.IsCompleted = true;
-
-            // Automatically update the status of all associated payments to "Completed"
-            foreach (var payment in order.Payments)
-            {
-                payment.Status = Status.Completed;
-            }
-
-            await _context.SaveChangesAsync();
 
             TempData["SuccessMessage"] = "Thank you for your order! Your order has been finalized. \u2705";
 
