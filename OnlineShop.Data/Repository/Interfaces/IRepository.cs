@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineShop.Data.Repository
+namespace OnlineShop.Data.Repository.Interfaces
 {
     public interface IRepository<TType, TId>
     {
