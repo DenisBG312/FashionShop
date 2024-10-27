@@ -13,7 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.Data.Models", "O
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.Common", "OnlineShop.Common\OnlineShop.Common.csproj", "{4CA92E1F-FE91-489A-B850-A19D3E414FBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShop.Services.Data", "OnlineShop.Services.Data\OnlineShop.Services.Data.csproj", "{BF05E605-37B5-4AFF-9103-567C6634B57F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShop.Services.Data", "OnlineShop.Services.Data\OnlineShop.Services.Data.csproj", "{BF05E605-37B5-4AFF-9103-567C6634B57F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{72080186-9ABF-433D-8D22-412BCC8929E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{676A2ABC-FEE5-4A70-93F0-4ABF71C63ABE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{17836C2D-E760-465A-AB31-E5EEB3899501}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +54,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E11232A8-F505-49C4-A8E5-83C5F2F0A8A8} = {72080186-9ABF-433D-8D22-412BCC8929E1}
+		{35C74BB2-6C10-4115-B8B6-9591FEC91557} = {72080186-9ABF-433D-8D22-412BCC8929E1}
+		{10F5E0D5-2379-4442-8908-30304D456B41} = {676A2ABC-FEE5-4A70-93F0-4ABF71C63ABE}
+		{E5D1D5F8-2F53-4AF8-A44C-53420E486387} = {676A2ABC-FEE5-4A70-93F0-4ABF71C63ABE}
+		{BF05E605-37B5-4AFF-9103-567C6634B57F} = {17836C2D-E760-465A-AB31-E5EEB3899501}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {576EA9C4-13E4-4579-9412-179840DA065A}

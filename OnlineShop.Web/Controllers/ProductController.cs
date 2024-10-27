@@ -51,8 +51,8 @@ namespace OnlineShop.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateProductViewModel product)
         {
-            ModelState.Remove("Genders");
-            ModelState.Remove("ClothingTypes");
+            ModelState.Remove(nameof(product.Genders));
+            ModelState.Remove(nameof(product.ClothingTypes));
 
             if (!ModelState.IsValid)
             {
