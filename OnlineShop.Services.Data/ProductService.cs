@@ -19,10 +19,14 @@ namespace OnlineShop.Services.Data
     public class ProductService : IProductService
     {
         private readonly BaseRepository<Product, int> _productRepository;
+        private readonly BaseRepository<Review, int> _reviewRepository;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ProductService(BaseRepository<Product, int> productRepository)
+        public ProductService(BaseRepository<Product, int> productRepository, BaseRepository<Review, int> reviewRepository, UserManager<IdentityUser> userManager)
         {
             _productRepository = productRepository;
+            _reviewRepository = reviewRepository;
+            _userManager = userManager;
         }
         public async Task<IEnumerable<Product>> GetProductsAsync(int? genderId, int? clothingTypeId, string searchTerm)
         {
@@ -116,6 +120,50 @@ namespace OnlineShop.Services.Data
         public async Task<List<SelectListItem>> GetClothingTypesAsync()
         {
             return await _productRepository.GetClothingTypesAsync();
+        }
+
+        public async Task SubmitReview(int productId, string userId, int rating, string comment)
+        {
+            var review = new Review
+            {
+                ProductId = productId,
+                UserId = userId,
+                Rating = rating,
+                Comment = comment,
+                ReviewDate = DateTime.Now
+            };
+
+            await _reviewRepository.AddAsync(review);
+        }
+
+        public async Task<ProductDetailsViewModel?> ViewDetailsAboutProductAsync(int id, string userId)
+        {
+            var product = await _productRepository.GetByIdAsync(id);
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (product == null) return null;
+
+            var reviews = await _reviewRepository.GetAllAttached()
+                .Include(p => p.User)
+                .ToListAsync();
+
+            var productDetailsViewModel = new ProductDetailsViewModel
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                ImageUrl = product.ImageUrl,
+                StockQuantity = product.StockQuantity,
+                Gender = product.GenderId.ToString(),
+                ClothingType = product.ClothingTypeId.ToString(),
+                PostedBy = user.UserName,
+                Reviews = reviews.Where(r => r.ProductId == id).ToList(),
+                UserId = product.UserId
+            };
+
+            return productDetailsViewModel;
         }
     }
 }

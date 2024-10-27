@@ -15,13 +15,11 @@ namespace OnlineShop.Web.Controllers
     [Authorize]
     public class ProductController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IProductService _productService;
 
-        public ProductController(ApplicationDbContext context, UserManager<IdentityUser> userManager, IProductService productService)
+        public ProductController(UserManager<IdentityUser> userManager, IProductService productService)
         {
-            _context = context;
             _userManager = userManager;
             _productService = productService;
         }
@@ -118,61 +116,25 @@ namespace OnlineShop.Web.Controllers
         public async Task<IActionResult> SubmitReview(int productId, int rating, string comment)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var review = new Review
-            {
-                ProductId = productId,
-                UserId = userId,
-                Rating = rating,
-                Comment = comment,
-                ReviewDate = DateTime.Now
-            };
 
-            await _context.Reviews.AddAsync(review);
-            await _context.SaveChangesAsync();
+            await _productService.SubmitReview(productId, userId, rating, comment);
 
             return RedirectToAction("Details", new { id = productId });
-        }
-
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(e => e.Id == id);
         }
 
         [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var product = await _context
-                .Products
-                .Include(p => p.Gender)
-                .Include(p => p.ClothingType)
-                .Include(product => product.Reviews)
-                .Include(p => p.User)
-                .Include(p => p.Reviews)
-                .ThenInclude(r => r.User)
-                .FirstOrDefaultAsync(p => p.Id == id);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var productDetails = await _productService.ViewDetailsAboutProductAsync(id, userId);
 
-            if (product == null)
+            if (productDetails == null)
             {
                 return NotFound();
             }
 
-            var productDetailsViewModel = new ProductDetailsViewModel
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                ImageUrl = product.ImageUrl,
-                StockQuantity = product.StockQuantity,
-                Gender = product.Gender.Name,
-                ClothingType = product.ClothingType.Name,
-                PostedBy = product.User?.UserName,
-                UserId = product.UserId,
-                Reviews = product.Reviews.ToList() // Ensure reviews are passed to the view model
-            };
-
-            return View(productDetailsViewModel);
+            return View(productDetails);
         }
 
         public string? GetUserId()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineShop.Data.Models;
 using OnlineShop.Web.ViewModels.Product;
@@ -17,5 +18,7 @@ namespace OnlineShop.Services.Data.Interfaces
         Task<bool> UpdateProductAsync(ProductEditViewModel product, string userId);
         Task<List<SelectListItem>> GetGendersAsync();
         Task<List<SelectListItem>> GetClothingTypesAsync();
+        Task SubmitReview(int productId, string userId, int rating, string comment);
+        Task<ProductDetailsViewModel?> ViewDetailsAboutProductAsync(int id, string userId);
     }
 }
