@@ -2,10 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data.Models;
 using System.Reflection;
+using Microsoft.AspNetCore.Identity;
 
 namespace OnlineShop.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext()
         {

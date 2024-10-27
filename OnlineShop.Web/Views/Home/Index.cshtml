@@ -9,6 +9,56 @@
         <a href="/Product" class="btn btn-lg btn-primary hero-button">Explore Products</a>
     </div>
 
+    <!-- Start of Carousel -->
+    <div id="clothesCarousel" class="carousel slide mb-5 mx-auto" data-bs-ride="carousel" data-bs-interval="3000" style="max-width: 1000px;">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#clothesCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#clothesCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#clothesCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner shadow-lg rounded">
+            <div class="carousel-item active">
+                <div class="position-relative">
+                    <img src="~/images/p_4db29d12-94b6-11ef-ba50-4651a841d960_wm.png" class="d-block w-100" alt="Trendy clothing collection" style="max-height: 400px;">
+                    <div class="overlay"></div>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="text-white">Discover the Latest Trends</h5>
+                        <p>Stay stylish with our new arrivals for every season.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="position-relative">
+                    <img src="~/images/p_9598d10a-94b6-11ef-9685-ae89e71256f4_wm.png" class="d-block w-100" alt="Men's fashion collection" style="max-height: 400px;">
+                    <div class="overlay"></div>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="text-white">Men's Collection</h5>
+                        <p>Find the perfect look for any occasion.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="position-relative">
+                    <img src="~/images/p_023fce8a-94b7-11ef-97bd-6e8bfdc1f9a6_wm.png" class="d-block w-100" alt="Women's fashion collection" style="max-height: 400px;">
+                    <div class="overlay"></div>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h5 class="text-white">Women's Collection</h5>
+                        <p>Fashion-forward pieces for every style and mood.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#clothesCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#clothesCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <!-- End of Carousel -->
+
     <div class="row text-center feature-section">
         <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
@@ -62,3 +112,27 @@
     </div>
 </div>
 
+<style>
+    .position-relative {
+        position: relative;
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent dark overlay */
+        z-index: 1;
+    }
+
+    .carousel-caption {
+        position: absolute;
+        z-index: 2;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
