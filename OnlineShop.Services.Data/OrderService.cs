@@ -47,5 +47,47 @@ namespace OnlineShop.Services.Data
                 })
             }).ToList();
         }
+
+        public async Task<OrderDetailsViewModel?> GetOrderDetails(int orderId)
+        {
+            var order = await _orderRepository.GetAllAttached()
+                .Include(o => o.Payments)
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                return null;
+            }
+
+            var userId = order.UserId;
+
+            var userOrders = await _orderRepository.GetAllAttached()
+                .Where(o => o.UserId == userId)
+                .OrderBy(o => o.Id)
+                .Include(o => o.OrderProducts)
+                .ToListAsync();
+
+            int userOrderNumber = userOrders.FindIndex(o => o.Id == order.Id) + 1;
+
+            var viewModel = new OrderDetailsViewModel
+            {
+                OrderId = order.Id,
+                CustomOrderNumber = userOrderNumber,
+                OrderDate = order.OrderDate,
+                TotalAmount = order.OrderProducts.Sum(op => op.UnitPrice * op.Quantity),
+                IsCompleted = order.IsCompleted,
+                IsCancelled = order.IsCancelled,
+                OrderProducts = order.OrderProducts.Select(op => new OrderProductViewModel
+                {
+                    ProductName = op.Product.Name,
+                    Quantity = op.Quantity,
+                    UnitPrice = op.UnitPrice
+                }).ToList()
+            };
+
+            return viewModel;
+        }
     }
 }

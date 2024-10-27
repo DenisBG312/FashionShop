@@ -10,5 +10,6 @@ namespace OnlineShop.Services.Data.Interfaces
     public interface IOrderService
     {
         Task<IEnumerable<OrderIndexViewModel>> GetAllOrders(string userId);
+        Task<OrderDetailsViewModel?> GetOrderDetails(int orderId);
     }
 }

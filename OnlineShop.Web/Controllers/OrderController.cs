@@ -38,44 +38,14 @@ namespace OnlineShop.Web.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var order = await _context.Orders
-                .Include(o => o.Payments)
-                .Include(o => o.OrderProducts)
-                .ThenInclude(op => op.Product)
-                .FirstOrDefaultAsync(o => o.Id == id);
+            var orderDetails = await _orderService.GetOrderDetails(id);
 
-            if (order == null)
+            if (orderDetails == null)
             {
                 return NotFound();
             }
 
-            var userId = order.UserId;
-
-            var userOrders = await _context.Orders
-                .Where(o => o.UserId == userId)
-                .OrderBy(o => o.Id)
-                .Include(o => o.OrderProducts)
-                .ToListAsync();
-
-            int userOrderNumber = userOrders.FindIndex(o => o.Id == order.Id) + 1;
-
-            var viewModel = new OrderDetailsViewModel
-            {
-                OrderId = order.Id,
-                CustomOrderNumber = userOrderNumber,
-                OrderDate = order.OrderDate,
-                TotalAmount = order.OrderProducts.Sum(op => op.UnitPrice * op.Quantity),
-                IsCompleted = order.IsCompleted,
-                IsCancelled = order.IsCancelled,
-                OrderProducts = order.OrderProducts.Select(op => new OrderProductViewModel
-                {
-                    ProductName = op.Product.Name,
-                    Quantity = op.Quantity,
-                    UnitPrice = op.UnitPrice
-                }).ToList()
-            };
-
-            return View(viewModel);
+            return View(orderDetails);
         }
 
         [HttpPost]
