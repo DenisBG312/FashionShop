@@ -30,5 +30,7 @@ namespace OnlineShop.Data.Repository.Interfaces
         bool Update(TType item);
 
         Task<bool> UpdateAsync(TType item);
+        Task<int> SaveChangesAsync();
+        int SaveChanges();
     }
 }

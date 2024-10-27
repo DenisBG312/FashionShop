@@ -11,5 +11,7 @@ namespace OnlineShop.Services.Data.Interfaces
     {
         Task<IEnumerable<OrderIndexViewModel>> GetAllOrders(string userId);
         Task<OrderDetailsViewModel?> GetOrderDetails(int orderId);
+        Task<bool> ReactivateOrder(int orderId);
+        Task<bool> CancelOrder(int orderId);
     }
 }

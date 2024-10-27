@@ -51,19 +51,11 @@ namespace OnlineShop.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Reactivate(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var success = await _orderService.ReactivateOrder(id);
 
-            if (order == null)
+            if (!success)
             {
                 return NotFound();
-            }
-
-            // Reactivate the order
-            if (order.IsCancelled)
-            {
-                order.IsCancelled = false;
-                order.IsCompleted = false;
-                await _context.SaveChangesAsync();
             }
 
             TempData["SuccessMessage"] = "Order reactivated successfully.";
@@ -71,37 +63,15 @@ namespace OnlineShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var order = await _context.Orders.FindAsync(id);
-
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            _context.Orders.Remove(order);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
         public async Task<IActionResult> Cancel(int id)
         {
-            var order = await _context.Orders.FindAsync(id);
+            var success = await _orderService.CancelOrder(id);
 
-            if (order == null)
+            if (!success)
             {
                 return NotFound();
             }
 
-            // Ensure the order is not completed before cancelling
-            if (!order.IsCompleted && !order.IsCancelled)
-            {
-                order.IsCancelled = true; // Set the order as cancelled
-                await _context.SaveChangesAsync();
-            }
 
             return RedirectToAction("Index");
         }

@@ -54,13 +54,11 @@ namespace OnlineShop.Data.Repository
         public void Add(TType item)
         {
             dbSet.Add(item);
-            _context.SaveChanges();
         }
 
         public async Task AddAsync(TType item)
         {
             await dbSet.AddAsync(item);
-            await _context.SaveChangesAsync();
         }
 
         public bool Delete(TId id)
@@ -73,7 +71,6 @@ namespace OnlineShop.Data.Repository
             }
 
             dbSet.Remove(entity);
-            _context.SaveChanges();
 
             return true;
         }
@@ -88,7 +85,6 @@ namespace OnlineShop.Data.Repository
             }
 
             dbSet.Remove(entity);
-            await _context.SaveChangesAsync();  
 
             return true;
         }
@@ -99,7 +95,6 @@ namespace OnlineShop.Data.Repository
             {
                 dbSet.Attach(item);
                 _context.Entry(item).State = EntityState.Modified;
-                _context.SaveChanges();
 
                 return true;
             }
@@ -115,7 +110,6 @@ namespace OnlineShop.Data.Repository
             {
                 dbSet.Attach(item);
                 _context.Entry(item).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
 
                 return true;
             }
@@ -123,6 +117,16 @@ namespace OnlineShop.Data.Repository
             {
                 return false;
             }
+        }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
+
+        public int SaveChanges()
+        {
+            return _context.SaveChanges();
         }
 
         public async Task<List<SelectListItem>> GetGendersAsync()

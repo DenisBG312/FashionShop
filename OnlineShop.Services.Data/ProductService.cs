@@ -65,6 +65,7 @@ namespace OnlineShop.Services.Data
             };
 
             await _productRepository.AddAsync(newProduct);
+            await _productRepository.SaveChangesAsync();
         }
 
         public async Task<ProductEditViewModel?> GetEditProductViewModelAsync(int productId, string userId)
@@ -108,6 +109,7 @@ namespace OnlineShop.Services.Data
             productEntity.ImageUrl = product.ImageUrl;
 
             await _productRepository.UpdateAsync(productEntity);
+            await _productRepository.SaveChangesAsync();
 
             return true;
         }
@@ -134,6 +136,7 @@ namespace OnlineShop.Services.Data
             };
 
             await _reviewRepository.AddAsync(review);
+            await _reviewRepository.SaveChangesAsync();
         }
 
         public async Task<ProductDetailsViewModel?> ViewDetailsAboutProductAsync(int id, string userId)

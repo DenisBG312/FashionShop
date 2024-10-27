@@ -89,5 +89,45 @@ namespace OnlineShop.Services.Data
 
             return viewModel;
         }
+
+        public async Task<bool> ReactivateOrder(int orderId)
+        {
+            var order = await _orderRepository.GetByIdAsync(orderId);
+
+            if (order == null)
+            {
+                return false;
+            }
+
+            if (order.IsCancelled)
+            {
+                order.IsCancelled = false;
+                order.IsCompleted = false;
+
+                await _orderRepository.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> CancelOrder(int orderId)
+        {
+            var order = await _orderRepository.GetByIdAsync(orderId);
+
+            if (order == null)
+            {
+                return false;
+            }
+
+            if (!order.IsCompleted && !order.IsCancelled)
+            {
+                order.IsCancelled = true;
+                await _orderRepository.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+        }
     }
 }
