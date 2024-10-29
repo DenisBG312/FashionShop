@@ -27,6 +27,8 @@ namespace OnlineShop.Web.Controllers
             _productService = productService;
         }
 
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Index(int? genderId, int? clothingTypeId, string searchTerm, int page = 1)
         {
             var products = await _productService.GetProductsAsync(genderId, clothingTypeId, searchTerm);
@@ -127,8 +129,8 @@ namespace OnlineShop.Web.Controllers
             return RedirectToAction("Details", new { id = productId });
         }
 
-        [AllowAnonymous]
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

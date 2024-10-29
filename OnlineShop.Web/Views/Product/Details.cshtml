@@ -68,7 +68,12 @@
             {
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">Rating: @review.Rating/5</h5>
+                        <h5 class="card-title">
+                            Rating: @for (int i = 0; i < review.Rating; i++)
+                            {
+                                <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                            }
+                        </h5>
                         <p class="card-text">@review.Comment</p>
                         <p class="card-text">
                             <small class="text-muted">Reviewed by @review.User.UserName on @review.ReviewDate.ToShortDateString()</small>
