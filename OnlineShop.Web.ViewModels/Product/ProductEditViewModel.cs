@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -14,10 +15,13 @@ namespace OnlineShop.Web.ViewModels.Product
         public string Name { get; set; }
         public string? Description { get; set; }
         public decimal Price { get; set; }
+        [DisplayName("Stock Quantity")]
         public int StockQuantity { get; set; }
         public string? ImageUrl { get; set; }
+        [DisplayName("Gender")]
         
         public int GenderId { get; set; }
+        [DisplayName("Clothing Type")]
         public int ClothingTypeId { get; set; }
         
         public List<SelectListItem> Genders { get; set; }
