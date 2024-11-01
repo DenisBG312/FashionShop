@@ -3,59 +3,132 @@
     ViewData["Title"] = "Edit Product";
 }
 
-<h2>Edit Product</h2>
+<div class="edit-product-container">
+    <h2 class="text-center">Edit Product</h2>
 
-<form asp-action="Edit" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
-    </div>
+    <form asp-action="Edit" method="post" enctype="multipart/form-data" class="edit-product-form shadow-sm rounded p-4">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control form-control-lg" placeholder="Product name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="Price" class="form-label"></label>
+                <input asp-for="Price" class="form-control form-control-lg" placeholder="0.00" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="Description"></label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control form-control-lg" rows="3" placeholder="Product description"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="Price"></label>
-        <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
-    </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="StockQuantity" class="form-label"></label>
+                <input asp-for="StockQuantity" class="form-control form-control-lg" placeholder="Stock quantity" />
+                <span asp-validation-for="StockQuantity" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="ImageUrl" class="form-label">Image URL</label>
+                <input asp-for="ImageUrl" class="form-control form-control-lg" placeholder="Image URL" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="StockQuantity"></label>
-        <input asp-for="StockQuantity" class="form-control" />
-        <span asp-validation-for="StockQuantity" class="text-danger"></span>
-    </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="GenderId" class="form-label"></label>
+                <select asp-for="GenderId" class="form-select form-select-lg" asp-items="Model.Genders"></select>
+                <span asp-validation-for="GenderId" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="ClothingTypeId" class="form-label"></label>
+                <select asp-for="ClothingTypeId" class="form-select form-select-lg" asp-items="Model.ClothingTypes"></select>
+                <span asp-validation-for="ClothingTypeId" class="text-danger"></span>
+            </div>
+        </div>
 
-    <div class="form-group">
-        <label asp-for="GenderId"></label>
-        <select asp-for="GenderId" class="form-control" asp-items="Model.Genders"></select>
-        <span asp-validation-for="GenderId" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ClothingTypeId"></label>
-        <select asp-for="ClothingTypeId" class="form-control" asp-items="Model.ClothingTypes"></select>
-        <span asp-validation-for="ClothingTypeId" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="ImageUrl">Image URL</label>
-        <input asp-for="ImageUrl" class="form-control" />
-        <span asp-validation-for="ImageUrl" class="text-danger"></span>
-    </div>
-
-    <div class="form-group mt-3">
-        <input type="submit" value="Save Changes" class="btn btn-primary" />
-        <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary">Cancel</a>
-    </div>
-</form>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <i class="fa-solid fa-floppy-disk me-2"></i>Save Changes
+            </button>
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-primary ms-2">
+                <i class="fa-solid fa-ban me-2"></i>Cancel
+            </a>
+        </div>
+    </form>
+</div>
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
+<style>
+    body {
+        background-color: #f0f2f5;
+    }
+
+    .edit-product-container {
+        max-width: 700px;
+        margin: auto;
+        padding: 20px;
+    }
+
+    .edit-product-form {
+        background-color: #ffffff;
+        border-radius: 8px;
+        padding: 30px;
+    }
+
+    h2 {
+        font-size: 2rem;
+        color: #333;
+        margin-bottom: 1.5rem;
+        font-weight: bold;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+    }
+
+    .form-control-lg, .form-select-lg {
+        font-size: 1rem;
+        padding: 10px 15px;
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .form-control-lg:focus, .form-select-lg:focus {
+            border-color: #0d6efd;
+            box-shadow: 0px 0px 5px rgba(13, 110, 253, 0.3);
+        }
+
+    .btn-primary {
+        padding: 10px 20px;
+        font-size: 1.1rem;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            transform: translateY(-2px);
+        }
+
+    .btn-secondary {
+        padding: 10px 20px;
+        font-size: 1.1rem;
+    }
+
+        .btn-secondary:hover {
+            background-color: #6c757d;
+            color: #fff;
+        }
+</style>

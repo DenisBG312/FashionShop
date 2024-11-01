@@ -76,7 +76,7 @@ namespace OnlineShop.Services.Data
         {
             var product = await _productRepository.GetByIdAsync(productId);
 
-            if (product == null) return null;
+            if (product == null || product.UserId != userId) return null;
 
             var productEditViewModel = new ProductEditViewModel
             {
