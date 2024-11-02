@@ -16,7 +16,7 @@ namespace OnlineShop.Services.Data.Interfaces
 
         Task<AddToCartResult> AddToCartAsync(string userId, int productId, int quantity);
 
-        Task UpdateQuantityAsync(int shoppingCartId, int productId, int quantity);
+        Task<bool> UpdateQuantityAsync(int shoppingCartId, int productId, int quantity);
 
         Task RemoveFromCartAsync(int shoppingCartId, int productId);
 

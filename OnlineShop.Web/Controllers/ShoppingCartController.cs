@@ -58,46 +58,17 @@ namespace OnlineShop.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateQuantity(int shoppingCartId, int productId, int quantity)
+        public async Task<IActionResult> UpdateQuantity(int shoppingCartId, int productId, int quantity)
         {
-            var shoppingCartProduct = _context.ShoppingCartsProducts
-                .Include(scp => scp.Product) // Include product to access price
-                .FirstOrDefault(scp => scp.ShoppingCartId == shoppingCartId && scp.ProductId == productId);
+            var result = await _shoppingCartService.UpdateQuantityAsync(shoppingCartId, productId, quantity);
 
-            if (shoppingCartProduct != null)
+            if (!result)
             {
-                var shoppingCart = _context.ShoppingCarts
-                    .Include(shoppingCart => shoppingCart.ShoppingCartProducts)
-                    .FirstOrDefault(sc => sc.Id == shoppingCartId);
-
-                if (shoppingCart != null)
-                {
-                    // Subtract the current product's total price from the cart amount
-                    shoppingCart.Amount -= shoppingCartProduct.Product.Price * shoppingCartProduct.Quantity;
-
-                    // Update the quantity of the product in the cart
-                    shoppingCartProduct.Quantity = quantity;
-
-                    // Add the updated product's total price back to the cart amount
-                    shoppingCart.Amount += shoppingCartProduct.Product.Price * shoppingCartProduct.Quantity;
-
-                    // Check if quantity is zero after updating
-                    if (shoppingCartProduct.Quantity == 0)
-                    {
-                        // Remove product if quantity is zero
-                        _context.ShoppingCartsProducts.Remove(shoppingCartProduct);
-                    }
-
-                    // Check if there are any products left in the cart
-                    if (!shoppingCart.ShoppingCartProducts.Any())
-                    {
-                        shoppingCart.Amount = 0; // Set amount to zero if cart is empty
-                    }
-
-                    _context.SaveChanges();
-                }
+                TempData["ErrorMessage"] = "Unable to update quantity. Please try again.";
+                return RedirectToAction(nameof(Index));
             }
 
+            TempData["SuccessMessage"] = "Quantity updated successfully.";
             return RedirectToAction(nameof(Index));
         }
 

@@ -81,9 +81,46 @@ namespace OnlineShop.Services.Data
             return new AddToCartResult { IsSuccess = true };
         }
 
-        public Task UpdateQuantityAsync(int shoppingCartId, int productId, int quantity)
+        public async Task<bool> UpdateQuantityAsync(int shoppingCartId, int productId, int quantity)
         {
-            throw new NotImplementedException();
+            var shoppingCart = await _shoppingCartRepository
+                .GetAllAttached()
+                .Include(sc => sc.ShoppingCartProducts)
+                .ThenInclude(scp => scp.Product)
+                .FirstOrDefaultAsync(sc => sc.Id == shoppingCartId);
+
+            if (shoppingCart == null)
+            {
+                return false;
+            }
+
+            var shoppingCartProduct = shoppingCart.ShoppingCartProducts
+                .FirstOrDefault(scp => scp.ProductId == productId);
+
+            if (shoppingCartProduct == null)
+            {
+                return false;
+            }
+
+            shoppingCart.Amount -= shoppingCartProduct.Product.Price * shoppingCartProduct.Quantity;
+            
+            shoppingCartProduct.Quantity = quantity;
+
+            shoppingCart.Amount += shoppingCartProduct.Product.Price * shoppingCartProduct.Quantity;
+
+            if (shoppingCartProduct.Quantity <= 0)
+            {
+                await _shoppingCartRepository.DeleteAsync(shoppingCartProduct.ProductId);
+            }
+
+            if (!shoppingCart.ShoppingCartProducts.Any())
+            {
+                shoppingCart.Amount = 0;
+            }
+
+            await _shoppingCartRepository.SaveChangesAsync();
+
+            return true;
         }
 
         public Task RemoveFromCartAsync(int shoppingCartId, int productId)
