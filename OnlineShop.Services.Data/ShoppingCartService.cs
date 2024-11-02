@@ -9,6 +9,7 @@ using OnlineShop.Data.Models.Enums.Payment;
 using OnlineShop.Data.Repository;
 using OnlineShop.Data.Repository.Interfaces;
 using OnlineShop.Services.Data.Interfaces;
+using OnlineShop.Web.ViewModels.Cart;
 using OnlineShop.Web.ViewModels.Order;
 
 namespace OnlineShop.Services.Data
@@ -16,10 +17,12 @@ namespace OnlineShop.Services.Data
     public class ShoppingCartService : IShoppingCartService
     {
         private readonly IRepository<ShoppingCart, int> _shoppingCartRepository;
+        private readonly IRepository<Product, int> _productRepository;
 
-        public ShoppingCartService(BaseRepository<ShoppingCart, int> shoppingCartRepository)
+        public ShoppingCartService(BaseRepository<ShoppingCart, int> shoppingCartRepository, BaseRepository<Product, int> productRepository)
         {
             _shoppingCartRepository = shoppingCartRepository;
+            _productRepository = productRepository;
         }
         public async Task<ShoppingCart> GetCartAsync(string userId)
         {
@@ -32,9 +35,50 @@ namespace OnlineShop.Services.Data
             return cart;
         }
 
-        public Task AddToCartAsync(string userId, int productId, int quantity)
+        public async Task<AddToCartResult> AddToCartAsync(string userId, int productId, int quantity)
         {
-            throw new NotImplementedException();
+            var shoppingCart = await GetCartAsync(userId);
+
+            if (shoppingCart == null)
+            {
+                shoppingCart = new ShoppingCart
+                {
+                    UserId = userId,
+                    Amount = 0
+                };
+                await _shoppingCartRepository.AddAsync(shoppingCart);
+                await _shoppingCartRepository.SaveChangesAsync();
+            }
+
+            var product = await _productRepository.GetByIdAsync(productId);
+            if (product == null)
+            {
+                return new AddToCartResult { IsSuccess = false, ErrorMessage = "Product not found." };
+            }
+
+            var cartProduct = shoppingCart.ShoppingCartProducts
+                .FirstOrDefault(scp => scp.ProductId == productId);
+
+            if (cartProduct != null)
+            {
+                cartProduct.Quantity += quantity;
+            }
+            else
+            {
+                cartProduct = new ShoppingCartProduct
+                {
+                    ShoppingCartId = shoppingCart.Id,
+                    ProductId = productId,
+                    Quantity = quantity
+                };
+                shoppingCart.ShoppingCartProducts.Add(cartProduct);
+            }
+
+            shoppingCart.Amount += product.Price * quantity;
+
+            await _shoppingCartRepository.SaveChangesAsync();
+
+            return new AddToCartResult { IsSuccess = true };
         }
 
         public Task UpdateQuantityAsync(int shoppingCartId, int productId, int quantity)

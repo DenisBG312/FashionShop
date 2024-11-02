@@ -42,55 +42,19 @@ namespace OnlineShop.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult AddToCart(int productId, int quantity)
+        public async Task<IActionResult> AddToCart(int productId, int quantity)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            // Retrieve the user's shopping cart
-            var shoppingCart = _context.ShoppingCarts
-                .Include(sc => sc.ShoppingCartProducts)
-                .FirstOrDefault(sc => sc.UserId == userId);
+            var result = await _shoppingCartService.AddToCartAsync(userId, productId, quantity);
 
-            if (shoppingCart == null)
+            if (!result.IsSuccess)
             {
-                // Create a new shopping cart for the user if none exists
-                shoppingCart = new ShoppingCart
-                {
-                    UserId = userId,
-                    Amount = 0 // Initial amount
-                };
-                _context.ShoppingCarts.Add(shoppingCart);
-                _context.SaveChanges();
+                ModelState.AddModelError("", result.ErrorMessage);
+                return NotFound();
             }
 
-            // Check if the product is already in the cart
-            var cartProduct = shoppingCart.ShoppingCartProducts
-                .FirstOrDefault(scp => scp.ProductId == productId);
-
-            if (cartProduct != null)
-            {
-                // Update quantity if product already exists in cart
-                cartProduct.Quantity += quantity;
-            }
-            else
-            {
-                // Add new product to the cart
-                cartProduct = new ShoppingCartProduct
-                {
-                    ShoppingCartId = shoppingCart.Id,
-                    ProductId = productId,
-                    Quantity = quantity
-                };
-                _context.ShoppingCartsProducts.Add(cartProduct);
-            }
-
-            // Update the total amount in the cart
-            var product = _context.Products.Find(productId);
-            shoppingCart.Amount += product.Price * quantity;
-
-            _context.SaveChanges();
-
-            return RedirectToAction("Index"); // Redirect back to the product list or cart page
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]

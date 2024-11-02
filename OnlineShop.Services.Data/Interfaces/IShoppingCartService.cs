@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using OnlineShop.Web.ViewModels.Cart;
 using OnlineShop.Web.ViewModels.Order;
 
 namespace OnlineShop.Services.Data.Interfaces
@@ -13,7 +14,7 @@ namespace OnlineShop.Services.Data.Interfaces
     {
         Task<ShoppingCart> GetCartAsync(string userId);
 
-        Task AddToCartAsync(string userId, int productId, int quantity);
+        Task<AddToCartResult> AddToCartAsync(string userId, int productId, int quantity);
 
         Task UpdateQuantityAsync(int shoppingCartId, int productId, int quantity);
 
