@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Data.Models;
 using OnlineShop.Data.Models.Enums.Payment;
+using OnlineShop.Services.Data.Interfaces;
 using static OnlineShop.Common.EntityValidationConstants;
 using OrderProduct = OnlineShop.Data.Models.OrderProduct;
 using Payment = OnlineShop.Data.Models.Payment;
@@ -14,21 +15,21 @@ namespace OnlineShop.Web.Controllers
     [Authorize]
     public class ShoppingCartController : Controller
     {
-        private ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
+        private readonly IShoppingCartService _shoppingCartService;
 
-        public ShoppingCartController(ApplicationDbContext context)
+        public ShoppingCartController(ApplicationDbContext context, IShoppingCartService shoppingCartService)
         {
             _context = context;
+            _shoppingCartService = shoppingCartService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var cart = await _context.ShoppingCarts
-                .Include(c => c.ShoppingCartProducts)
-                .ThenInclude(cp => cp.Product)
-                .FirstOrDefaultAsync(c => c.UserId == userId);
+
+            var cart = await _shoppingCartService.GetCartAsync(userId);
 
             if (cart == null || !cart.ShoppingCartProducts.Any())
             {
