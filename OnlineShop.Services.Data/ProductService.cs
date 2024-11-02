@@ -23,13 +23,11 @@ namespace OnlineShop.Services.Data
         private readonly IRepository<Review, int> _reviewRepository;
         private readonly IRepository<ClothingType, int> _clothingTypeRepository;
         private readonly IRepository<Gender, int> _genderRepository;
-        private readonly UserManager<IdentityUser> _userManager;
 
         public ProductService(BaseRepository<Product, int> productRepository, BaseRepository<Review, int> reviewRepository, UserManager<IdentityUser> userManager, BaseRepository<Gender, int> genderRepository, BaseRepository<ClothingType, int> clothingTypeRepository)
         {
             _productRepository = productRepository;
             _reviewRepository = reviewRepository;
-            _userManager = userManager;
             _genderRepository = genderRepository;
             _clothingTypeRepository = clothingTypeRepository;
         }
@@ -161,8 +159,6 @@ namespace OnlineShop.Services.Data
                 .Include(p => p.ClothingType)
                 .Include(p => p.User)
                 .FirstOrDefaultAsync(p => p.Id == id);
-
-            var user = await _userManager.FindByIdAsync(userId);
 
             if (product == null) return null;
 
