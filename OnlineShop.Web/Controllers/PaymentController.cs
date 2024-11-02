@@ -64,53 +64,19 @@ namespace OnlineShop.Web.Controllers
 
         public async Task<IActionResult> ConfirmPayment(int orderId, decimal amount)
         {
-            var order = await _context.Orders
-                .Include(o => o.OrderProducts)
-                .Include(o => o.Payments)
-                .FirstOrDefaultAsync(o => o.Id == orderId);
+            var result = await _paymentService.ConfirmPaymentAsync(orderId, amount);
 
-            if (order == null)
+            if (!result.Success)
             {
-                return NotFound();
-            }
-
-            var remainingAmount = order.OrderProducts.Sum(op => op.UnitPrice * op.Quantity) - order.Payments.Sum(p => p.Amount);
-
-            if (amount < remainingAmount)
-            {
-                ModelState.AddModelError(string.Empty, "Payment amount is less than the total amount due.");
+                ModelState.AddModelError(string.Empty, result.ErrorMessage);
                 return View("Create", new CreatePaymentViewModel
                 {
                     OrderId = orderId,
-                    TotalAmount = remainingAmount
+                    TotalAmount = amount
                 });
             }
 
-            // Create a new payment entry with status set to Pending
-            var payment = new Payment
-            {
-                OrderId = orderId,
-                Amount = amount,
-                PaymentDate = DateTime.Now,
-                Status = Status.Pending // Set status to Pending by default
-            };
-
-            _context.Payments.Add(payment);
-
-            // Reduce stock for each product in the order
-            foreach (var orderProduct in order.OrderProducts)
-            {
-                var product = await _context.Products.FindAsync(orderProduct.ProductId);
-                if (product != null)
-                {
-                    product.StockQuantity -= orderProduct.Quantity; // Decrease stock
-                }
-            }
-
-            await _context.SaveChangesAsync();
-
             TempData["PaymentSuccess"] = true;
-
             return RedirectToAction("Details", "Order", new { id = orderId });
         }
 
@@ -118,32 +84,16 @@ namespace OnlineShop.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Cancel(int paymentId)
         {
-            var payment = await _context.Payments.Include(p => p.Order).ThenInclude(o => o.OrderProducts).FirstOrDefaultAsync(p => p.Id == paymentId);
+            var success = await _paymentService.CancelPaymentAsync(paymentId);
 
-            if (payment == null)
+            if (!success)
             {
                 return NotFound();
             }
 
-            // Update the payment status to Cancelled
-            payment.Status = Status.Cancelled;
-
-            // Refund the stock for each product in the order
-            foreach (var orderProduct in payment.Order.OrderProducts)
-            {
-                var product = await _context.Products.FindAsync(orderProduct.ProductId);
-                if (product != null)
-                {
-                    product.StockQuantity += orderProduct.Quantity; // Restore stock
-                }
-            }
-
-            await _context.SaveChangesAsync();
-
-            // Set a flag to show the cancellation message in the view
             TempData["PaymentCancelled"] = true;
 
-            return RedirectToAction("Details", "Order", new { id = payment.OrderId });
+            return RedirectToAction("Details", "Order", new { id = paymentId });
         }
     }
 }

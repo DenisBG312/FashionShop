@@ -11,5 +11,7 @@ namespace OnlineShop.Services.Data.Interfaces
     {
         Task<PaymentCreationResult> PreparePaymentAsync(int orderId);
         Task<bool> ProcessPaymentAsync(CreatePaymentViewModel model);
+        Task<PaymentCreationResult> ConfirmPaymentAsync(int orderId, decimal amount);
+        Task<bool> CancelPaymentAsync(int paymentId);
     }
 }

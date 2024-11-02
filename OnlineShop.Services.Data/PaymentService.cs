@@ -92,5 +92,89 @@ namespace OnlineShop.Services.Data
             await _orderRepository.SaveChangesAsync();
             return true;
         }
+
+        public async Task<PaymentCreationResult> ConfirmPaymentAsync(int orderId, decimal amount)
+        {
+            var order = await _orderRepository
+                .GetAllAttached()
+                .Include(o => o.OrderProducts)
+                .Include(o => o.Payments)
+                .FirstOrDefaultAsync(o => o.Id == orderId);
+
+            if (order == null)
+            {
+                return new PaymentCreationResult
+                {
+                    Success = false,
+                    ErrorMessage = "Order not found."
+                };
+            }
+
+            var totalAmountDue = order.OrderProducts.Sum(op => op.UnitPrice * op.Quantity);
+            var amountPaid = order.Payments.Sum(p => p.Amount);
+            var remainingAmount = totalAmountDue - amountPaid;
+
+            if (amount < remainingAmount)
+            {
+                return new PaymentCreationResult
+                {
+                    Success = false,
+                    ErrorMessage = "Payment amount is less than the total amount due."
+                };
+            }
+
+            var payment = new Payment
+            {
+                OrderId = orderId,
+                Amount = amount,
+                PaymentDate = DateTime.UtcNow,
+                Status = Status.Pending
+            };
+
+            await _paymentRepository.AddAsync(payment);
+
+            foreach (var orderProduct in order.OrderProducts)
+            {
+                var product = await _productRepository.GetByIdAsync(orderProduct.ProductId);
+
+                if (product != null)
+                {
+                    product.StockQuantity -= orderProduct.Quantity; // Decrease stock
+                }
+            }
+
+            await _orderRepository.SaveChangesAsync();
+
+            return new PaymentCreationResult
+            {
+                Success = true
+            };
+        }
+
+        public async Task<bool> CancelPaymentAsync(int paymentId)
+        {
+            var payment = await _paymentRepository
+                .GetAllAttached()
+                .Include(p => p.Order)
+                .ThenInclude(o => o.OrderProducts)
+                .FirstOrDefaultAsync(p => p.Id == paymentId);
+
+            if (payment == null) return false;
+
+            payment.Status = Status.Cancelled;
+
+            foreach (var orderProduct in payment.Order.OrderProducts)
+            {
+                var product = await _productRepository.GetByIdAsync(orderProduct.ProductId);
+                if (product != null)
+                {
+                    product.StockQuantity += orderProduct.Quantity;
+                }
+            }
+
+            await _paymentRepository.SaveChangesAsync();
+
+            return true;
+        }
     }
 }
