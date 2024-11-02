@@ -16,13 +16,14 @@ using System.Xml.Linq;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.draw;
+using OnlineShop.Data.Repository.Interfaces;
 using Document = System.Reflection.Metadata.Document;
 
 namespace OnlineShop.Services.Data
 {
     public class OrderService : IOrderService
     {
-        private readonly BaseRepository<Order, int> _orderRepository;
+        private readonly IRepository<Order, int> _orderRepository;
         public OrderService(BaseRepository<Order, int> orderRepository)
         {
             _orderRepository = orderRepository;

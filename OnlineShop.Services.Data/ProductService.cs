@@ -13,15 +13,16 @@ using OnlineShop.Web.ViewModels.Product;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using OnlineShop.Data.Repository;
+using OnlineShop.Data.Repository.Interfaces;
 
 namespace OnlineShop.Services.Data
 {
     public class ProductService : IProductService
     {
-        private readonly BaseRepository<Product, int> _productRepository;
-        private readonly BaseRepository<Review, int> _reviewRepository;
-        private readonly BaseRepository<ClothingType, int> _clothingTypeRepository;
-        private readonly BaseRepository<Gender, int> _genderRepository;
+        private readonly IRepository<Product, int> _productRepository;
+        private readonly IRepository<Review, int> _reviewRepository;
+        private readonly IRepository<ClothingType, int> _clothingTypeRepository;
+        private readonly IRepository<Gender, int> _genderRepository;
         private readonly UserManager<IdentityUser> _userManager;
 
         public ProductService(BaseRepository<Product, int> productRepository, BaseRepository<Review, int> reviewRepository, UserManager<IdentityUser> userManager, BaseRepository<Gender, int> genderRepository, BaseRepository<ClothingType, int> clothingTypeRepository)

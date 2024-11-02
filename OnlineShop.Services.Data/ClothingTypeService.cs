@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using OnlineShop.Data.Models;
 using OnlineShop.Data.Repository;
+using OnlineShop.Data.Repository.Interfaces;
 using OnlineShop.Services.Data.Interfaces;
 
 namespace OnlineShop.Services.Data
 {
     public class ClothingTypeService : IClothingTypeService
     {
-        private readonly BaseRepository<ClothingType, int> _clothingTypeRepository;
+        private readonly IRepository<ClothingType, int> _clothingTypeRepository;
         public ClothingTypeService(BaseRepository<ClothingType, int> clothingTypeRepository)
         {
             _clothingTypeRepository = clothingTypeRepository;
