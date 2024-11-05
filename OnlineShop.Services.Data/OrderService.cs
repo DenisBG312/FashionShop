@@ -12,10 +12,12 @@ using OnlineShop.Services.Data.Interfaces;
 using OnlineShop.Web.ViewModels.Order;
 using OnlineShop.Web.ViewModels.Transaction;
 using System.Drawing.Printing;
+using System.Security.Claims;
 using System.Xml.Linq;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.draw;
+using Microsoft.AspNetCore.Identity;
 using OnlineShop.Data.Repository.Interfaces;
 using Document = System.Reflection.Metadata.Document;
 
@@ -24,9 +26,11 @@ namespace OnlineShop.Services.Data
     public class OrderService : IOrderService
     {
         private readonly IRepository<Order, int> _orderRepository;
-        public OrderService(BaseRepository<Order, int> orderRepository)
+        private readonly UserManager<IdentityUser> _userManager;
+        public OrderService(BaseRepository<Order, int> orderRepository, UserManager<IdentityUser> userManager)
         {
             _orderRepository = orderRepository;
+            _userManager = userManager;
         }
 
 
@@ -210,6 +214,7 @@ namespace OnlineShop.Services.Data
                 .Include(o => o.User)
                 .Include(o => o.OrderProducts)
                     .ThenInclude(op => op.Product)
+                    .ThenInclude(p => p.User)
                 .Include(o => o.Payments)
                 .FirstOrDefaultAsync(o => o.Id == orderId);
 
@@ -245,11 +250,14 @@ Order Status: {(order.IsCompleted ? "Completed" : order.IsCancelled ? "Cancelled
                 };
                 document.Add(orderInfo);
 
-                // User Details Section
+                var sellerEmail = order.OrderProducts.FirstOrDefault()?.Product.User?.Email ?? "N/A";
+                var customerEmail = order.User?.Email ?? "N/A";
+
+
                 var userDetails = new Paragraph($@"
-Customer Name: {order.User.UserName}
-Customer Email: {order.User.Email}
-", infoFont);
+Seller Email: {sellerEmail}
+Customer Email: {customerEmail}", infoFont);
+
                 document.Add(userDetails);
 
                 // Product Table Section
