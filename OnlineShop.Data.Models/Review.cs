@@ -18,7 +18,7 @@ namespace OnlineShop.Data.Models
         public IdentityUser User { get; set; } = null!;
 
         public int Rating { get; set; } // Rating from 1 to 5
-        public string Comment { get; set; } = null!;
+        public string? Comment { get; set; }
 
         public DateTime ReviewDate { get; set; } = DateTime.Now;
     }
