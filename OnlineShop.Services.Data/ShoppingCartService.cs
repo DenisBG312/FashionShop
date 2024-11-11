@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data.Models;
 using OnlineShop.Data.Models.Enums.Payment;
@@ -18,11 +19,17 @@ namespace OnlineShop.Services.Data
     {
         private readonly IRepository<ShoppingCart, int> _shoppingCartRepository;
         private readonly IRepository<Product, int> _productRepository;
+        private readonly IRepository<Order, int> _orderRepository;
+        private readonly IRepository<Payment, int> _paymentRepository;
+        private readonly IRepository<OrderProduct, int> _orderProductRepository;
 
-        public ShoppingCartService(BaseRepository<ShoppingCart, int> shoppingCartRepository, BaseRepository<Product, int> productRepository)
+        public ShoppingCartService(BaseRepository<ShoppingCart, int> shoppingCartRepository, BaseRepository<Product, int> productRepository, BaseRepository<Order, int> orderRepository, BaseRepository<Payment, int> paymentRepository, BaseRepository<OrderProduct, int> orderProductRepository)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _productRepository = productRepository;
+            _orderRepository = orderRepository;
+            _paymentRepository = paymentRepository;
+            _orderProductRepository = orderProductRepository;
         }
         public async Task<ShoppingCart> GetCartAsync(string userId)
         {
@@ -159,9 +166,86 @@ namespace OnlineShop.Services.Data
 
         }
 
-        public Task<PlaceOrderResult> PlaceOrderAsync(int shoppingCartId, string userId, PaymentMethod paymentMethod)
+        public async Task<PlaceOrderResult> PlaceOrderAsync(int shoppingCartId, string userId, PaymentMethod paymentMethod)
         {
-            throw new NotImplementedException();
+            var result = new PlaceOrderResult();
+
+            var shoppingCart = await _shoppingCartRepository
+                .GetAllAttached()
+                .Include(sc => sc.ShoppingCartProducts)
+                .ThenInclude(scp => scp.Product)
+                .FirstOrDefaultAsync(sc => sc.Id == shoppingCartId);
+
+            if (shoppingCart == null || !shoppingCart.ShoppingCartProducts.Any())
+            {
+                result.IsSuccess = false;
+                result.ErrorMessage = "Your shopping cart is empty.";
+                return result;
+            }
+
+            foreach (var cartProduct in shoppingCart.ShoppingCartProducts)
+            {
+                var product = await _productRepository.GetByIdAsync(cartProduct.ProductId);
+                if (product == null || product.StockQuantity < cartProduct.Quantity)
+                {
+                    result.IsSuccess = false;
+                    result.ErrorMessage = $"Insufficient stock for {cartProduct.Product.Name}. Available: {product?.StockQuantity ?? 0}.";
+                    return result;
+                }
+            }
+
+            decimal totalAmount = shoppingCart.ShoppingCartProducts.Sum(scp => scp.Quantity * scp.Product.Price);
+
+            var order = new Order
+            {
+                UserId = userId,
+                OrderDate = DateTime.Now,
+                TotalAmount = totalAmount
+            };
+
+            await _orderRepository.AddAsync(order);
+            await _orderRepository.SaveChangesAsync();
+
+            var payment = new Payment
+            {
+                PaymentMethod = paymentMethod,
+                Amount = totalAmount,
+                PaymentDate = DateTime.Now,
+                Status = Status.Pending,
+                OrderId = order.Id
+            };
+
+            await _paymentRepository.AddAsync(payment);
+            await _paymentRepository.SaveChangesAsync();
+
+            foreach (var cartProduct in shoppingCart.ShoppingCartProducts)
+            {
+                var orderProduct = new OrderProduct
+                {
+                    OrderId = order.Id,
+                    ProductId = cartProduct.ProductId,
+                    Quantity = cartProduct.Quantity,
+                    UnitPrice = cartProduct.Product.Price
+                };
+
+                await _orderProductRepository.AddAsync(orderProduct);
+
+                var product = await _productRepository.GetByIdAsync(cartProduct.ProductId);
+                product.StockQuantity -= cartProduct.Quantity;
+            }
+
+            await _orderProductRepository.SaveChangesAsync();
+
+            foreach (var cartProduct in shoppingCart.ShoppingCartProducts)
+            {
+                await _shoppingCartRepository.DeleteAsync(cartProduct.ShoppingCartId);
+            }
+
+            await _shoppingCartRepository.DeleteAsync(shoppingCartId);
+            await _shoppingCartRepository.SaveChangesAsync();
+
+            result.IsSuccess = true;
+            return result;
         }
     }
 }

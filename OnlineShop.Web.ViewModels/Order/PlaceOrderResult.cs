@@ -8,7 +8,7 @@ namespace OnlineShop.Web.ViewModels.Order
 {
     public class PlaceOrderResult
     {
-        public bool Success { get; set; }
-        public List<string> ErrorMessages { get; set; }
+        public bool IsSuccess { get; set; }
+        public string ErrorMessage { get; set; }
     }
 }
