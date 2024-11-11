@@ -18,7 +18,7 @@ namespace OnlineShop.Services.Data.Interfaces
 
         Task<bool> UpdateQuantityAsync(int shoppingCartId, int productId, int quantity);
 
-        Task RemoveFromCartAsync(int shoppingCartId, int productId);
+        Task<bool> RemoveFromCartAsync(int shoppingCartId, int productId);
 
         Task<PlaceOrderResult> PlaceOrderAsync(int shoppingCartId, string userId, PaymentMethod paymentMethod);
     }

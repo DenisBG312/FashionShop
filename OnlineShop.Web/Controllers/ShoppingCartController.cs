@@ -73,35 +73,14 @@ namespace OnlineShop.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult RemoveFromCart(int shoppingCartId, int productId)
+        public async Task<IActionResult> RemoveFromCart(int shoppingCartId, int productId)
         {
-            var shoppingCartProduct = _context.ShoppingCartsProducts
-                .Include(scp => scp.Product) // Include product to access price
-                .FirstOrDefault(scp => scp.ShoppingCartId == shoppingCartId && scp.ProductId == productId);
+            var result = await _shoppingCartService.RemoveFromCartAsync(shoppingCartId, productId);
 
-            if (shoppingCartProduct != null)
+            if (!result)
             {
-                var shoppingCart = _context.ShoppingCarts
-                    .Include(sc => sc.ShoppingCartProducts) // Include products to check emptiness
-                    .FirstOrDefault(sc => sc.Id == shoppingCartId);
-
-                if (shoppingCart != null)
-                {
-                    // Subtract the product's price * quantity from the cart's total amount
-                    shoppingCart.Amount -= shoppingCartProduct.Product.Price * shoppingCartProduct.Quantity;
-
-                    // Remove the product from the cart
-                    _context.ShoppingCartsProducts.Remove(shoppingCartProduct);
-                    _context.SaveChanges();
-
-                    // Check if there are any products left in the cart
-                    if (!shoppingCart.ShoppingCartProducts.Any())
-                    {
-                        _context.ShoppingCarts.Remove(shoppingCart); // Delete the shopping cart
-                    }
-
-                    _context.SaveChanges();
-                }
+                TempData["ErrorMessage"] = "Failed to remove the item from the cart. The item might not exist in the cart.";
+                return RedirectToAction(nameof(Index));
             }
 
             return RedirectToAction(nameof(Index));

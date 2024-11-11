@@ -123,9 +123,40 @@ namespace OnlineShop.Services.Data
             return true;
         }
 
-        public Task RemoveFromCartAsync(int shoppingCartId, int productId)
+        public async Task<bool> RemoveFromCartAsync(int shoppingCartId, int productId)
         {
-            throw new NotImplementedException();
+            var shoppingCart = await _shoppingCartRepository
+                .GetAllAttached()
+                .Include(sc => sc.ShoppingCartProducts)
+                .ThenInclude(scp => scp.Product)
+                .FirstOrDefaultAsync(sc => sc.Id == shoppingCartId);
+
+            if (shoppingCart == null)
+            {
+                return false;
+            }
+
+            var shoppingCartProduct = shoppingCart.ShoppingCartProducts
+                .FirstOrDefault(scp => scp.ProductId == productId);
+
+            if (shoppingCartProduct == null)
+            {
+                return false;
+            }
+
+            shoppingCart.Amount -= shoppingCartProduct.Product.Price * shoppingCartProduct.Quantity;
+
+            shoppingCart.ShoppingCartProducts.Remove(shoppingCartProduct);
+
+            if (!shoppingCart.ShoppingCartProducts.Any())
+            {
+                shoppingCart.Amount = 0;
+            }
+
+            await _shoppingCartRepository.SaveChangesAsync();
+
+            return true;
+
         }
 
         public Task<PlaceOrderResult> PlaceOrderAsync(int shoppingCartId, string userId, PaymentMethod paymentMethod)
