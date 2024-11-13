@@ -1,26 +1,46 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@using OnlineShop.Data.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<style>
+    .profile-img {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-left: 20px;
+    }
+</style>
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
+        var user = await UserManager.GetUserAsync(User);
+
+        if (String.IsNullOrEmpty(user.ProfileImgUrl))
+        {
+            user.ProfileImgUrl = "https://st2.depositphotos.com/5682790/10456/v/450/depositphotos_104564156-stock-illustration-male-user-icon.jpg";
+        }
+
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @user.FirstName @user.LastName! <img src="@user.ProfileImgUrl" class="profile-img" /></a>
     </li>
     <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-light">Logout</button>
+        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link text-light mt-4">Logout  <i class="fa-solid fa-door-open"></i></button>
         </form>
     </li>
 }
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register">Register  <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">Login  <i class="fa-solid fa-right-to-bracket"></i>
+
+        </a>
     </li>
 }
 </ul>

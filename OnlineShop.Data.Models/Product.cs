@@ -40,7 +40,7 @@ namespace OnlineShop.Data.Models
         public ClothingType ClothingType { get; set; } = null!;
         public string? UserId { get; set; }
         [ForeignKey(nameof(UserId))]
-        public IdentityUser User { get; set; }
+        public ApplicationUser? User { get; set; }
 
         public ICollection<OrderProduct> OrderProducts { get; set; } = new HashSet<OrderProduct>();
         public ICollection<ShoppingCartProduct> ShoppingCartProducts { get; set; } = new HashSet<ShoppingCartProduct>();

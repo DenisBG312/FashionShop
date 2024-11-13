@@ -17,11 +17,11 @@ namespace OnlineShop.Web.Controllers
     [Authorize]
     public class ProductController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly IProductService _productService;
         private const int pageSize = 6;
 
-        public ProductController(UserManager<IdentityUser> userManager, IProductService productService)
+        public ProductController(UserManager<ApplicationUser> userManager, IProductService productService)
         {
             _userManager = userManager;
             _productService = productService;

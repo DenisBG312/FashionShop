@@ -15,7 +15,7 @@ namespace OnlineShop.Data.Models
         public Product Product { get; set; }
 
         public string UserId { get; set; } = null!;
-        public IdentityUser User { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
 
         public int Rating { get; set; } // Rating from 1 to 5
         public string? Comment { get; set; }

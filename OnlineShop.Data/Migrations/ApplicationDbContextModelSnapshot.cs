@@ -74,71 +74,6 @@ namespace OnlineShop.Web.Data.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -222,6 +157,82 @@ namespace OnlineShop.Web.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("OnlineShop.Data.Models.ApplicationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ProfileImgUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("OnlineShop.Data.Models.ClothingType", b =>
@@ -330,7 +341,7 @@ namespace OnlineShop.Web.Data.Migrations
                             Id = 1,
                             IsCancelled = false,
                             IsCompleted = false,
-                            OrderDate = new DateTime(2024, 11, 10, 22, 52, 52, 425, DateTimeKind.Local).AddTicks(7662),
+                            OrderDate = new DateTime(2024, 11, 13, 21, 54, 18, 106, DateTimeKind.Local).AddTicks(8702),
                             TotalAmount = 150.00m,
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         },
@@ -339,7 +350,7 @@ namespace OnlineShop.Web.Data.Migrations
                             Id = 2,
                             IsCancelled = false,
                             IsCompleted = true,
-                            OrderDate = new DateTime(2024, 11, 9, 22, 52, 52, 425, DateTimeKind.Local).AddTicks(7671),
+                            OrderDate = new DateTime(2024, 11, 12, 21, 54, 18, 106, DateTimeKind.Local).AddTicks(8710),
                             TotalAmount = 75.50m,
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });
@@ -542,8 +553,8 @@ namespace OnlineShop.Web.Data.Migrations
                             Comment = "I really liked wearing these shoes. They are very comfortable",
                             ProductId = 1,
                             Rating = 4,
-                            ReviewDate = new DateTime(2024, 11, 10, 22, 52, 52, 426, DateTimeKind.Local).AddTicks(3684),
-                            UserId = "89c2eda5-ff48-4f89-ace6-8d47a02c0af1"
+                            ReviewDate = new DateTime(2024, 11, 13, 21, 54, 18, 107, DateTimeKind.Local).AddTicks(4469),
+                            UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });
                 });
 
@@ -580,7 +591,7 @@ namespace OnlineShop.Web.Data.Migrations
                         {
                             Id = 1,
                             Amount = 1575.00m,
-                            PaymentDate = new DateTime(2024, 11, 10, 22, 52, 52, 426, DateTimeKind.Local).AddTicks(4530),
+                            PaymentDate = new DateTime(2024, 11, 13, 21, 54, 18, 107, DateTimeKind.Local).AddTicks(5285),
                             Status = "Active",
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });
@@ -629,7 +640,7 @@ namespace OnlineShop.Web.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("OnlineShop.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -638,7 +649,7 @@ namespace OnlineShop.Web.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("OnlineShop.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -653,7 +664,7 @@ namespace OnlineShop.Web.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("OnlineShop.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -662,7 +673,7 @@ namespace OnlineShop.Web.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("OnlineShop.Data.Models.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -671,7 +682,7 @@ namespace OnlineShop.Web.Data.Migrations
 
             modelBuilder.Entity("OnlineShop.Data.Models.Order", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                    b.HasOne("OnlineShop.Data.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -724,7 +735,7 @@ namespace OnlineShop.Web.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                    b.HasOne("OnlineShop.Data.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
@@ -743,7 +754,7 @@ namespace OnlineShop.Web.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                    b.HasOne("OnlineShop.Data.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -756,7 +767,7 @@ namespace OnlineShop.Web.Data.Migrations
 
             modelBuilder.Entity("OnlineShop.Data.Models.ShoppingCart", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                    b.HasOne("OnlineShop.Data.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

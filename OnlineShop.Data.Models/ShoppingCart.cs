@@ -13,10 +13,11 @@ namespace OnlineShop.Data.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
-        public string UserId { get; set; } = null!;
+
+        [Required] 
+        public string UserId { get; set; } = null;
         [ForeignKey(nameof(UserId))]
-        public IdentityUser User { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Amount { get; set; }

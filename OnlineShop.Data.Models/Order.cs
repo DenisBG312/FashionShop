@@ -16,7 +16,7 @@ namespace OnlineShop.Data.Models
         [Required]
         public string UserId { get; set; } = null!;
         [ForeignKey(nameof(UserId))]
-        public IdentityUser User { get; set; } = null!;
+        public ApplicationUser User { get; set; } = null!;
         public DateTime OrderDate { get; set; } = DateTime.Now;
         [Required]
         public decimal TotalAmount { get; set; }

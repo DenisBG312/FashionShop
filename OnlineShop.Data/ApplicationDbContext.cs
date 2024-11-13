@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace OnlineShop.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
         public ApplicationDbContext()
         {

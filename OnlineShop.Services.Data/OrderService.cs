@@ -26,8 +26,8 @@ namespace OnlineShop.Services.Data
     public class OrderService : IOrderService
     {
         private readonly IRepository<Order, int> _orderRepository;
-        private readonly UserManager<IdentityUser> _userManager;
-        public OrderService(BaseRepository<Order, int> orderRepository, UserManager<IdentityUser> userManager)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public OrderService(BaseRepository<Order, int> orderRepository, UserManager<ApplicationUser> userManager)
         {
             _orderRepository = orderRepository;
             _userManager = userManager;

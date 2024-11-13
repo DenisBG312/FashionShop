@@ -24,7 +24,7 @@ namespace OnlineShop.Data.Configuration
                 {
                     Id = 1,
                     ProductId = 1,
-                    UserId = "89c2eda5-ff48-4f89-ace6-8d47a02c0af1",
+                    UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
                     Rating = 4,
                     Comment = "I really liked wearing these shoes. They are very comfortable"
                 }

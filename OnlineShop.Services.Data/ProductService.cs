@@ -24,7 +24,7 @@ namespace OnlineShop.Services.Data
         private readonly IRepository<ClothingType, int> _clothingTypeRepository;
         private readonly IRepository<Gender, int> _genderRepository;
 
-        public ProductService(BaseRepository<Product, int> productRepository, BaseRepository<Review, int> reviewRepository, UserManager<IdentityUser> userManager, BaseRepository<Gender, int> genderRepository, BaseRepository<ClothingType, int> clothingTypeRepository)
+        public ProductService(BaseRepository<Product, int> productRepository, BaseRepository<Review, int> reviewRepository, UserManager<ApplicationUser> userManager, BaseRepository<Gender, int> genderRepository, BaseRepository<ClothingType, int> clothingTypeRepository)
         {
             _productRepository = productRepository;
             _reviewRepository = reviewRepository;
@@ -178,7 +178,7 @@ namespace OnlineShop.Services.Data
                 ClothingType = product.ClothingType.Name,
                 PostedBy = product.User?.UserName,
                 Reviews = reviews.Where(r => r.ProductId == id).ToList(),
-                UserId = product.UserId
+                UserId = product.UserId.ToString()
             };
 
             return productDetailsViewModel;
