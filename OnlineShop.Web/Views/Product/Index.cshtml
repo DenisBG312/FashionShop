@@ -74,15 +74,17 @@
                             <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="btn btn-outline-primary rounded-pill px-4">
                                 View Details <i class="fa-solid fa-circle-info"></i>
                             </a>
-
-                            <!-- Add to Cart Button -->
-                            <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post" class="mt-3">
-                                <input type="hidden" name="productId" value="@product.Id"/>
-                                <input type="hidden" name="quantity" value="1"/>
-                                <button type="submit" class="btn btn-success rounded-pill px-4">
-                                    Add to Cart <i class="fa-solid fa-cart-shopping"></i>
-                                </button>
-                            </form>
+                            
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post" class="mt-3">
+                                    <input type="hidden" name="productId" value="@product.Id"/>
+                                    <input type="hidden" name="quantity" value="1"/>
+                                    <button type="submit" class="btn btn-success rounded-pill px-4">
+                                        Add to Cart <i class="fa-solid fa-cart-shopping"></i>
+                                    </button>
+                                </form>
+                            }
                         </div>
                     </div>
                 </div>
