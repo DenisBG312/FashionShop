@@ -12,7 +12,7 @@ using OnlineShop.Data;
 namespace OnlineShop.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241113195418_Initial")]
+    [Migration("20241116142416_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -236,6 +236,27 @@ namespace OnlineShop.Web.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "b64245d2-86ae-4c9d-815c-9877952cf418",
+                            Email = "bgdenibg@gmail.com",
+                            EmailConfirmed = true,
+                            FirstName = "Denis",
+                            LastName = "Tsranski",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "BGDENIBG@GMAIL.COM",
+                            NormalizedUserName = "BGDENIBG@GMAIL.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAnCyF4MAwr8InwOYoI3iplwnpXSfC7FEnr0rRYQOKx/wMNoF6f09lFN8ICb/mVzxA==",
+                            PhoneNumber = "+111111111111",
+                            PhoneNumberConfirmed = true,
+                            SecurityStamp = "8445e030-d4aa-4b76-ac65-563682742919",
+                            TwoFactorEnabled = false,
+                            UserName = "bgdenibg@gmail.com"
+                        });
                 });
 
             modelBuilder.Entity("OnlineShop.Data.Models.ClothingType", b =>
@@ -344,7 +365,7 @@ namespace OnlineShop.Web.Data.Migrations
                             Id = 1,
                             IsCancelled = false,
                             IsCompleted = false,
-                            OrderDate = new DateTime(2024, 11, 13, 21, 54, 18, 106, DateTimeKind.Local).AddTicks(8702),
+                            OrderDate = new DateTime(2024, 11, 16, 16, 24, 15, 852, DateTimeKind.Local).AddTicks(2230),
                             TotalAmount = 150.00m,
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         },
@@ -353,7 +374,7 @@ namespace OnlineShop.Web.Data.Migrations
                             Id = 2,
                             IsCancelled = false,
                             IsCompleted = true,
-                            OrderDate = new DateTime(2024, 11, 12, 21, 54, 18, 106, DateTimeKind.Local).AddTicks(8710),
+                            OrderDate = new DateTime(2024, 11, 15, 16, 24, 15, 852, DateTimeKind.Local).AddTicks(2239),
                             TotalAmount = 75.50m,
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });
@@ -556,7 +577,7 @@ namespace OnlineShop.Web.Data.Migrations
                             Comment = "I really liked wearing these shoes. They are very comfortable",
                             ProductId = 1,
                             Rating = 4,
-                            ReviewDate = new DateTime(2024, 11, 13, 21, 54, 18, 107, DateTimeKind.Local).AddTicks(4469),
+                            ReviewDate = new DateTime(2024, 11, 16, 16, 24, 15, 852, DateTimeKind.Local).AddTicks(7088),
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });
                 });
@@ -594,7 +615,7 @@ namespace OnlineShop.Web.Data.Migrations
                         {
                             Id = 1,
                             Amount = 1575.00m,
-                            PaymentDate = new DateTime(2024, 11, 13, 21, 54, 18, 107, DateTimeKind.Local).AddTicks(5285),
+                            PaymentDate = new DateTime(2024, 11, 16, 16, 24, 15, 852, DateTimeKind.Local).AddTicks(7568),
                             Status = "Active",
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });

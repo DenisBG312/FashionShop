@@ -245,6 +245,11 @@ namespace OnlineShop.Web.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ProfileImgUrl", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f", 0, "b64245d2-86ae-4c9d-815c-9877952cf418", "bgdenibg@gmail.com", true, "Denis", "Tsranski", false, null, "BGDENIBG@GMAIL.COM", "BGDENIBG@GMAIL.COM", "AQAAAAIAAYagAAAAEAnCyF4MAwr8InwOYoI3iplwnpXSfC7FEnr0rRYQOKx/wMNoF6f09lFN8ICb/mVzxA==", "+111111111111", true, null, "8445e030-d4aa-4b76-ac65-563682742919", false, "bgdenibg@gmail.com" });
+
+            migrationBuilder.InsertData(
                 table: "ClothingTypes",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
@@ -269,22 +274,8 @@ namespace OnlineShop.Web.Data.Migrations
                 columns: new[] { "Id", "IsCancelled", "IsCompleted", "OrderDate", "TotalAmount", "UserId" },
                 values: new object[,]
                 {
-                    { 1, false, false, new DateTime(2024, 11, 13, 21, 54, 18, 106, DateTimeKind.Local).AddTicks(8702), 150.00m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" },
-                    { 2, false, true, new DateTime(2024, 11, 12, 21, 54, 18, 106, DateTimeKind.Local).AddTicks(8710), 75.50m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "ShoppingCarts",
-                columns: new[] { "Id", "Amount", "PaymentDate", "Status", "UserId" },
-                values: new object[] { 1, 1575.00m, new DateTime(2024, 11, 13, 21, 54, 18, 107, DateTimeKind.Local).AddTicks(5285), "Active", "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
-
-            migrationBuilder.InsertData(
-                table: "Payments",
-                columns: new[] { "Id", "Amount", "OrderId", "PaymentDate", "PaymentMethod", "Status" },
-                values: new object[,]
-                {
-                    { 1, 100.20m, 1, new DateTime(2024, 10, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 1 },
-                    { 2, 300.10m, 2, new DateTime(2024, 12, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, 2 }
+                    { 1, false, false, new DateTime(2024, 11, 16, 16, 24, 15, 852, DateTimeKind.Local).AddTicks(2230), 150.00m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" },
+                    { 2, false, true, new DateTime(2024, 11, 15, 16, 24, 15, 852, DateTimeKind.Local).AddTicks(2239), 75.50m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" }
                 });
 
             migrationBuilder.InsertData(
@@ -297,6 +288,11 @@ namespace OnlineShop.Web.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "ShoppingCarts",
+                columns: new[] { "Id", "Amount", "PaymentDate", "Status", "UserId" },
+                values: new object[] { 1, 1575.00m, new DateTime(2024, 11, 16, 16, 24, 15, 852, DateTimeKind.Local).AddTicks(7568), "Active", "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
+
+            migrationBuilder.InsertData(
                 table: "OrdersProducts",
                 columns: new[] { "OrderId", "ProductId", "Quantity", "UnitPrice" },
                 values: new object[,]
@@ -306,9 +302,18 @@ namespace OnlineShop.Web.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Payments",
+                columns: new[] { "Id", "Amount", "OrderId", "PaymentDate", "PaymentMethod", "Status" },
+                values: new object[,]
+                {
+                    { 1, 100.20m, 1, new DateTime(2024, 10, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), 0, 1 },
+                    { 2, 300.10m, 2, new DateTime(2024, 12, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), 3, 2 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Reviews",
                 columns: new[] { "Id", "Comment", "ProductId", "Rating", "ReviewDate", "UserId" },
-                values: new object[] { 1, "I really liked wearing these shoes. They are very comfortable", 1, 4, new DateTime(2024, 11, 13, 21, 54, 18, 107, DateTimeKind.Local).AddTicks(4469), "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
+                values: new object[] { 1, "I really liked wearing these shoes. They are very comfortable", 1, 4, new DateTime(2024, 11, 16, 16, 24, 15, 852, DateTimeKind.Local).AddTicks(7088), "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
 
             migrationBuilder.InsertData(
                 table: "ShoppingCartsProducts",
@@ -399,6 +404,11 @@ namespace OnlineShop.Web.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Genders");
+
+            migrationBuilder.DeleteData(
+                table: "AspNetUsers",
+                keyColumn: "Id",
+                keyValue: "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f");
 
             migrationBuilder.DropColumn(
                 name: "FirstName",
