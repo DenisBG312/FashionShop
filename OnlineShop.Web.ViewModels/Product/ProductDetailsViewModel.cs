@@ -25,5 +25,8 @@ namespace OnlineShop.Web.ViewModels.Product
         public string? PostedBy { get; set; }
         public string UserId { get; set; } = null!;
         public List<Review> Reviews { get; set; }
+        public bool IsOnSale { get; set; }
+
+        public decimal? DiscountPercentage { get; set; }
     }
 }

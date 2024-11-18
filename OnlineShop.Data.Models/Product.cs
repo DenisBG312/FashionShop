@@ -31,6 +31,12 @@ namespace OnlineShop.Data.Models
         [Required]
         public int StockQuantity { get; set; }
         [Required]
+        public bool IsOnSale { get; set; }
+        public int? DiscountPercentage { get; set; }
+        public decimal DiscountedPrice => IsOnSale && DiscountPercentage.HasValue
+            ? Price - (Price * DiscountPercentage.Value / 100)
+            : Price;
+        [Required]
         public int GenderId { get; set; }
         [ForeignKey(nameof(GenderId))]
         public Gender Gender { get; set; } = null!;

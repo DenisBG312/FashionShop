@@ -51,6 +51,27 @@
                 <span asp-validation-for="ClothingTypeId" class="text-danger"></span>
             </div>
         </div>
+        
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="IsOnSale" class="form-label">On Sale</label>
+                <input asp-for="IsOnSale" type="checkbox" class="form-check-input" id="IsOnSaleCheckbox" />
+                <span asp-validation-for="IsOnSale" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DiscountPercentage" class="form-label">Discount Percentage</label>
+                <select asp-for="DiscountPercentage" class="form-select form-select-lg" id="DiscountPercentageDropdown">
+                    <option value="">Select Discount</option>
+                    <option value="5">5%</option>
+                    <option value="10">10%</option>
+                    <option value="15">15%</option>
+                    <option value="20">20%</option>
+                    <option value="25">25%</option>
+                    <option value="30">30%</option>
+                </select>
+                <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+            </div>
+        </div>
 
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-primary btn-lg">
@@ -67,6 +88,19 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    
+    <script>
+        document.getElementById("IsOnSaleCheckbox").addEventListener("change", function () {    
+            const dropdown = document.getElementById("DiscountPercentageDropdown");
+            dropdown.disabled = !this.checked;
+        });
+
+        window.addEventListener("load", function () {
+            const checkbox = document.getElementById("IsOnSaleCheckbox");
+            const dropdown = document.getElementById("DiscountPercentageDropdown");
+            dropdown.disabled = !checkbox.checked;
+        });
+    </script>
 }
 
 <style>

@@ -15,9 +15,14 @@ namespace OnlineShop.Web.ViewModels.Product
         public string Name { get; set; }
         public string? Description { get; set; }
         public decimal Price { get; set; }
+        public decimal DiscountedPrice => IsOnSale && DiscountPercentage.HasValue
+            ? Price - (Price * DiscountPercentage.Value / 100)
+            : Price;
         [DisplayName("Stock Quantity")]
         public int StockQuantity { get; set; }
         public string? ImageUrl { get; set; }
+        public bool IsOnSale { get; set; }
+        public int? DiscountPercentage { get; set; }
         [DisplayName("Gender")]
         
         public int GenderId { get; set; }

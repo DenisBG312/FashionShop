@@ -87,6 +87,8 @@ namespace OnlineShop.Services.Data
                 ImageUrl = product.ImageUrl,
                 GenderId = product.GenderId,
                 ClothingTypeId = product.ClothingTypeId,
+                IsOnSale = product.IsOnSale,
+                DiscountPercentage = product.IsOnSale ? (int?)(product.DiscountPercentage) : null,
                 Genders = await GetGendersAsync(),
                 ClothingTypes = await GetClothingTypesAsync()
             };
@@ -110,6 +112,9 @@ namespace OnlineShop.Services.Data
             productEntity.GenderId = product.GenderId;
             productEntity.ClothingTypeId = product.ClothingTypeId;
             productEntity.ImageUrl = product.ImageUrl;
+            productEntity.IsOnSale = product.IsOnSale;
+            productEntity.DiscountPercentage = product.DiscountPercentage;
+
 
             await _productRepository.UpdateAsync(productEntity);
             await _productRepository.SaveChangesAsync();
@@ -178,7 +183,9 @@ namespace OnlineShop.Services.Data
                 ClothingType = product.ClothingType.Name,
                 PostedBy = product.User?.UserName,
                 Reviews = reviews.Where(r => r.ProductId == id).ToList(),
-                UserId = product.UserId.ToString()
+                UserId = product.UserId,
+                DiscountPercentage = product.DiscountPercentage,
+                IsOnSale = product.IsOnSale
             };
 
             return productDetailsViewModel;

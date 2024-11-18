@@ -5,7 +5,6 @@
     ViewData["Title"] = @Model.Name;
 }
 
-
 <!-- Product section-->
 <section class="py-5">
     <div class="container px-4 px-lg-5 my-5">
@@ -24,18 +23,38 @@
             <div class="col-md-6">
                 <div class="small mb-1">SKU: @Model.Id</div>
                 <h1 class="display-5 fw-bolder">@Model.Name</h1>
+
+                <!-- Sale Badge -->
+                @if (Model.IsOnSale)
+                {
+                    <div class="badge bg-danger text-white mb-3" style="font-size: 1.2rem; padding: 10px;">On Sale @Model.DiscountPercentage<i class="fa-solid fa-percent"></i></div>
+                }
+
                 <div class="fs-5 mb-5">
-                    <span class="text-success fw-bold" style="font-size: 1.5rem;">
-                        @Model.Price.ToString("C")
-                    </span>
+                    @if (Model.IsOnSale)
+                    {
+                        <!-- Show original price and discounted price if on sale -->
+                        <span class="text-muted text-decoration-line-through">@Model.Price.ToString("C")</span>
+                        <span class="text-success fw-bold" style="font-size: 1.5rem;">
+                            @((Model.Price - (Model.Price * (Model.DiscountPercentage ?? 0) / 100)).ToString("C"))
+                        </span>
+                    }
+                    else
+                    {
+                        <!-- Regular price display if not on sale -->
+                        <span class="text-success fw-bold" style="font-size: 1.5rem;">
+                            @Model.Price.ToString("C")
+                        </span>
+                    }
                 </div>
+
                 <p class="lead">@Model.Description</p>
                 <div class="d-flex">
                     @if (User.Identity.IsAuthenticated)
                     {
                         <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post" class="me-3">
-                            <input type="hidden" name="productId" value="@Model.Id"/>
-                            <input type="hidden" name="quantity" value="1"/>
+                            <input type="hidden" name="productId" value="@Model.Id" />
+                            <input type="hidden" name="quantity" value="1" />
                             <button type="submit" class="btn btn-outline-primary flex-shrink-0">
                                 <i class="bi-cart-fill me-1"></i>
                                 Add to Cart <i class="fa-solid fa-cart-shopping"></i>
@@ -51,6 +70,7 @@
                         </form>
                     }
                 </div>
+
                 <ul class="list-unstyled mt-3">
                     @if (!string.IsNullOrEmpty(Model.PostedBy))
                     {

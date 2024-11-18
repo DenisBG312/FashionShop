@@ -14,12 +14,10 @@ using OnlineShop.Web.ViewModels.Transaction;
 using System.Drawing.Printing;
 using System.Security.Claims;
 using System.Xml.Linq;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
-using iTextSharp.text.pdf.draw;
 using Microsoft.AspNetCore.Identity;
 using OnlineShop.Data.Repository.Interfaces;
-using Document = System.Reflection.Metadata.Document;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace OnlineShop.Services.Data
 {
@@ -208,6 +206,7 @@ namespace OnlineShop.Services.Data
             return viewModel;
         }
 
+
         public async Task<byte[]> GenerateOrderTransactionPdfAsync(int orderId)
         {
             var order = await _orderRepository.GetAllAttached()
@@ -346,5 +345,7 @@ Customer Email: {customerEmail}", infoFont);
                 document.Add(logo);
             }
         }
+
     }
 }
+
