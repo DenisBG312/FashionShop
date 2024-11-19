@@ -41,4 +41,28 @@
     <ProjectReference Include="..\OnlineShop.Web.ViewModels\OnlineShop.Web.ViewModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Recources\Resource.bg.Designer.cs">
+      <DependentUpon>Resource.bg.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="Recources\Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Recources\Resource.bg.resx">
+      <LastGenOutput>Resource.bg.Designer.cs</LastGenOutput>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Recources\Resource.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

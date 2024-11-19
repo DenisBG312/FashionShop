@@ -42,6 +42,26 @@
                         </li>
                         <!-- Clothing Types and For Who dropdowns here... -->
                     </ul>
+                    
+                    <ul class="navbar-nav text-end">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @if (Thread.CurrentThread.CurrentCulture.ToString() == "en")
+                                {
+                                    <span>English</span>
+                                }
+                                else
+                                {
+                                    <span>Bulgarian </span>
+                                }
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="ChangeLanguage" asp-route-lang="en">English</a></li>
+                                <li><a class="dropdown-item" asp-controller="Home" asp-action="ChangeLanguage" asp-route-lang="bg">Bulgarian</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
 
                     <div class="d-flex">
 

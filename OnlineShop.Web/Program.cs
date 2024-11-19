@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using OnlineShop.Data;
 using OnlineShop.Data.Models;
 using OnlineShop.Data.Repository;
@@ -8,6 +10,7 @@ using OnlineShop.Services.Data;
 using OnlineShop.Services.Data.Interfaces;
 using OnlineShop.Web.Data;
 using OnlineShop.Web.Infrastructure.Extensions;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,7 +36,23 @@ builder.Services.RegisterUserDefinedServices(typeof(IProductService).Assembly);
 
 builder.Services.AddControllersWithViews();
 
+var supportedCultures = new[]
+{
+    new CultureInfo("en-US"), // US Dollars
+    new CultureInfo("bg-BG")  // Bulgarian Leva
+};
+
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    options.DefaultRequestCulture = new RequestCulture("en-US");
+    options.SupportedCultures = supportedCultures;
+    options.SupportedUICultures = supportedCultures;
+});
+
 var app = builder.Build();
+
+var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
+app.UseRequestLocalization(localizationOptions);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -51,6 +70,23 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.Use(async (context, next) =>
+{
+    string cookie = string.Empty;
+    if (context.Request.Cookies.TryGetValue("Language", out cookie))
+    {
+        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cookie);
+        System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(cookie);
+    }
+    else
+    {
+        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en");
+        System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
+    }
+    await next.Invoke();
+});
+
 
 app.UseAuthorization();
 
