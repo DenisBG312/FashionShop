@@ -139,10 +139,10 @@
     <value>Модни модели за всеки стил и настроение.</value>
   </data>
   <data name="FilterClothingType" xml:space="preserve">
-    <value>Филтриране по вид облекло:</value>
+    <value>Филтриране по вид облекло</value>
   </data>
   <data name="FilterGender" xml:space="preserve">
-    <value>Филтрирай по Пол:</value>
+    <value>Филтрирай по Пол</value>
   </data>
   <data name="FindThePerfect" xml:space="preserve">
     <value>Намерете перфектната визия за всеки повод.</value>

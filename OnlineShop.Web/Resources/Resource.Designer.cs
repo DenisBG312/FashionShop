@@ -124,7 +124,7 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Filter by Clothing Type:.
+        ///   Looks up a localized string similar to Filter by Clothing Type.
         /// </summary>
         public static string FilterClothingType {
             get {
@@ -133,7 +133,7 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Filter by Gender:.
+        ///   Looks up a localized string similar to Filter by Gender.
         /// </summary>
         public static string FilterGender {
             get {

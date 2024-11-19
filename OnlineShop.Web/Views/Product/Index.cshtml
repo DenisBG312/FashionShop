@@ -37,7 +37,7 @@
     <div class="row mb-4 text-center">
         <!-- Center the row -->
         <div class="col-md-4">
-            <h5>@Resource.FilterGender</h5>
+            <h5>@Resource.FilterGender  <i class="fa-solid fa-venus-mars"></i>:</h5>
             <div class="d-flex justify-content-center flex-wrap">
                 <!-- Center buttons -->
                 <a href="@Url.Action("Index", "Product", new { genderId = "1", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "1" ? "active" : "")">@Resource.Men</a>
@@ -46,7 +46,7 @@
             </div>
         </div>
         <div class="col-md-4">
-            <h5>@Resource.FilterClothingType</h5>
+            <h5>@Resource.FilterClothingType  <i class="fa-solid fa-shirt"></i>:</h5>
             <div class="d-flex justify-content-center flex-wrap">
                 <!-- Center buttons -->
                 <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "1" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "1" ? "active" : "")">@Resource.T_Shirts</a>

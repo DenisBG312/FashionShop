@@ -139,10 +139,10 @@
     <value>Fashion-forward pieces for every style and mood.</value>
   </data>
   <data name="FilterClothingType" xml:space="preserve">
-    <value>Filter by Clothing Type:</value>
+    <value>Filter by Clothing Type</value>
   </data>
   <data name="FilterGender" xml:space="preserve">
-    <value>Filter by Gender:</value>
+    <value>Filter by Gender</value>
   </data>
   <data name="FindThePerfect" xml:space="preserve">
     <value>Find the perfect look for any occasion.</value>
