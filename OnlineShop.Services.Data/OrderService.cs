@@ -37,25 +37,42 @@ namespace OnlineShop.Services.Data
             var userOrders = await _orderRepository.GetAllAttached()
                 .Where(o => o.UserId == userId)
                 .Include(o => o.OrderProducts)
+                .ThenInclude(p => p.Product)
                 .Include(o => o.Payments)
                 .ToListAsync();
 
-            return userOrders.Select((order, index) => new OrderIndexViewModel()
+            var orderIndexViewModels = new List<OrderIndexViewModel>();
+
+            foreach (var order in userOrders)
             {
-                OrderId = order.Id,
-                CustomOrderNumber = index + 1,
-                OrderDate = order.OrderDate,
-                TotalAmount = order.OrderProducts.Sum(op => op.UnitPrice * op.Quantity),
-                IsCompleted = order.IsCompleted,
-                IsCancelled = order.IsCancelled,
-                Transactions = order.Payments.Select(p => new TransactionViewModel()
+                // Calculate the total amount, including discounts
+                var totalAmount = order.OrderProducts.Sum(op =>
                 {
-                    PaymentMethod = p.PaymentMethod.ToString(),
-                    Amount = p.Amount,
-                    PaymentDate = p.PaymentDate,
-                    Status = p.Status.ToString()
-                })
-            }).ToList();
+                    var discount = op.Product.DiscountPercentage ?? 0; // Default to 0 if no discount
+                    var discountedPrice = op.UnitPrice * (1 - discount / 100);
+                    return discountedPrice * op.Quantity;
+                });
+
+                // Create and add the view model
+                orderIndexViewModels.Add(new OrderIndexViewModel
+                {
+                    OrderId = order.Id,
+                    CustomOrderNumber = orderIndexViewModels.Count + 1, // Auto-increment
+                    OrderDate = order.OrderDate,
+                    TotalAmount = totalAmount,
+                    IsCompleted = order.IsCompleted,
+                    IsCancelled = order.IsCancelled,
+                    Transactions = order.Payments.Select(p => new TransactionViewModel
+                    {
+                        PaymentMethod = p.PaymentMethod.ToString(),
+                        Amount = p.Amount,
+                        PaymentDate = p.PaymentDate,
+                        Status = p.Status.ToString()
+                    }).ToList()
+                });
+            }
+
+            return orderIndexViewModels;
         }
 
         public async Task<OrderDetailsViewModel?> GetOrderDetails(int orderId)

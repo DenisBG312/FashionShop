@@ -250,10 +250,14 @@ namespace OnlineShop.Services.Data
                     UnitPrice = cartProduct.Product.Price
                 };
 
+                if (cartProduct.Product.IsOnSale && cartProduct.Product.DiscountPercentage.HasValue)
+                {
+                    orderProduct.UnitPrice = cartProduct.Product.DiscountedPrice;
+                }
+
                 await _orderProductRepository.AddAsync(orderProduct);
 
                 var product = await _productRepository.GetByIdAsync(cartProduct.ProductId);
-                product.StockQuantity -= cartProduct.Quantity;
             }
 
             await _orderProductRepository.SaveChangesAsync();
