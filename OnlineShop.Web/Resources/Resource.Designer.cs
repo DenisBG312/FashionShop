@@ -61,6 +61,15 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add To Cart.
+        /// </summary>
+        public static string AddToCart {
+            get {
+                return ResourceManager.GetString("AddToCart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm Password.
         /// </summary>
         public static string ConfirmPassword {
@@ -115,6 +124,24 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter by Clothing Type:.
+        /// </summary>
+        public static string FilterClothingType {
+            get {
+                return ResourceManager.GetString("FilterClothingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Filter by Gender:.
+        /// </summary>
+        public static string FilterGender {
+            get {
+                return ResourceManager.GetString("FilterGender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Find the perfect look for any occasion..
         /// </summary>
         public static string FindThePerfect {
@@ -151,6 +178,33 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Jackets.
+        /// </summary>
+        public static string Jackets {
+            get {
+                return ResourceManager.GetString("Jackets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Jeans.
+        /// </summary>
+        public static string Jeans {
+            get {
+                return ResourceManager.GetString("Jeans", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kids.
+        /// </summary>
+        public static string Kids {
+            get {
+                return ResourceManager.GetString("Kids", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Name.
         /// </summary>
         public static string LastName {
@@ -178,6 +232,15 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Men.
+        /// </summary>
+        public static string Men {
+            get {
+                return ResourceManager.GetString("Men", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Men&apos;s Collection.
         /// </summary>
         public static string Men_sCollection {
@@ -201,6 +264,24 @@ namespace OnlineShop.Web.Resources {
         public static string MyShoppingCart {
             get {
                 return ResourceManager.GetString("MyShoppingCart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On Sale.
+        /// </summary>
+        public static string OnSale {
+            get {
+                return ResourceManager.GetString("OnSale", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Our Products.
+        /// </summary>
+        public static string OurProducts {
+            get {
+                return ResourceManager.GetString("OurProducts", resourceCulture);
             }
         }
         
@@ -250,11 +331,47 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset Filters.
+        /// </summary>
+        public static string ResetFilters {
+            get {
+                return ResourceManager.GetString("ResetFilters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search by brand.
         /// </summary>
         public static string SearchByBrand {
             get {
                 return ResourceManager.GetString("SearchByBrand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shirts.
+        /// </summary>
+        public static string Shirts {
+            get {
+                return ResourceManager.GetString("Shirts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shoes.
+        /// </summary>
+        public static string Shoes {
+            get {
+                return ResourceManager.GetString("Shoes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shorts.
+        /// </summary>
+        public static string Shorts {
+            get {
+                return ResourceManager.GetString("Shorts", resourceCulture);
             }
         }
         
@@ -268,6 +385,24 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Stock.
+        /// </summary>
+        public static string Stock {
+            get {
+                return ResourceManager.GetString("Stock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to T-Shirts.
+        /// </summary>
+        public static string T_Shirts {
+            get {
+                return ResourceManager.GetString("T-Shirts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use a local account to log in..
         /// </summary>
         public static string UseLocalAccount {
@@ -277,11 +412,38 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View Details.
+        /// </summary>
+        public static string ViewDetails {
+            get {
+                return ResourceManager.GetString("ViewDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to We don&apos;t currently have the searched items!.
+        /// </summary>
+        public static string WeDon_tCurrently {
+            get {
+                return ResourceManager.GetString("WeDon\'tCurrently", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Welcome to Fashion Shop!.
         /// </summary>
         public static string WelcomeToFashionShop {
             get {
                 return ResourceManager.GetString("WelcomeToFashionShop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Women.
+        /// </summary>
+        public static string Women {
+            get {
+                return ResourceManager.GetString("Women", resourceCulture);
             }
         }
         

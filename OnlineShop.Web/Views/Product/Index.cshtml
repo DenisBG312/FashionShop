@@ -1,6 +1,7 @@
 ﻿@using System.Globalization
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using X.PagedList.Mvc.Core
+@using OnlineShop.Web.Resources
 @model IEnumerable<OnlineShop.Data.Models.Product>
 
 @{
@@ -30,30 +31,30 @@
 </style>
 
 <div class="container my-5">
-    <h1 class="text-center mb-5">Our Products</h1>
+    <h1 class="text-center mb-5">@Resource.OurProducts</h1>
 
     <!-- Filtering Options -->
     <div class="row mb-4 text-center">
         <!-- Center the row -->
         <div class="col-md-4">
-            <h5>Filter by Gender:</h5>
+            <h5>@Resource.FilterGender</h5>
             <div class="d-flex justify-content-center flex-wrap">
                 <!-- Center buttons -->
-                <a href="@Url.Action("Index", "Product", new { genderId = "1", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "1" ? "active" : "")">Men</a>
-                <a href="@Url.Action("Index", "Product", new { genderId = "2", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "2" ? "active" : "")">Women</a>
-                <a href="@Url.Action("Index", "Product", new { genderId = "3", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "3" ? "active" : "")">Kids</a>
+                <a href="@Url.Action("Index", "Product", new { genderId = "1", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "1" ? "active" : "")">@Resource.Men</a>
+                <a href="@Url.Action("Index", "Product", new { genderId = "2", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "2" ? "active" : "")">@Resource.Women</a>
+                <a href="@Url.Action("Index", "Product", new { genderId = "3", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "3" ? "active" : "")">@Resource.Kids</a>
             </div>
         </div>
         <div class="col-md-4">
-            <h5>Filter by Clothing Type:</h5>
+            <h5>@Resource.FilterClothingType</h5>
             <div class="d-flex justify-content-center flex-wrap">
                 <!-- Center buttons -->
-                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "1" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "1" ? "active" : "")">T-Shirts</a>
-                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "2" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "2" ? "active" : "")">Jackets</a>
-                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "3" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "3" ? "active" : "")">Shoes</a>
-                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "4" })" class="btn btn-outline-primary me-2 mt-2 @(clothingTypeId == "4" ? "active" : "")">Jeans</a>
-                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "5" })" class="btn btn-outline-primary me-2 mt-2 @(clothingTypeId == "5" ? "active" : "")">Shirts</a>
-                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "6" })" class="btn btn-outline-primary me-2 mt-2 @(clothingTypeId == "6" ? "active" : "")">Shorts</a>
+                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "1" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "1" ? "active" : "")">@Resource.T_Shirts</a>
+                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "2" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "2" ? "active" : "")">@Resource.Jackets</a>
+                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "3" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "3" ? "active" : "")">@Resource.Shoes</a>
+                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "4" })" class="btn btn-outline-primary me-2 mt-2 @(clothingTypeId == "4" ? "active" : "")">@Resource.Jeans</a>
+                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "5" })" class="btn btn-outline-primary me-2 mt-2 @(clothingTypeId == "5" ? "active" : "")">@Resource.Shirts</a>
+                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "6" })" class="btn btn-outline-primary me-2 mt-2 @(clothingTypeId == "6" ? "active" : "")">@Resource.Shorts</a>
             </div>
         </div>
         <div class="col-md-4">
@@ -61,7 +62,7 @@
             <h5>&nbsp;</h5> <!-- Just for spacing -->
             <div class="d-flex justify-content-center">
                 <!-- Center the reset button -->
-                <a href="@Url.Action("Index", "Product", new { genderId = "", clothingTypeId = "" })" class="btn btn-outline-danger">Reset Filters  <i class="fa-solid fa-trash-can-arrow-up"></i></a>
+                <a href="@Url.Action("Index", "Product", new { genderId = "", clothingTypeId = "" })" class="btn btn-outline-danger">@Resource.ResetFilters  <i class="fa-solid fa-trash-can-arrow-up"></i></a>
             </div>
         </div>
     </div>
@@ -79,7 +80,7 @@
                         @if (product.IsOnSale && product.DiscountPercentage.HasValue)
                         {
                             <span class="badge bg-danger text-white position-absolute" style="top: 10px; left: 10px; z-index: 10; font-size: 0.9rem; padding: 5px 10px; border-radius: 5px;">
-                                ON SALE  @product.DiscountPercentage<i class="fa-solid fa-percent"></i>
+                                @Resource.OnSale  @product.DiscountPercentage<i class="fa-solid fa-percent"></i>
                             </span>
                         }
 
@@ -109,11 +110,11 @@
                             </p>
 
                             <!-- Stock Quantity -->
-                            <p class="card-text text-muted">Stock: <strong>@product.StockQuantity</strong></p>
+                            <p class="card-text text-muted">@Resource.Stock: <strong>@product.StockQuantity</strong></p>
 
                             <!-- View Details Button -->
                             <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="btn btn-outline-primary rounded-pill px-4">
-                                View Details <i class="fa-solid fa-circle-info"></i>
+                                @Resource.ViewDetails <i class="fa-solid fa-circle-info"></i>
                             </a>
 
                             @if (User.Identity.IsAuthenticated)
@@ -122,7 +123,7 @@
                                     <input type="hidden" name="productId" value="@product.Id" />
                                     <input type="hidden" name="quantity" value="1" />
                                     <button type="submit" class="btn btn-success rounded-pill px-4">
-                                        Add to Cart <i class="fa-solid fa-cart-shopping"></i>
+                                        @Resource.AddToCart <i class="fa-solid fa-cart-shopping"></i>
                                     </button>
                                 </form>
                             }
@@ -133,7 +134,7 @@
         }
         else
         {
-            <h1 class="text-center mt-5">We don't currently have the searched brand items!</h1>
+            <h1 class="text-center mt-5">@Resource.WeDon_tCurrently</h1>
         }
         <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
             @Html.PagedListPager((X.PagedList.IPagedList?)Model, page => Url.Action("Index", new { page }),

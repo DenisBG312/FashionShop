@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddToCart" xml:space="preserve">
+    <value>Добави в количка</value>
+  </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Повтори паролата</value>
   </data>
@@ -135,6 +138,12 @@
   <data name="FashionForward" xml:space="preserve">
     <value>Модни модели за всеки стил и настроение.</value>
   </data>
+  <data name="FilterClothingType" xml:space="preserve">
+    <value>Филтриране по вид облекло:</value>
+  </data>
+  <data name="FilterGender" xml:space="preserve">
+    <value>Филтрирай по Пол:</value>
+  </data>
   <data name="FindThePerfect" xml:space="preserve">
     <value>Намерете перфектната визия за всеки повод.</value>
   </data>
@@ -147,6 +156,15 @@
   <data name="Home" xml:space="preserve">
     <value>Начало</value>
   </data>
+  <data name="Jackets" xml:space="preserve">
+    <value>Якета</value>
+  </data>
+  <data name="Jeans" xml:space="preserve">
+    <value>Дънки</value>
+  </data>
+  <data name="Kids" xml:space="preserve">
+    <value>Деца</value>
+  </data>
   <data name="LastName" xml:space="preserve">
     <value>Фамилно име</value>
   </data>
@@ -156,6 +174,9 @@
   <data name="Logout" xml:space="preserve">
     <value>Излез</value>
   </data>
+  <data name="Men" xml:space="preserve">
+    <value>Мъже</value>
+  </data>
   <data name="Men'sCollection" xml:space="preserve">
     <value> Мъжка Колекция</value>
   </data>
@@ -164,6 +185,12 @@
   </data>
   <data name="MyShoppingCart" xml:space="preserve">
     <value>Моята количка</value>
+  </data>
+  <data name="OnSale" xml:space="preserve">
+    <value>Намаление</value>
+  </data>
+  <data name="OurProducts" xml:space="preserve">
+    <value>Нашите продукти</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Парола</value>
@@ -180,17 +207,44 @@
   <data name="RememberMe" xml:space="preserve">
     <value>Запомни ме?</value>
   </data>
+  <data name="ResetFilters" xml:space="preserve">
+    <value>Премахни филтрацията</value>
+  </data>
   <data name="SearchByBrand" xml:space="preserve">
     <value>Търси по марка</value>
+  </data>
+  <data name="Shirts" xml:space="preserve">
+    <value>Ризи</value>
+  </data>
+  <data name="Shoes" xml:space="preserve">
+    <value>Обувки</value>
+  </data>
+  <data name="Shorts" xml:space="preserve">
+    <value>Шорти</value>
   </data>
   <data name="StayStylish" xml:space="preserve">
     <value>Бъдете стилни с нашите нови продукти за всеки сезон.</value>
   </data>
+  <data name="Stock" xml:space="preserve">
+    <value>Наличност</value>
+  </data>
+  <data name="T-Shirts" xml:space="preserve">
+    <value>Тениски</value>
+  </data>
   <data name="UseLocalAccount" xml:space="preserve">
     <value>Използвайте локален акаунт, за да влезете.</value>
   </data>
+  <data name="ViewDetails" xml:space="preserve">
+    <value>Виж детайли</value>
+  </data>
+  <data name="WeDon'tCurrently" xml:space="preserve">
+    <value>В момента нямаме търсените артикули!</value>
+  </data>
   <data name="WelcomeToFashionShop" xml:space="preserve">
     <value>Добре дошли във Fashion Shop!</value>
+  </data>
+  <data name="Women" xml:space="preserve">
+    <value>Жени</value>
   </data>
   <data name="Women'sCollection" xml:space="preserve">
     <value>Женска Колекция</value>
