@@ -66,6 +66,13 @@ namespace OnlineShop.Services.Data
             var cartProduct = shoppingCart.ShoppingCartProducts
                 .FirstOrDefault(scp => scp.ProductId == productId);
 
+            decimal productPrice = product.Price;
+
+            if (product.IsOnSale && product.DiscountPercentage.HasValue)
+            {
+                productPrice = product.DiscountedPrice;
+            }
+
             if (cartProduct != null)
             {
                 cartProduct.Quantity += quantity;
@@ -81,7 +88,7 @@ namespace OnlineShop.Services.Data
                 shoppingCart.ShoppingCartProducts.Add(cartProduct);
             }
 
-            shoppingCart.Amount += product.Price * quantity;
+            shoppingCart.Amount += productPrice * quantity;
 
             await _shoppingCartRepository.SaveChangesAsync();
 
@@ -109,11 +116,18 @@ namespace OnlineShop.Services.Data
                 return false;
             }
 
-            shoppingCart.Amount -= shoppingCartProduct.Product.Price * shoppingCartProduct.Quantity;
-            
+            decimal productPrice = shoppingCartProduct.Product.Price;
+
+            if (shoppingCartProduct.Product.IsOnSale && shoppingCartProduct.Product.DiscountPercentage.HasValue)
+            {
+                productPrice = shoppingCartProduct.Product.DiscountedPrice;
+            }
+
+            shoppingCart.Amount -= productPrice * shoppingCartProduct.Quantity;
+
             shoppingCartProduct.Quantity = quantity;
 
-            shoppingCart.Amount += shoppingCartProduct.Product.Price * shoppingCartProduct.Quantity;
+            shoppingCart.Amount += productPrice * shoppingCartProduct.Quantity;
 
             if (shoppingCartProduct.Quantity <= 0)
             {
@@ -151,7 +165,15 @@ namespace OnlineShop.Services.Data
                 return false;
             }
 
-            shoppingCart.Amount -= shoppingCartProduct.Product.Price * shoppingCartProduct.Quantity;
+            var product = shoppingCartProduct.Product;
+            decimal productPrice = product.Price;
+
+            if (product.IsOnSale && product.DiscountPercentage.HasValue)
+            {
+                productPrice = product.DiscountedPrice;
+            }
+
+            shoppingCart.Amount -= productPrice * shoppingCartProduct.Quantity;
 
             shoppingCart.ShoppingCartProducts.Remove(shoppingCartProduct);
 
@@ -183,18 +205,18 @@ namespace OnlineShop.Services.Data
                 return result;
             }
 
+            decimal totalAmount = 0;
             foreach (var cartProduct in shoppingCart.ShoppingCartProducts)
             {
-                var product = await _productRepository.GetByIdAsync(cartProduct.ProductId);
-                if (product == null || product.StockQuantity < cartProduct.Quantity)
+                decimal productPrice = cartProduct.Product.Price;
+                if (cartProduct.Product.IsOnSale && cartProduct.Product.DiscountPercentage.HasValue)
                 {
-                    result.IsSuccess = false;
-                    result.ErrorMessage = $"Insufficient stock for {cartProduct.Product.Name}. Available: {product?.StockQuantity ?? 0}.";
-                    return result;
+                    productPrice = cartProduct.Product.DiscountedPrice;
                 }
+
+                totalAmount += cartProduct.Quantity * productPrice;
             }
 
-            decimal totalAmount = shoppingCart.ShoppingCartProducts.Sum(scp => scp.Quantity * scp.Product.Price);
 
             var order = new Order
             {

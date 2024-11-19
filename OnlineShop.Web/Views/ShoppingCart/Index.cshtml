@@ -1,6 +1,8 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using OnlineShop.Data.Models.Enums
 
+@model OnlineShop.Data.Models.ShoppingCart
 
 @{
     ViewData["Title"] = "Shopping Cart";
@@ -44,7 +46,13 @@
                                 <td>
                                     <div class="d-flex align-items-center flex-column flex-md-row">
                                         <img src="@item.Product.ImageUrl" alt="@item.Product.Name" class="img-thumbnail mb-2 mb-md-0" style="width: 80px; height: 80px; object-fit: cover;" />
-                                        <span class="ms-md-3">@item.Product.Name</span>
+                                        <div class="ms-md-3 text-center text-md-start">
+                                            <span>@item.Product.Name</span>
+                                            @if (item.Product.IsOnSale && item.Product.DiscountPercentage.HasValue)
+                                            {
+                                                <span class="badge bg-danger ms-2">Sale @item.Product.DiscountPercentage.Value% OFF</span>
+                                            }
+                                        </div>
                                     </div>
                                 </td>
                                 <td>
@@ -59,8 +67,20 @@
                                         </form>
                                     </div>
                                 </td>
-                                <td>@item.Product.Price.ToString("C")</td>
-                                <td>@((item.Product.Price * item.Quantity).ToString("C"))</td>
+                                @if (item.Product.IsOnSale && item.Product.DiscountPercentage.HasValue)
+                                {
+                                    <td>
+                                        <span class="text-danger fw-bold">@item.Product.DiscountedPrice.ToString("C", new CultureInfo("en-US"))</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-danger fw-bold">@((item.Product.DiscountedPrice * item.Quantity).ToString("C", new CultureInfo("en-US")))</span>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>@item.Product.Price.ToString("C", new CultureInfo("en-US"))</td>
+                                    <td>@((item.Product.Price * item.Quantity).ToString("C", new CultureInfo("en-US")))</td>
+                                }
                                 <td>
                                     <form asp-action="RemoveFromCart" method="post">
                                         <input type="hidden" name="shoppingCartId" value="@item.ShoppingCartId" />
@@ -79,7 +99,7 @@
 
         <div class="row mt-4">
             <div class="col-md-6 col-12">
-                <h4>Total: <strong class="text-success">@Model.Amount.ToString("C")</strong></h4>
+                <h4>Total: <strong class="text-success">@Model.Amount.ToString("C", new CultureInfo("en-US"))</strong></h4>
             </div>
             <div class="col-md-6 col-12 text-md-end text-center">
                 <form asp-action="PlaceOrder" method="post">
