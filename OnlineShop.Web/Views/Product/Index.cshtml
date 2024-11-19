@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using X.PagedList.Mvc.Core
 @model IEnumerable<OnlineShop.Data.Models.Product>
 
@@ -6,17 +7,6 @@
     ViewData["Title"] = "Products";
     var genderId = ViewContext.HttpContext.Request.Query["genderId"].ToString();
     var clothingTypeId = ViewContext.HttpContext.Request.Query["clothingTypeId"].ToString();
-    var currentCulture = System.Globalization.CultureInfo.CurrentCulture; // Use the thread's current culture
-
-    if (currentCulture.NumberFormat.CurrencySymbol == "¤")
-    {
-        currentCulture.NumberFormat.CurrencySymbol = currentCulture.Name switch
-        {
-            "bg" => "лв",
-            "en" => "$",
-            _ => "¤"
-        };
-    }
 }
 
 <style>
@@ -44,9 +34,11 @@
 
     <!-- Filtering Options -->
     <div class="row mb-4 text-center">
+        <!-- Center the row -->
         <div class="col-md-4">
             <h5>Filter by Gender:</h5>
             <div class="d-flex justify-content-center flex-wrap">
+                <!-- Center buttons -->
                 <a href="@Url.Action("Index", "Product", new { genderId = "1", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "1" ? "active" : "")">Men</a>
                 <a href="@Url.Action("Index", "Product", new { genderId = "2", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "2" ? "active" : "")">Women</a>
                 <a href="@Url.Action("Index", "Product", new { genderId = "3", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "3" ? "active" : "")">Kids</a>
@@ -55,6 +47,7 @@
         <div class="col-md-4">
             <h5>Filter by Clothing Type:</h5>
             <div class="d-flex justify-content-center flex-wrap">
+                <!-- Center buttons -->
                 <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "1" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "1" ? "active" : "")">T-Shirts</a>
                 <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "2" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "2" ? "active" : "")">Jackets</a>
                 <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "3" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "3" ? "active" : "")">Shoes</a>
@@ -64,8 +57,10 @@
             </div>
         </div>
         <div class="col-md-4">
-            <h5>&nbsp;</h5>
+            <!-- Single Reset Button -->
+            <h5>&nbsp;</h5> <!-- Just for spacing -->
             <div class="d-flex justify-content-center">
+                <!-- Center the reset button -->
                 <a href="@Url.Action("Index", "Product", new { genderId = "", clothingTypeId = "" })" class="btn btn-outline-danger">Reset Filters  <i class="fa-solid fa-trash-can-arrow-up"></i></a>
             </div>
         </div>
@@ -78,39 +73,45 @@
             foreach (var product in Model)
             {
                 <div class="col-sm-6 col-md-4">
+                    <!-- Card Styling -->
                     <div class="card product-card shadow-sm" style="border-radius: 15px; overflow: hidden; position: relative;">
+                        <!-- On Sale Badge -->
                         @if (product.IsOnSale && product.DiscountPercentage.HasValue)
                         {
-                            <span class="badge bg-danger text-white position-absolute" style="top: 10px; left: 10px; z-index: 10;">
-                                ON SALE @product.DiscountPercentage<i class="fa-solid fa-percent"></i>
+                            <span class="badge bg-danger text-white position-absolute" style="top: 10px; left: 10px; z-index: 10; font-size: 0.9rem; padding: 5px 10px; border-radius: 5px;">
+                                ON SALE  @product.DiscountPercentage<i class="fa-solid fa-percent"></i>
                             </span>
                         }
 
+                        <!-- Product Image -->
                         <div class="card-img-top p-3 text-center bg-light" style="height: 280px;">
                             <img src="@product.ImageUrl" alt="@product.Name" class="img-fluid" style="max-height: 100%; width: auto; object-fit: contain;">
                         </div>
 
+                        <!-- Card Body -->
                         <div class="card-body text-center">
+                            <!-- Product Name -->
                             <h5 class="card-title font-weight-bold">@product.Name</h5>
 
+                            <!-- Product Price -->
                             <p class="card-text text-success fw-bold" style="font-size: 1.2rem;">
                                 @if (product.IsOnSale && product.DiscountPercentage.HasValue)
                                 {
-                                    <span class="text-decoration-line-through text-muted">
-                                        @product.Price.ToString("C", currentCulture)
-                                    </span>
+                                    <span class="text-decoration-line-through text-muted">@product.Price.ToString("C", new CultureInfo("en-US"))</span>;
                                     <span>
-                                        @product.DiscountedPrice.ToString("C", currentCulture)
+                                        @product.DiscountedPrice.ToString("C", new CultureInfo("en-US"))
                                     </span>
                                 }
                                 else
                                 {
-                                    @product.Price.ToString("C", currentCulture)
+                                    @product.Price.ToString("C", new CultureInfo("en-US"))
                                 }
                             </p>
 
+                            <!-- Stock Quantity -->
                             <p class="card-text text-muted">Stock: <strong>@product.StockQuantity</strong></p>
 
+                            <!-- View Details Button -->
                             <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="btn btn-outline-primary rounded-pill px-4">
                                 View Details <i class="fa-solid fa-circle-info"></i>
                             </a>
@@ -136,16 +137,16 @@
         }
         <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
             @Html.PagedListPager((X.PagedList.IPagedList?)Model, page => Url.Action("Index", new { page }),
-                     new PagedListRenderOptions
-            {
-                UlElementClasses = new[] { "pagination" },
-                LiElementClasses = new[] { "page-item" },
-                PageClasses = new[] { "page-link" },
-                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-                DisplayLinkToNextPage = PagedListDisplayMode.Always,
-                DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
-                DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded
-            })
+                new PagedListRenderOptions
+                {
+                    UlElementClasses = new[] { "pagination" },
+                    LiElementClasses = new[] { "page-item" },
+                    PageClasses = new[] { "page-link" },
+                    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                    DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                    DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+                    DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded
+                })
         </nav>
     </div>
 </div>

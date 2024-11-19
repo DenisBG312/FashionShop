@@ -117,13 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DiscoverTheLatestTrends" xml:space="preserve">
+    <value>Discover the Latest Trends</value>
+  </data>
   <data name="ExploreProducts" xml:space="preserve">
-    <value>Разгледайте продуктите</value>
+    <value>Explore Products</value>
+  </data>
+  <data name="FashionForward" xml:space="preserve">
+    <value>Fashion-forward pieces for every style and mood.</value>
+  </data>
+  <data name="FindThePerfect" xml:space="preserve">
+    <value>Find the perfect look for any occasion.</value>
+  </data>
+  <data name="Men'sCollection" xml:space="preserve">
+    <value>Men's Collection</value>
+  </data>
+  <data name="StayStylish" xml:space="preserve">
+    <value>Stay stylish with our new arrivals for every season.</value>
   </data>
   <data name="WelcomeToFashionShop" xml:space="preserve">
-    <value>Добре дошли във Fashion Shop!</value>
+    <value>Welcome to Fashion Shop!</value>
+  </data>
+  <data name="Women'sCollection" xml:space="preserve">
+    <value>Women's Collection</value>
   </data>
   <data name="YourOne-stopShopForAllYourNeeds" xml:space="preserve">
-    <value>Вашят магазин за всички ваши нужди, от основни неща до луксозни артикули.</value>
+    <value>Your one-stop shop for all your needs, from essentials to luxury items.</value>
   </data>
 </root>

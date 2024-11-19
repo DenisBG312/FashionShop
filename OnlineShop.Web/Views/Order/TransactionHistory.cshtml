@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using OnlineShop.Data.Models.Enums.Payment
 @model OnlineShop.Web.ViewModels.Order.OrderTransactionHistoryViewModel
 
@@ -28,7 +29,7 @@
                     {
                         <tr>
                             <td>@payment.PaymentMethod</td>
-                            <td>@payment.Amount.ToString("C")</td>
+                            <td>@payment.Amount.ToString("C", new CultureInfo("en-US"))</td>
                             <td>@payment.PaymentDate.ToString("g")</td>
                             <td>
                                 <span class="badge @(payment.Status == Status.Completed ? "bg-success" : "bg-warning")">

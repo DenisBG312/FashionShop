@@ -1,4 +1,5 @@
-﻿@model OnlineShop.Web.ViewModels.Order.OrderDetailsViewModel
+﻿@using System.Globalization
+@model OnlineShop.Web.ViewModels.Order.OrderDetailsViewModel
 
 @{
     ViewData["Title"] = $"Order Details - Order #{Model.OrderId}";
@@ -31,7 +32,7 @@
 
                 <div class="card-body">
                     <p><strong>Order Date:</strong> <span class="text-muted">@Model.OrderDate.ToShortDateString()</span></p>
-                    <p><strong>Total Amount:</strong> <span class="text-success fw-bold">@Model.TotalAmount.ToString("C")</span></p>
+                    <p><strong>Total Amount:</strong> <span class="text-success fw-bold">@Model.TotalAmount.ToString("C", new CultureInfo("en-US"))</span></p>
                     <p>
                         <strong>Status:</strong>
                         <span class="badge rounded-pill @(Model.IsCompleted ? "bg-success" : Model.IsCancelled ? "bg-danger" : "bg-warning")" style="font-size: 0.9rem;">
@@ -59,7 +60,7 @@
                                         <tr>
                                             <td>@product.ProductName</td>
                                             <td class="text-center">@product.Quantity</td>
-                                            <td class="text-end">@product.UnitPrice.ToString("C")</td>
+                                            <td class="text-end">@product.UnitPrice.ToString("C", new CultureInfo("en-US"))</td>
                                         </tr>
                                     }
                                 }

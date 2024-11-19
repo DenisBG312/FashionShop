@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace OnlineShop.Web.Recources {
+namespace OnlineShop.Web.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace OnlineShop.Web.Recources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OnlineShop.Web.Recources.Resource", typeof(Resource).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("OnlineShop.Web.Resources.Resource", typeof(Resource).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,6 +61,15 @@ namespace OnlineShop.Web.Recources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Discover the Latest Trends.
+        /// </summary>
+        public static string DiscoverTheLatestTrends {
+            get {
+                return ResourceManager.GetString("DiscoverTheLatestTrends", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Explore Products.
         /// </summary>
         public static string ExploreProducts {
@@ -70,11 +79,56 @@ namespace OnlineShop.Web.Recources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fashion-forward pieces for every style and mood..
+        /// </summary>
+        public static string FashionForward {
+            get {
+                return ResourceManager.GetString("FashionForward", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Find the perfect look for any occasion..
+        /// </summary>
+        public static string FindThePerfect {
+            get {
+                return ResourceManager.GetString("FindThePerfect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Men&apos;s Collection.
+        /// </summary>
+        public static string Men_sCollection {
+            get {
+                return ResourceManager.GetString("Men\'sCollection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stay stylish with our new arrivals for every season..
+        /// </summary>
+        public static string StayStylish {
+            get {
+                return ResourceManager.GetString("StayStylish", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Welcome to Fashion Shop!.
         /// </summary>
         public static string WelcomeToFashionShop {
             get {
                 return ResourceManager.GetString("WelcomeToFashionShop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Women&apos;s Collection.
+        /// </summary>
+        public static string Women_sCollection {
+            get {
+                return ResourceManager.GetString("Women\'sCollection", resourceCulture);
             }
         }
         

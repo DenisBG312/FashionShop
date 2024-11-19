@@ -42,12 +42,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Recources\Resource.bg.Designer.cs">
+    <Compile Update="Resources\Resource.bg.Designer.cs">
       <DependentUpon>Resource.bg.resx</DependentUpon>
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Update="Recources\Resource.Designer.cs">
+    <Compile Update="Resources\Resource.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resource.resx</DependentUpon>
@@ -55,11 +55,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Recources\Resource.bg.resx">
+    <EmbeddedResource Update="Resources\Resource.bg.resx">
       <LastGenOutput>Resource.bg.Designer.cs</LastGenOutput>
       <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Recources\Resource.resx">
+    <EmbeddedResource Update="Resources\Resource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>

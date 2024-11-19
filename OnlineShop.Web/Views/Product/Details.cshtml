@@ -1,8 +1,9 @@
-﻿@using System.Security.Claims
+﻿@using System.Globalization
+@using System.Security.Claims
 @model OnlineShop.Web.ViewModels.Product.ProductDetailsViewModel
 
 @{
-    ViewData["Title"] = @Model.Name;
+    ViewData["Title"] = Model.Name;
 }
 
 <!-- Product section-->
@@ -34,16 +35,16 @@
                     @if (Model.IsOnSale && Model.DiscountPercentage.HasValue)
                     {
                         <!-- Show original price and discounted price if on sale -->
-                        <span class="text-muted text-decoration-line-through">@Model.Price.ToString("C")</span>
+                        <span class="text-muted text-decoration-line-through">@Model.Price.ToString("C", new CultureInfo("en-US"))</span>
                         <span class="text-success fw-bold" style="font-size: 1.5rem;">
-                            @((Model.Price - (Model.Price * (Model.DiscountPercentage ?? 0) / 100)).ToString("C"))
+                            @((Model.Price - (Model.Price * (Model.DiscountPercentage ?? 0) / 100)).ToString("C", new CultureInfo("en-US")))
                         </span>
                     }
                     else
                     {
                         <!-- Regular price display if not on sale -->
                         <span class="text-success fw-bold" style="font-size: 1.5rem;">
-                            @Model.Price.ToString("C")
+                            @Model.Price.ToString("C", new CultureInfo("en-US"))
                         </span>
                     }
                 </div>
