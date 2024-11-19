@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
   <data name="AddToCart" xml:space="preserve">
     <value>Add To Cart</value>
   </data>
@@ -195,11 +198,20 @@
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="PlaceAnOrder" xml:space="preserve">
+    <value>Place an order</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Product</value>
+  </data>
   <data name="Products" xml:space="preserve">
     <value>Products</value>
   </data>
   <data name="ProfileImgUrl" xml:space="preserve">
     <value>Profile Image Url</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Quantity</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>Register</value>
@@ -207,11 +219,17 @@
   <data name="RememberMe" xml:space="preserve">
     <value>Remember me?</value>
   </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
   <data name="ResetFilters" xml:space="preserve">
     <value>Reset Filters</value>
   </data>
   <data name="SearchByBrand" xml:space="preserve">
     <value>Search by brand</value>
+  </data>
+  <data name="SelectPaymentMethod" xml:space="preserve">
+    <value>Select Payment Method</value>
   </data>
   <data name="Shirts" xml:space="preserve">
     <value>Shirts</value>
@@ -222,6 +240,9 @@
   <data name="Shorts" xml:space="preserve">
     <value>Shorts</value>
   </data>
+  <data name="StartAdding" xml:space="preserve">
+    <value>Start adding products to your cart now</value>
+  </data>
   <data name="StayStylish" xml:space="preserve">
     <value>Stay stylish with our new arrivals for every season.</value>
   </data>
@@ -230,6 +251,18 @@
   </data>
   <data name="T-Shirts" xml:space="preserve">
     <value>T-Shirts</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="TotalPrice" xml:space="preserve">
+    <value>Total Price</value>
+  </data>
+  <data name="UnitPrice" xml:space="preserve">
+    <value>Unit Price</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
   </data>
   <data name="UseLocalAccount" xml:space="preserve">
     <value>Use a local account to log in.</value>
@@ -249,7 +282,13 @@
   <data name="Women'sCollection" xml:space="preserve">
     <value>Women's Collection</value>
   </data>
+  <data name="YourCartIsEmpty" xml:space="preserve">
+    <value>Your cart is empty! Start adding products to your cart now</value>
+  </data>
   <data name="YourOne-stopShopForAllYourNeeds" xml:space="preserve">
     <value>Your one-stop shop for all your needs, from essentials to luxury items.</value>
+  </data>
+  <data name="YourShoppingCart" xml:space="preserve">
+    <value>Your Shopping Cart</value>
   </data>
 </root>

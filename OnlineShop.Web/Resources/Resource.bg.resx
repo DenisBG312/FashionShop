@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Actions" xml:space="preserve">
+    <value>Действия</value>
+  </data>
   <data name="AddToCart" xml:space="preserve">
     <value>Добави в количка</value>
   </data>
@@ -195,11 +198,20 @@
   <data name="Password" xml:space="preserve">
     <value>Парола</value>
   </data>
+  <data name="PlaceAnOrder" xml:space="preserve">
+    <value>Създай поръчка</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Продукт</value>
+  </data>
   <data name="Products" xml:space="preserve">
     <value>Продукти</value>
   </data>
   <data name="ProfileImgUrl" xml:space="preserve">
     <value>Линк към профилна снимка</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Количество</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>Регистрирай се</value>
@@ -207,11 +219,17 @@
   <data name="RememberMe" xml:space="preserve">
     <value>Запомни ме?</value>
   </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Изтрий</value>
+  </data>
   <data name="ResetFilters" xml:space="preserve">
     <value>Премахни филтрацията</value>
   </data>
   <data name="SearchByBrand" xml:space="preserve">
     <value>Търси по марка</value>
+  </data>
+  <data name="SelectPaymentMethod" xml:space="preserve">
+    <value>Избери начин на плащане</value>
   </data>
   <data name="Shirts" xml:space="preserve">
     <value>Ризи</value>
@@ -222,6 +240,9 @@
   <data name="Shorts" xml:space="preserve">
     <value>Шорти</value>
   </data>
+  <data name="StartAdding" xml:space="preserve">
+    <value>Добавете продукти в количката си сега</value>
+  </data>
   <data name="StayStylish" xml:space="preserve">
     <value>Бъдете стилни с нашите нови продукти за всеки сезон.</value>
   </data>
@@ -230,6 +251,18 @@
   </data>
   <data name="T-Shirts" xml:space="preserve">
     <value>Тениски</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Общо</value>
+  </data>
+  <data name="TotalPrice" xml:space="preserve">
+    <value>Цена общо</value>
+  </data>
+  <data name="UnitPrice" xml:space="preserve">
+    <value>Единична цена</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Обнови</value>
   </data>
   <data name="UseLocalAccount" xml:space="preserve">
     <value>Използвайте локален акаунт, за да влезете.</value>
@@ -249,7 +282,13 @@
   <data name="Women'sCollection" xml:space="preserve">
     <value>Женска Колекция</value>
   </data>
+  <data name="YourCartIsEmpty" xml:space="preserve">
+    <value>Вашата количка е празна</value>
+  </data>
   <data name="YourOne-stopShopForAllYourNeeds" xml:space="preserve">
     <value>Вашят магазин за всички ваши нужди, от основни неща до луксозни артикули.</value>
+  </data>
+  <data name="YourShoppingCart" xml:space="preserve">
+    <value>Вашата количка</value>
   </data>
 </root>

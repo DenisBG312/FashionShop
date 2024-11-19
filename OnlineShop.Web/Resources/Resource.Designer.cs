@@ -61,6 +61,15 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actions.
+        /// </summary>
+        public static string Actions {
+            get {
+                return ResourceManager.GetString("Actions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add To Cart.
         /// </summary>
         public static string AddToCart {
@@ -295,6 +304,24 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Place an order.
+        /// </summary>
+        public static string PlaceAnOrder {
+            get {
+                return ResourceManager.GetString("PlaceAnOrder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product.
+        /// </summary>
+        public static string Product {
+            get {
+                return ResourceManager.GetString("Product", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Products.
         /// </summary>
         public static string Products {
@@ -309,6 +336,15 @@ namespace OnlineShop.Web.Resources {
         public static string ProfileImgUrl {
             get {
                 return ResourceManager.GetString("ProfileImgUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity.
+        /// </summary>
+        public static string Quantity {
+            get {
+                return ResourceManager.GetString("Quantity", resourceCulture);
             }
         }
         
@@ -331,6 +367,15 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove.
+        /// </summary>
+        public static string Remove {
+            get {
+                return ResourceManager.GetString("Remove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset Filters.
         /// </summary>
         public static string ResetFilters {
@@ -345,6 +390,15 @@ namespace OnlineShop.Web.Resources {
         public static string SearchByBrand {
             get {
                 return ResourceManager.GetString("SearchByBrand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Payment Method.
+        /// </summary>
+        public static string SelectPaymentMethod {
+            get {
+                return ResourceManager.GetString("SelectPaymentMethod", resourceCulture);
             }
         }
         
@@ -376,6 +430,15 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start adding products to your cart now.
+        /// </summary>
+        public static string StartAdding {
+            get {
+                return ResourceManager.GetString("StartAdding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Stay stylish with our new arrivals for every season..
         /// </summary>
         public static string StayStylish {
@@ -399,6 +462,42 @@ namespace OnlineShop.Web.Resources {
         public static string T_Shirts {
             get {
                 return ResourceManager.GetString("T-Shirts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total.
+        /// </summary>
+        public static string Total {
+            get {
+                return ResourceManager.GetString("Total", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Price.
+        /// </summary>
+        public static string TotalPrice {
+            get {
+                return ResourceManager.GetString("TotalPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unit Price.
+        /// </summary>
+        public static string UnitPrice {
+            get {
+                return ResourceManager.GetString("UnitPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        public static string Update {
+            get {
+                return ResourceManager.GetString("Update", resourceCulture);
             }
         }
         
@@ -457,11 +556,29 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your cart is empty! Start adding products to your cart now.
+        /// </summary>
+        public static string YourCartIsEmpty {
+            get {
+                return ResourceManager.GetString("YourCartIsEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your one-stop shop for all your needs, from essentials to luxury items..
         /// </summary>
         public static string YourOne_stopShopForAllYourNeeds {
             get {
                 return ResourceManager.GetString("YourOne-stopShopForAllYourNeeds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your Shopping Cart.
+        /// </summary>
+        public static string YourShoppingCart {
+            get {
+                return ResourceManager.GetString("YourShoppingCart", resourceCulture);
             }
         }
     }
