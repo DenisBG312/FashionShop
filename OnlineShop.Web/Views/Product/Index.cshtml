@@ -75,7 +75,7 @@
                     <!-- Card Styling -->
                     <div class="card product-card shadow-sm" style="border-radius: 15px; overflow: hidden; position: relative;">
                         <!-- On Sale Badge -->
-                        @if (product.IsOnSale)
+                        @if (product.IsOnSale && product.DiscountPercentage.HasValue)
                         {
                             <span class="badge bg-danger text-white position-absolute" style="top: 10px; left: 10px; z-index: 10; font-size: 0.9rem; padding: 5px 10px; border-radius: 5px;">
                                 ON SALE  @product.DiscountPercentage<i class="fa-solid fa-percent"></i>

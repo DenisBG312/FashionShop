@@ -25,13 +25,13 @@
                 <h1 class="display-5 fw-bolder">@Model.Name</h1>
 
                 <!-- Sale Badge -->
-                @if (Model.IsOnSale)
+                @if (Model.IsOnSale && Model.DiscountPercentage.HasValue)
                 {
                     <div class="badge bg-danger text-white mb-3" style="font-size: 1.2rem; padding: 10px;">On Sale @Model.DiscountPercentage<i class="fa-solid fa-percent"></i></div>
                 }
 
                 <div class="fs-5 mb-5">
-                    @if (Model.IsOnSale)
+                    @if (Model.IsOnSale && Model.DiscountPercentage.HasValue)
                     {
                         <!-- Show original price and discounted price if on sale -->
                         <span class="text-muted text-decoration-line-through">@Model.Price.ToString("C")</span>
