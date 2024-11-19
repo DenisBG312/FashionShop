@@ -1,4 +1,6 @@
 ﻿@using System.Globalization
+@using OnlineShop.Web.Resources
+
 @model List<OnlineShop.Web.ViewModels.Order.OrderIndexViewModel>
 
 @{
@@ -6,7 +8,7 @@
 }
 
 <div class="container mt-5">
-    <h1 class="text-center mb-4">My Orders</h1>
+    <h1 class="text-center mb-4">@Resource.MyOrders</h1>
 
     <!-- Set 2 cards per row across all screen sizes -->
     <div class="row row-cols-1 row-cols-md-2 g-4">
@@ -16,27 +18,27 @@
                 <div class="card shadow-sm border-0 rounded h-100" style="background-color: #f9f9f9;">
                     <!-- Consistent shadow and neutral background -->
                     <div class="card-body text-center">
-                        <h5 class="card-title mb-3">Order #@order.CustomOrderNumber</h5>
+                        <h5 class="card-title mb-3">@Resource.Order #@order.CustomOrderNumber</h5>
 
                         <p class="card-text mb-4">
-                            <strong>Order Date:</strong> @order.OrderDate.ToString("MMMM dd, yyyy")<br />
-                            <strong>Total Amount:</strong>
+                            <strong>@Resource.OrderDate:</strong> @order.OrderDate.ToString("MMMM dd, yyyy")<br />
+                            <strong>@Resource.TotalAmount:</strong>
                             <span class="text-success fw-bold">@order.TotalAmount.ToString("C", new CultureInfo("en-US"))</span> <!-- Eye-catching total -->
                             <br />
-                            <strong>Status:</strong>
+                            <strong>@Resource.Status:</strong>
                             <span class="badge rounded-pill @(order.IsCompleted ? "bg-success" : order.IsCancelled ? "bg-danger" : "bg-warning")" style="font-size: 0.9rem;">
-                                @(order.IsCompleted ? "Completed" : order.IsCancelled ? "Cancelled" : "Pending")
+                                @(order.IsCompleted ? $"{Resource.Completed}" : order.IsCancelled ? $"{Resource.Cancelled}" : $"{Resource.Pending}")
                             </span>
                         </p>
 
                         <div class="d-flex justify-content-between">
                             <a asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-primary px-4">
-                                View Details <i class="fa-solid fa-eye"></i>
+                                @Resource.ViewDetails <i class="fa-solid fa-eye"></i>
                             </a>
                             @if (!order.IsCancelled && !order.IsCompleted)
                             {
                                 <a href="javascript:void(0);" onclick="confirmCancel(@order.OrderId)" class="btn btn-danger px-4">
-                                    Cancel <i class="fa-solid fa-ban"></i>
+                                    @Resource.Cancel <i class="fa-solid fa-ban"></i>
                                 </a>
                             }
                         </div>

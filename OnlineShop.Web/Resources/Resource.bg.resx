@@ -123,6 +123,15 @@
   <data name="AddToCart" xml:space="preserve">
     <value>Добави в количка</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Откажи</value>
+  </data>
+  <data name="Cancelled" xml:space="preserve">
+    <value>Отказана</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Завършена</value>
+  </data>
   <data name="ConfirmPassword" xml:space="preserve">
     <value>Повтори паролата</value>
   </data>
@@ -192,11 +201,20 @@
   <data name="OnSale" xml:space="preserve">
     <value>Намаление</value>
   </data>
+  <data name="Order" xml:space="preserve">
+    <value>Поръчка</value>
+  </data>
+  <data name="OrderDate" xml:space="preserve">
+    <value>Дата на поръчката</value>
+  </data>
   <data name="OurProducts" xml:space="preserve">
     <value>Нашите продукти</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Парола</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Чакаща</value>
   </data>
   <data name="PlaceAnOrder" xml:space="preserve">
     <value>Създай поръчка</value>
@@ -243,6 +261,9 @@
   <data name="StartAdding" xml:space="preserve">
     <value>Добавете продукти в количката си сега</value>
   </data>
+  <data name="Status" xml:space="preserve">
+    <value>Статус</value>
+  </data>
   <data name="StayStylish" xml:space="preserve">
     <value>Бъдете стилни с нашите нови продукти за всеки сезон.</value>
   </data>
@@ -254,6 +275,9 @@
   </data>
   <data name="Total" xml:space="preserve">
     <value>Общо</value>
+  </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>Обща сума</value>
   </data>
   <data name="TotalPrice" xml:space="preserve">
     <value>Цена общо</value>
