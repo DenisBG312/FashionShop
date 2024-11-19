@@ -22,7 +22,10 @@ namespace OnlineShop.Data.Configuration
             {
                 new ClothingType { Id = 1, Name = "T-Shirt" },
                 new ClothingType { Id = 2, Name = "Jacket" },
-                new ClothingType { Id = 3, Name = "Shoes" }
+                new ClothingType { Id = 3, Name = "Shoes" },
+                new ClothingType { Id = 4, Name = "Jeans" },
+                new ClothingType { Id = 5, Name = "Shirts" },
+                new ClothingType { Id = 6, Name = "Shorts" }
             };
         }
     }
