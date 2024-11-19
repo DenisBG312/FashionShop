@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using OnlineShop.Data.Models
+@using OnlineShop.Web.Resources
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -24,21 +25,21 @@
         }
 
         <li class="nav-item">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @user.FirstName @user.LastName ! <img src="@user.ProfileImgUrl" class="profile-img" /></a>
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@Resource.Hello @user.FirstName @user.LastName ! <img src="@user.ProfileImgUrl" class="profile-img" /></a>
     </li>
     <li class="nav-item">
         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-light mt-4">Logout  <i class="fa-solid fa-door-open"></i></button>
+                <button type="submit" class="nav-link btn btn-link text-light mt-4">@Resource.Logout  <i class="fa-solid fa-door-open"></i></button>
         </form>
     </li>
 }
 else
 {
     <li class="nav-item">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register">Register  <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register">@Resource.Register  <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
     </li>
     <li class="nav-item">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">Login  <i class="fa-solid fa-right-to-bracket"></i>
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">@Resource.Login  <i class="fa-solid fa-right-to-bracket"></i>
 
         </a>
     </li>

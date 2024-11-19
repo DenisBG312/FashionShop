@@ -117,8 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="CreateANewAccount" xml:space="preserve">
+    <value>Create a new account.</value>
+  </data>
   <data name="DiscoverTheLatestTrends" xml:space="preserve">
     <value>Discover the Latest Trends</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
   </data>
   <data name="ExploreProducts" xml:space="preserve">
     <value>Explore Products</value>
@@ -129,11 +138,56 @@
   <data name="FindThePerfect" xml:space="preserve">
     <value>Find the perfect look for any occasion.</value>
   </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>First Name</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>Hello</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Last Name</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
   <data name="Men'sCollection" xml:space="preserve">
     <value>Men's Collection</value>
   </data>
+  <data name="MyOrders" xml:space="preserve">
+    <value>My Orders</value>
+  </data>
+  <data name="MyShoppingCart" xml:space="preserve">
+    <value>My Shopping Cart</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="ProfileImgUrl" xml:space="preserve">
+    <value>Profile Image Url</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="RememberMe" xml:space="preserve">
+    <value>Remember me?</value>
+  </data>
+  <data name="SearchByBrand" xml:space="preserve">
+    <value>Search by brand</value>
+  </data>
   <data name="StayStylish" xml:space="preserve">
     <value>Stay stylish with our new arrivals for every season.</value>
+  </data>
+  <data name="UseLocalAccount" xml:space="preserve">
+    <value>Use a local account to log in.</value>
   </data>
   <data name="WelcomeToFashionShop" xml:space="preserve">
     <value>Welcome to Fashion Shop!</value>
