@@ -181,7 +181,7 @@ namespace OnlineShop.Services.Data
                 StockQuantity = product.StockQuantity,
                 Gender = product.Gender.Name,
                 ClothingType = product.ClothingType.Name,
-                PostedBy = product.User?.UserName,
+                PostedBy = $"{product.User?.FirstName} {product.User?.LastName}",
                 Reviews = reviews.Where(r => r.ProductId == id).ToList(),
                 UserId = product.UserId,
                 DiscountPercentage = product.DiscountPercentage,
