@@ -1,4 +1,8 @@
-﻿@using static OnlineShop.Common.ApplicationConstants
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using OnlineShop.Data.Models
+@using static OnlineShop.Common.ApplicationConstants
+@inject SignInManager<ApplicationUser> SignInManager
 @{
     int currentYear = DateTime.UtcNow.Year;
     string footerYear = (ReleaseYear == currentYear) ? $"{currentYear}" : $"{ReleaseYear} - {currentYear}";
@@ -42,7 +46,12 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Order" asp-action="Index">@Resource.MyOrders <i class="fa-solid fa-list"></i></a>
                         </li>
-                        <!-- Clothing Types and For Who dropdowns here... -->
+                        @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin Panel <i class="fa-solid fa-tools"></i></a>
+                            </li>
+                        }
                     </ul>
                     
                     <ul class="navbar-nav text-end">
