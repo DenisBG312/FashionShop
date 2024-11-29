@@ -6,6 +6,13 @@
 
 <div class="container mt-4">
     <h1 class="mb-4">Users List</h1>
+    
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
 
     <div class="mb-3">
         <a href="@Url.Action("Create", "Users", new { area = "Admin" })" class="btn btn-primary">Create New User</a>
@@ -36,9 +43,8 @@
                     }
                     <td>
                         <a href="@Url.Action("Details", "Users", new { area = "Admin", id = userViewModel.User.Id })" class="btn btn-info btn-sm">Details</a>
-                        <a href="@Url.Action("Edit", "Users", new { area = "Admin", id = userViewModel.User.Id })" class="btn btn-warning btn-sm">Edit</a>
                         <a href="@Url.Action("Delete", "Users", new { area = "Admin", id = userViewModel.User.Id })" class="btn btn-danger btn-sm">Delete</a>
-                        <a href="@Url.Action("AssignRole", "Users", new { area = "Admin", id = userViewModel.User.Id })" class="btn btn-secondary btn-sm">Assign Roles</a>
+                        <a href="@Url.Action("AssignRoles", "Users", new { area = "Admin", id = userViewModel.User.Id })" class="btn btn-warning btn-sm">Assign Roles</a>
                     </td>
                 </tr>
             }

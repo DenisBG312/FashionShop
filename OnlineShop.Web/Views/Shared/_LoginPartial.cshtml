@@ -15,33 +15,44 @@
 </style>
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
+    @if (SignInManager.IsSignedIn(User))
+    {
         var user = await UserManager.GetUserAsync(User);
 
-        if (String.IsNullOrEmpty(user.ProfileImgUrl))
+        // Check if user is null (it shouldn't be, but it's always good to add a safety check)
+        if (user != null)
         {
-            user.ProfileImgUrl = "https://st2.depositphotos.com/5682790/10456/v/450/depositphotos_104564156-stock-illustration-male-user-icon.jpg";
+            if (String.IsNullOrEmpty(user.ProfileImgUrl))
+            {
+                user.ProfileImgUrl = "https://st2.depositphotos.com/5682790/10456/v/450/depositphotos_104564156-stock-illustration-male-user-icon.jpg";
+            }
+
+            <li class="nav-item">
+                <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@Resource.Hello @user.FirstName @user.LastName ! <img src="@user.ProfileImgUrl" class="profile-img" /></a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="nav-link btn btn-link text-light mt-4">@Resource.Logout  <i class="fa-solid fa-door-open"></i></button>
+                </form>
+            </li>
         }
-
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register">@Resource.Register  <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">@Resource.Login  <i class="fa-solid fa-right-to-bracket"></i></a>
+            </li>
+        }
+    }
+    else
+    {
         <li class="nav-item">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@Resource.Hello @user.FirstName @user.LastName ! <img src="@user.ProfileImgUrl" class="profile-img" /></a>
-    </li>
-    <li class="nav-item">
-        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-light mt-4">@Resource.Logout  <i class="fa-solid fa-door-open"></i></button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
             <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register">@Resource.Register  <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
-    </li>
-    <li class="nav-item">
-            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">@Resource.Login  <i class="fa-solid fa-right-to-bracket"></i>
-
-        </a>
-    </li>
-}
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Login">@Resource.Login  <i class="fa-solid fa-right-to-bracket"></i></a>
+        </li>
+    }
 </ul>
