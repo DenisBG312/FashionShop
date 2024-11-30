@@ -33,6 +33,11 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
 
 builder.Services.AddScoped(typeof(BaseRepository<,>));
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.AccessDeniedPath = "/Home/Error/403";
+});
+
 builder.Services.RegisterUserDefinedServices(typeof(IProductService).Assembly);
 
 builder.Services.AddControllersWithViews();
@@ -91,17 +96,20 @@ app.Use(async (context, next) =>
 
 app.UseAuthorization();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "Admin",
-        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-    );
-});
+app.UseStatusCodePagesWithReExecute("/Home/Error/{0}");
+
+app.MapControllerRoute(
+    name: "Admin",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{statusCode?}");
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapRazorPages();
 
 await SeedAdminUserAndRole(app);
