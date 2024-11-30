@@ -121,29 +121,20 @@ async Task SeedAdminUserAndRole(WebApplication app)
         await roleManager.CreateAsync(new IdentityRole("Admin"));
     }
 
-    // Check if the Admin user exists, and create it if not
-    const string adminEmail = "admin@onlineshop.com";
-    const string adminPassword = "Admin@1234";
-
-    var adminUser = await userManager.FindByEmailAsync(adminEmail);
-    if (adminUser == null)
+    if (!await roleManager.RoleExistsAsync("User"))
     {
-        adminUser = new ApplicationUser
-        {
-            FirstName = "Denis",
-            LastName = "Admin",
-            UserName = adminEmail,
-            Email = adminEmail
-        };
+        await roleManager.CreateAsync(new IdentityRole("User"));
+    }
 
-        var result = await userManager.CreateAsync(adminUser, adminPassword);
-        if (result.Succeeded)
-        {
-            await userManager.AddToRoleAsync(adminUser, "Admin");
-        }
-        else
-        {
-            throw new Exception("Failed to create Admin user: " + string.Join(", ", result.Errors.Select(e => e.Description)));
-        }
+    var adminUser = await userManager.FindByEmailAsync("admin@onlineshop.com");
+    if (adminUser != null && !await userManager.IsInRoleAsync(adminUser, "Admin"))
+    {
+        await userManager.AddToRoleAsync(adminUser, "Admin");
+    }
+
+    var regularUser = await userManager.FindByEmailAsync("bgdenibg@gmail.com");
+    if (regularUser != null && !await userManager.IsInRoleAsync(regularUser, "User"))
+    {
+        await userManager.AddToRoleAsync(regularUser, "User");
     }
 }

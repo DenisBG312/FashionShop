@@ -115,6 +115,8 @@ namespace OnlineShop.Web.Data.Migrations
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     StockQuantity = table.Column<int>(type: "int", nullable: false),
+                    IsOnSale = table.Column<bool>(type: "bit", nullable: false),
+                    DiscountPercentage = table.Column<int>(type: "int", nullable: true),
                     GenderId = table.Column<int>(type: "int", nullable: false),
                     ClothingTypeId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
@@ -247,7 +249,11 @@ namespace OnlineShop.Web.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ProfileImgUrl", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f", 0, "b64245d2-86ae-4c9d-815c-9877952cf418", "bgdenibg@gmail.com", true, "Denis", "Tsranski", false, null, "BGDENIBG@GMAIL.COM", "BGDENIBG@GMAIL.COM", "AQAAAAIAAYagAAAAEAnCyF4MAwr8InwOYoI3iplwnpXSfC7FEnr0rRYQOKx/wMNoF6f09lFN8ICb/mVzxA==", "+111111111111", true, null, "8445e030-d4aa-4b76-ac65-563682742919", false, "bgdenibg@gmail.com" });
+                values: new object[,]
+                {
+                    { "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f", 0, "3ed08ec0-5c25-4bf8-8731-87024f2bedef", "bgdenibg@gmail.com", true, "Denis", "Tsranski", false, null, "BGDENIBG@GMAIL.COM", "BGDENIBG@GMAIL.COM", "AQAAAAIAAYagAAAAEJGd78fRY8r9+iTvw1ovPk/40HEHBbgNgXJC/roP4R1c5Yf8hBvPFGd6HHC/Mk321Q==", "+111111111111", true, null, "c869c6e6-fa7d-4792-ba9b-8aa8ab80cb64", false, "bgdenibg@gmail.com" },
+                    { "8a914c36-ea3f-49f0-9ad3-3d32134b2f8c", 0, "26b495f8-6d2e-484a-b114-29bc14c3829c", "admin@onlineshop.com", true, "Admin", "User", false, null, "ADMIN@ONLINESHOP.COM", "ADMIN@ONLINESHOP.COM", "AQAAAAIAAYagAAAAEGVOyvTzBtg53f5s6aRnvzHRaP6XUU2F56CSEkoPcziR/6bvm9OVxIiLnKFfUmTWTA==", null, false, null, "563d1fd3-ecc4-4e71-ad61-d7f7a4ef5f44", false, "admin@onlineshop.com" }
+                });
 
             migrationBuilder.InsertData(
                 table: "ClothingTypes",
@@ -256,7 +262,10 @@ namespace OnlineShop.Web.Data.Migrations
                 {
                     { 1, "T-Shirt" },
                     { 2, "Jacket" },
-                    { 3, "Shoes" }
+                    { 3, "Shoes" },
+                    { 4, "Jeans" },
+                    { 5, "Shirts" },
+                    { 6, "Shorts" }
                 });
 
             migrationBuilder.InsertData(
@@ -274,23 +283,23 @@ namespace OnlineShop.Web.Data.Migrations
                 columns: new[] { "Id", "IsCancelled", "IsCompleted", "OrderDate", "TotalAmount", "UserId" },
                 values: new object[,]
                 {
-                    { 1, false, false, new DateTime(2024, 11, 16, 16, 24, 15, 852, DateTimeKind.Local).AddTicks(2230), 150.00m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" },
-                    { 2, false, true, new DateTime(2024, 11, 15, 16, 24, 15, 852, DateTimeKind.Local).AddTicks(2239), 75.50m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" }
+                    { 1, false, false, new DateTime(2024, 11, 30, 16, 20, 53, 957, DateTimeKind.Local).AddTicks(3219), 150.00m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" },
+                    { 2, false, true, new DateTime(2024, 11, 29, 16, 20, 53, 957, DateTimeKind.Local).AddTicks(3230), 75.50m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "ClothingTypeId", "Description", "GenderId", "ImageUrl", "Name", "Price", "StockQuantity", "UserId" },
+                columns: new[] { "Id", "ClothingTypeId", "Description", "DiscountPercentage", "GenderId", "ImageUrl", "IsOnSale", "Name", "Price", "StockQuantity", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 3, "One of the best nike models ever created", 1, "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/66d8f65e-6ecd-414c-bd03-e50a996f7de0/NIKE+AIR+MAX+PLUS.png", "Nike Air Max Plus", 1500.00m, 100, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" },
-                    { 2, 2, "One of the greatest puffers ever created", 2, "https://images.stockx.com/images/Trapstar-Shooters-Hooded-Puffer-Black-Reflective.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&trim=color&updated_at=1673460322", "Trapstar Shooters Hooded Puffer Black", 75.00m, 50, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" }
+                    { 1, 3, "One of the best nike models ever created", null, 1, "https://static.nike.com/a/images/t_PDP_936_v1/f_auto,q_auto:eco/66d8f65e-6ecd-414c-bd03-e50a996f7de0/NIKE+AIR+MAX+PLUS.png", false, "Nike Air Max Plus", 1500.00m, 100, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" },
+                    { 2, 2, "One of the greatest puffers ever created", null, 2, "https://images.stockx.com/images/Trapstar-Shooters-Hooded-Puffer-Black-Reflective.jpg?fit=fill&bg=FFFFFF&w=700&h=500&fm=webp&auto=compress&q=90&dpr=2&trim=color&updated_at=1673460322", false, "Trapstar Shooters Hooded Puffer Black", 75.00m, 50, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" }
                 });
 
             migrationBuilder.InsertData(
                 table: "ShoppingCarts",
                 columns: new[] { "Id", "Amount", "PaymentDate", "Status", "UserId" },
-                values: new object[] { 1, 1575.00m, new DateTime(2024, 11, 16, 16, 24, 15, 852, DateTimeKind.Local).AddTicks(7568), "Active", "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
+                values: new object[] { 1, 1575.00m, new DateTime(2024, 11, 30, 16, 20, 53, 958, DateTimeKind.Local).AddTicks(6920), "Active", "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
 
             migrationBuilder.InsertData(
                 table: "OrdersProducts",
@@ -313,7 +322,7 @@ namespace OnlineShop.Web.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Reviews",
                 columns: new[] { "Id", "Comment", "ProductId", "Rating", "ReviewDate", "UserId" },
-                values: new object[] { 1, "I really liked wearing these shoes. They are very comfortable", 1, 4, new DateTime(2024, 11, 16, 16, 24, 15, 852, DateTimeKind.Local).AddTicks(7088), "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
+                values: new object[] { 1, "I really liked wearing these shoes. They are very comfortable", 1, 4, new DateTime(2024, 11, 30, 16, 20, 53, 958, DateTimeKind.Local).AddTicks(5953), "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
 
             migrationBuilder.InsertData(
                 table: "ShoppingCartsProducts",
@@ -409,6 +418,11 @@ namespace OnlineShop.Web.Data.Migrations
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f");
+
+            migrationBuilder.DeleteData(
+                table: "AspNetUsers",
+                keyColumn: "Id",
+                keyValue: "8a914c36-ea3f-49f0-9ad3-3d32134b2f8c");
 
             migrationBuilder.DropColumn(
                 name: "FirstName",

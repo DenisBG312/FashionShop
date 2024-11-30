@@ -239,7 +239,7 @@ namespace OnlineShop.Web.Data.Migrations
                         {
                             Id = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "35f6ad7b-fc5a-4d26-b484-23e95e22a08d",
+                            ConcurrencyStamp = "3ed08ec0-5c25-4bf8-8731-87024f2bedef",
                             Email = "bgdenibg@gmail.com",
                             EmailConfirmed = true,
                             FirstName = "Denis",
@@ -247,12 +247,30 @@ namespace OnlineShop.Web.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "BGDENIBG@GMAIL.COM",
                             NormalizedUserName = "BGDENIBG@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOVOyLxMVuowV/DfswaWlnxS7fC/LAnXRx8PP7dceUFiWLm2AgrvpnbGA4QcFjtfDg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJGd78fRY8r9+iTvw1ovPk/40HEHBbgNgXJC/roP4R1c5Yf8hBvPFGd6HHC/Mk321Q==",
                             PhoneNumber = "+111111111111",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "ee3e3214-8558-4e81-a970-ac47034e4215",
+                            SecurityStamp = "c869c6e6-fa7d-4792-ba9b-8aa8ab80cb64",
                             TwoFactorEnabled = false,
                             UserName = "bgdenibg@gmail.com"
+                        },
+                        new
+                        {
+                            Id = "8a914c36-ea3f-49f0-9ad3-3d32134b2f8c",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "26b495f8-6d2e-484a-b114-29bc14c3829c",
+                            Email = "admin@onlineshop.com",
+                            EmailConfirmed = true,
+                            FirstName = "Admin",
+                            LastName = "User",
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ADMIN@ONLINESHOP.COM",
+                            NormalizedUserName = "ADMIN@ONLINESHOP.COM",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGVOyvTzBtg53f5s6aRnvzHRaP6XUU2F56CSEkoPcziR/6bvm9OVxIiLnKFfUmTWTA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "563d1fd3-ecc4-4e71-ad61-d7f7a4ef5f44",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@onlineshop.com"
                         });
                 });
 
@@ -271,7 +289,7 @@ namespace OnlineShop.Web.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ClothingTypes", (string)null);
+                    b.ToTable("ClothingTypes");
 
                     b.HasData(
                         new
@@ -288,6 +306,21 @@ namespace OnlineShop.Web.Data.Migrations
                         {
                             Id = 3,
                             Name = "Shoes"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Jeans"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Shirts"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Shorts"
                         });
                 });
 
@@ -306,7 +339,7 @@ namespace OnlineShop.Web.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genders", (string)null);
+                    b.ToTable("Genders");
 
                     b.HasData(
                         new
@@ -354,7 +387,7 @@ namespace OnlineShop.Web.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
 
                     b.HasData(
                         new
@@ -362,7 +395,7 @@ namespace OnlineShop.Web.Data.Migrations
                             Id = 1,
                             IsCancelled = false,
                             IsCompleted = false,
-                            OrderDate = new DateTime(2024, 11, 18, 23, 42, 0, 936, DateTimeKind.Local).AddTicks(2682),
+                            OrderDate = new DateTime(2024, 11, 30, 16, 20, 53, 957, DateTimeKind.Local).AddTicks(3219),
                             TotalAmount = 150.00m,
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         },
@@ -371,7 +404,7 @@ namespace OnlineShop.Web.Data.Migrations
                             Id = 2,
                             IsCancelled = false,
                             IsCompleted = true,
-                            OrderDate = new DateTime(2024, 11, 17, 23, 42, 0, 936, DateTimeKind.Local).AddTicks(2691),
+                            OrderDate = new DateTime(2024, 11, 29, 16, 20, 53, 957, DateTimeKind.Local).AddTicks(3230),
                             TotalAmount = 75.50m,
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });
@@ -395,7 +428,7 @@ namespace OnlineShop.Web.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrdersProducts", (string)null);
+                    b.ToTable("OrdersProducts");
 
                     b.HasData(
                         new
@@ -441,7 +474,7 @@ namespace OnlineShop.Web.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("Payments", (string)null);
+                    b.ToTable("Payments");
 
                     b.HasData(
                         new
@@ -512,7 +545,7 @@ namespace OnlineShop.Web.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
 
                     b.HasData(
                         new
@@ -573,7 +606,7 @@ namespace OnlineShop.Web.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Reviews");
 
                     b.HasData(
                         new
@@ -582,7 +615,7 @@ namespace OnlineShop.Web.Data.Migrations
                             Comment = "I really liked wearing these shoes. They are very comfortable",
                             ProductId = 1,
                             Rating = 4,
-                            ReviewDate = new DateTime(2024, 11, 18, 23, 42, 0, 936, DateTimeKind.Local).AddTicks(9260),
+                            ReviewDate = new DateTime(2024, 11, 30, 16, 20, 53, 958, DateTimeKind.Local).AddTicks(5953),
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });
                 });
@@ -613,14 +646,14 @@ namespace OnlineShop.Web.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ShoppingCarts", (string)null);
+                    b.ToTable("ShoppingCarts");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             Amount = 1575.00m,
-                            PaymentDate = new DateTime(2024, 11, 18, 23, 42, 0, 937, DateTimeKind.Local).AddTicks(102),
+                            PaymentDate = new DateTime(2024, 11, 30, 16, 20, 53, 958, DateTimeKind.Local).AddTicks(6920),
                             Status = "Active",
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });
@@ -641,7 +674,7 @@ namespace OnlineShop.Web.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ShoppingCartsProducts", (string)null);
+                    b.ToTable("ShoppingCartsProducts");
 
                     b.HasData(
                         new
