@@ -25,7 +25,7 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var users = _userManager.Users.ToList();
+            var users = await _userManager.Users.ToListAsync();
 
             var userViewModels = new List<UserViewModel>();
 
@@ -93,6 +93,8 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
 
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, "User");
+
                     return RedirectToAction("Index");
                 }
 
@@ -150,7 +152,6 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
 
             await _context.SaveChangesAsync();
 
-            // Attempt to delete the user
             var result = await _userManager.DeleteAsync(user);
 
             if (result.Succeeded)
