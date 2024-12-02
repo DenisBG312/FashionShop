@@ -1,0 +1,53 @@
+﻿@model IEnumerable<OnlineShop.Web.Areas.Admin.Models.UserViewModel>
+
+@{
+    ViewData["Title"] = "Manage Users";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Users List</h1>
+    
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    <div class="mb-3">
+        <a href="@Url.Action("Create", "User", new { area = "Admin" })" class="btn btn-primary">Create New User</a>
+    </div>
+
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+        <tr>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var userViewModel in Model)
+        {
+            <tr>
+                <td>@userViewModel.User.UserName</td>
+                <td>@userViewModel.User.Email</td>
+                @if (userViewModel.Roles.Any())
+                {
+                    <td>@string.Join(", ", userViewModel.Roles)</td>
+                }
+                else
+                {
+                    <td>User</td>
+                }
+                <td>
+                    <a href="@Url.Action("Details", "User", new { area = "Admin", id = userViewModel.User.Id })" class="btn btn-info btn-sm">Details</a>
+                    <a href="@Url.Action("Delete", "User", new { area = "Admin", id = userViewModel.User.Id })" class="btn btn-danger btn-sm">Delete</a>
+                    <a href="@Url.Action("AssignRoles", "User", new { area = "Admin", id = userViewModel.User.Id })" class="btn btn-warning btn-sm">Assign Roles</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

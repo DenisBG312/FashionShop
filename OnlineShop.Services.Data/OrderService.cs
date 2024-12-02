@@ -45,19 +45,17 @@ namespace OnlineShop.Services.Data
 
             foreach (var order in userOrders)
             {
-                // Calculate the total amount, including discounts
                 var totalAmount = order.OrderProducts.Sum(op =>
                 {
-                    var discount = op.Product.DiscountPercentage ?? 0; // Default to 0 if no discount
+                    var discount = op.Product.DiscountPercentage ?? 0;
                     var discountedPrice = op.UnitPrice * (1 - discount / 100);
                     return discountedPrice * op.Quantity;
                 });
 
-                // Create and add the view model
                 orderIndexViewModels.Add(new OrderIndexViewModel
                 {
                     OrderId = order.Id,
-                    CustomOrderNumber = orderIndexViewModels.Count + 1, // Auto-increment
+                    CustomOrderNumber = orderIndexViewModels.Count + 1,
                     OrderDate = order.OrderDate,
                     TotalAmount = totalAmount,
                     IsCompleted = order.IsCompleted,
@@ -244,8 +242,6 @@ namespace OnlineShop.Services.Data
                 var document = new iTextSharp.text.Document(PageSize.A4, 40, 40, 40, 40);
                 PdfWriter writer = PdfWriter.GetInstance(document, stream);
                 document.Open();
-
-                // Header Section
                 var titleFont = FontFactory.GetFont("Arial", 24, Font.BOLD, BaseColor.BLACK);
                 var title = new Paragraph($"Order #{order.Id} - Transaction Details", titleFont)
                 {
@@ -254,7 +250,6 @@ namespace OnlineShop.Services.Data
                 };
                 document.Add(title);
 
-                // Order Information
                 var infoFont = FontFactory.GetFont("Arial", 12, Font.NORMAL, BaseColor.DARK_GRAY);
                 var orderInfo = new Paragraph($@"
 Order Date: {order.OrderDate:dd MMMM yyyy}
@@ -276,7 +271,6 @@ Customer Email: {customerEmail}", infoFont);
 
                 document.Add(userDetails);
 
-                // Product Table Section
                 var productTable = new PdfPTable(4) { WidthPercentage = 100, SpacingBefore = 20, SpacingAfter = 20 };
                 productTable.SetWidths(new float[] { 3f, 2f, 2f, 2f });
 
@@ -290,13 +284,11 @@ Customer Email: {customerEmail}", infoFont);
                     productTable.AddCell(new PdfPCell(new Phrase((orderProduct.Quantity * orderProduct.UnitPrice).ToString("C"), infoFont)));
                 }
 
-                // Total Row
                 var totalCell = new PdfPCell(new Phrase("Total", FontFactory.GetFont("Arial", 12, Font.BOLD))) { Colspan = 3, HorizontalAlignment = Element.ALIGN_RIGHT };
                 productTable.AddCell(totalCell);
                 productTable.AddCell(new PdfPCell(new Phrase(order.TotalAmount.ToString("C"), FontFactory.GetFont("Arial", 12, Font.BOLD))) { HorizontalAlignment = Element.ALIGN_RIGHT });
                 document.Add(productTable);
 
-                // Payment Information Table
                 var paymentTable = new PdfPTable(4) { WidthPercentage = 100, SpacingBefore = 20 };
                 paymentTable.SetWidths(new float[] { 3f, 2f, 2f, 2f });
 
@@ -311,7 +303,6 @@ Customer Email: {customerEmail}", infoFont);
                 }
                 document.Add(paymentTable);
 
-                // Footer Section
                 AddSignatureAndLogo(document);
                 document.Close();
 

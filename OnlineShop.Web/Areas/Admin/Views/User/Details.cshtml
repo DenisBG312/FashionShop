@@ -1,0 +1,46 @@
+﻿@using OnlineShop.Web.Areas.Admin.Models
+@model UserDetailsViewModel
+
+@{
+    ViewData["Title"] = "User Details";
+}
+
+<div class="container mt-4">
+    <h1>User Details</h1>
+    <div class="card">
+        <div class="card-header">
+            <h3>@Model.User.UserName</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Email:</strong> @Model.User.Email</p>
+            
+            @if (!string.IsNullOrEmpty(Model.ImgUrl))
+            {
+                <p><strong>Profile Image:</strong> <img src="@Model.ImgUrl" alt="Profile Image" style="width: 100px; height: 100px;" /></p>
+            }
+            else
+            {
+                <p><strong>Profile Image:</strong> <img src="https://st2.depositphotos.com/5682790/10456/v/450/depositphotos_104564156-stock-illustration-male-user-icon.jpg" alt="Profile Image" style="width: 100px; height: 100px;" /></p>
+            }
+
+            <h5>Roles:</h5>
+            <ul>
+                @if (Model.Roles.Any())
+                {
+                    @foreach (var role in Model.Roles)
+                    {
+                        <li>@role</li>
+                    }
+                }
+                else
+                {
+                    <li>User</li>
+                }
+            </ul>
+
+            <div class="mt-3">
+                <a href="@Url.Action("Index", "User", new { area = "Admin" })" class="btn btn-secondary">Back to Users List</a>
+            </div>
+        </div>
+    </div>
+</div>
