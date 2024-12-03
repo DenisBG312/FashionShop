@@ -26,21 +26,22 @@ namespace OnlineShop.Web.Controllers
 
         public IActionResult Error(int? statusCode)
         {
-            if (!statusCode.HasValue)
+            if (statusCode == null)
             {
-                return View();
+                return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
 
-            if (statusCode == 404)
+            switch (statusCode)
             {
-                return View("Error404");
+                case 404:
+                    return View("Error404");
+                case 500:
+                    return View("Error500");
+                case 403:
+                    return View("Error403");
+                default:
+                    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
-            else if (statusCode == 403 || statusCode == 401)
-            {
-                return View("Error403");
-            }
-
-            return View("Error500");
         }
 
         public IActionResult ChangeLanguage(string lang)

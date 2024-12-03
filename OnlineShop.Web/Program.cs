@@ -16,21 +16,23 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddApplicationServices(builder.Configuration);
 
-builder.Services.AddScoped(typeof(BaseRepository<,>));
-
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.AccessDeniedPath = "/Home/Error/403";
 });
 
+builder.Services.AddScoped(typeof(BaseRepository<,>));
+
 builder.Services.RegisterUserDefinedServices(typeof(IProductService).Assembly);
 
 builder.Services.AddControllersWithViews();
 
+
+
 var supportedCultures = new[]
 {
-    new CultureInfo("en-US"), // US Dollars
-    new CultureInfo("bg-BG")  // Bulgarian Leva
+    new CultureInfo("en-US"),
+    new CultureInfo("bg-BG")
 };
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
@@ -45,7 +47,6 @@ var app = builder.Build();
 var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
 app.UseRequestLocalization(localizationOptions);
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -53,7 +54,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -64,32 +64,29 @@ app.UseRouting();
 
 app.Use(async (context, next) =>
 {
-    string cookie = string.Empty;
-    if (context.Request.Cookies.TryGetValue("Language", out cookie))
+    if (context.Request.Cookies.TryGetValue("Language", out var cookie))
     {
-        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(cookie);
-        System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(cookie);
+        Thread.CurrentThread.CurrentCulture = new CultureInfo(cookie);
+        Thread.CurrentThread.CurrentUICulture = new CultureInfo(cookie);
     }
     else
     {
-        System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en");
-        System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
+        Thread.CurrentThread.CurrentCulture = new CultureInfo("en");
+        Thread.CurrentThread.CurrentUICulture = new CultureInfo("en");
     }
+
     await next.Invoke();
 });
 
 
+app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseStatusCodePagesWithReExecute("/Home/Error/{0}");
+app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
 app.MapControllerRoute(
     name: "Admin",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{statusCode?}");
 
 app.MapControllerRoute(
     name: "default",

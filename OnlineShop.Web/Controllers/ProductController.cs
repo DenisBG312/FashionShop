@@ -42,38 +42,6 @@ namespace OnlineShop.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create()
-        {
-
-            var viewModel = new CreateProductViewModel
-            {
-                Genders = await _productService.GetGendersAsync(),
-                ClothingTypes = await _productService.GetClothingTypesAsync()
-            };
-
-            return View(viewModel);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateProductViewModel product)
-        {
-            ModelState.Remove(nameof(product.Genders));
-            ModelState.Remove(nameof(product.ClothingTypes));
-
-            if (!ModelState.IsValid)
-            {
-                product.Genders = await _productService.GetGendersAsync();
-                product.ClothingTypes = await _productService.GetClothingTypesAsync();
-
-                return View(product);
-            }
-
-            await _productService.CreateProductAsync(product, GetUserId()!);
-
-            return RedirectToAction(nameof(Index));
-        }
-
-        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var userId = _userManager.GetUserId(User);

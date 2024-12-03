@@ -1,17 +1,16 @@
-﻿@model OnlineShop.Web.ViewModels.Product.CreateProductViewModel
-
+﻿@model OnlineShop.Web.ViewModels.Product.ProductEditViewModel
 @{
-    ViewData["Title"] = "Create Product";
+    ViewData["Title"] = "Edit Product";
 }
 
-<div class="create-product-container">
-    <h2 class="text-center">Create New Product  <i class="fa-solid fa-shirt"></i></h2>
+<div class="edit-product-container">
+    <h2 class="text-center">Edit Product</h2>
 
-    <form asp-action="Create" method="post" class="create-product-form shadow-sm rounded p-4">
+    <form asp-action="Edit" method="post" enctype="multipart/form-data" class="edit-product-form shadow-sm rounded p-4">
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="Name" class="form-label"></label>
-                <input asp-for="Name" class="form-control form-control-lg" placeholder="Enter product name" />
+                <input asp-for="Name" class="form-control form-control-lg" placeholder="Product name" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="col-md-6">
@@ -29,14 +28,14 @@
 
         <div class="row mb-3">
             <div class="col-md-6">
-                <label asp-for="ImageUrl" class="form-label"></label>
-                <input asp-for="ImageUrl" class="form-control form-control-lg" placeholder="Image URL" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                <label asp-for="StockQuantity" class="form-label"></label>
+                <input asp-for="StockQuantity" class="form-control form-control-lg" placeholder="Stock quantity" />
+                <span asp-validation-for="StockQuantity" class="text-danger"></span>
             </div>
             <div class="col-md-6">
-                <label asp-for="StockQuantity" class="form-label"></label>
-                <input asp-for="StockQuantity" type="number" class="form-control form-control-lg" placeholder="Stock quantity" />
-                <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                <label asp-for="ImageUrl" class="form-label">Image URL</label>
+                <input asp-for="ImageUrl" class="form-control form-control-lg" placeholder="Image URL" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
         </div>
 
@@ -52,11 +51,35 @@
                 <span asp-validation-for="ClothingTypeId" class="text-danger"></span>
             </div>
         </div>
+        
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="IsOnSale" class="form-label">On Sale</label>
+                <input asp-for="IsOnSale" type="checkbox" class="form-check-input" id="IsOnSaleCheckbox" />
+                <span asp-validation-for="IsOnSale" class="text-danger"></span>
+            </div>
+            <div class="col-md-6">
+                <label asp-for="DiscountPercentage" class="form-label">Discount Percentage</label>
+                <select asp-for="DiscountPercentage" class="form-select form-select-lg" id="DiscountPercentageDropdown">
+                    <option value="">Select Discount</option>
+                    <option value="5">5%</option>
+                    <option value="10">10%</option>
+                    <option value="15">15%</option>
+                    <option value="20">20%</option>
+                    <option value="25">25%</option>
+                    <option value="30">30%</option>
+                </select>
+                <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+            </div>
+        </div>
 
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-primary btn-lg">
-                <i class="fa-solid fa-circle-plus me-2"></i>Create Product
+                <i class="fa-solid fa-floppy-disk me-2"></i>Save Changes
             </button>
+            <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-primary ms-2">
+                <i class="fa-solid fa-ban me-2"></i>Cancel
+            </a>
         </div>
     </form>
 </div>
@@ -65,6 +88,19 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    
+    <script>
+        document.getElementById("IsOnSaleCheckbox").addEventListener("change", function () {    
+            const dropdown = document.getElementById("DiscountPercentageDropdown");
+            dropdown.disabled = !this.checked;
+        });
+
+        window.addEventListener("load", function () {
+            const checkbox = document.getElementById("IsOnSaleCheckbox");
+            const dropdown = document.getElementById("DiscountPercentageDropdown");
+            dropdown.disabled = !checkbox.checked;
+        });
+    </script>
 }
 
 <style>
@@ -72,13 +108,13 @@
         background-color: #f0f2f5;
     }
 
-    .create-product-container {
+    .edit-product-container {
         max-width: 700px;
         margin: auto;
         padding: 20px;
     }
 
-    .create-product-form {
+    .edit-product-form {
         background-color: #ffffff;
         border-radius: 8px;
         padding: 30px;
@@ -118,5 +154,15 @@
         .btn-primary:hover {
             background-color: #0b5ed7;
             transform: translateY(-2px);
+        }
+
+    .btn-secondary {
+        padding: 10px 20px;
+        font-size: 1.1rem;
+    }
+
+        .btn-secondary:hover {
+            background-color: #6c757d;
+            color: #fff;
         }
 </style>

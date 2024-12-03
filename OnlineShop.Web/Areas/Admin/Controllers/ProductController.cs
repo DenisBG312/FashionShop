@@ -6,6 +6,8 @@ using OnlineShop.Services.Data;
 using OnlineShop.Services.Data.Interfaces;
 using OnlineShop.Web.ViewModels.Product;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using OnlineShop.Data.Models;
 
 namespace OnlineShop.Web.Areas.Admin.Controllers
 {
@@ -15,10 +17,12 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IProductService _productService;
-        public ProductController(ApplicationDbContext context, IProductService productService)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public ProductController(ApplicationDbContext context, IProductService productService, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _productService = productService;
+            _userManager = userManager;
         }
         public async Task<IActionResult> Index()
         {
@@ -59,6 +63,50 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var userId = _userManager.GetUserId(User);
+            var product = await _productService.GetEditProductViewModelAsync(id, userId!);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, ProductEditViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return BadRequest();
+            }
+
+            ModelState.Remove(nameof(model.Genders));
+            ModelState.Remove(nameof(model.ClothingTypes));
+
+            if (!ModelState.IsValid)
+            {
+                model.Genders = await _productService.GetGendersAsync();
+                model.ClothingTypes = await _productService.GetClothingTypesAsync();
+                return View(model);
+            }
+
+            var userId = _userManager.GetUserId(User);
+
+            var success = await _productService.UpdateProductAsync(model, userId);
+
+            if (!success)
+            {
+                return Forbid();
+            }
+
+            return RedirectToAction("Details", new { id = model.Id });
+        }
 
 
         public string? GetUserId()
