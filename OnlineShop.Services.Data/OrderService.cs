@@ -12,6 +12,7 @@ using OnlineShop.Services.Data.Interfaces;
 using OnlineShop.Web.ViewModels.Order;
 using OnlineShop.Web.ViewModels.Transaction;
 using System.Drawing.Printing;
+using System.Globalization;
 using System.Security.Claims;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Identity;
@@ -253,7 +254,7 @@ namespace OnlineShop.Services.Data
                 var infoFont = FontFactory.GetFont("Arial", 12, Font.NORMAL, BaseColor.DARK_GRAY);
                 var orderInfo = new Paragraph($@"
 Order Date: {order.OrderDate:dd MMMM yyyy}
-Total Amount: {order.TotalAmount:C}
+Total Amount: {order.TotalAmount.ToString("C", new CultureInfo("en-US"))}
 Order Status: {(order.IsCompleted ? "Completed" : order.IsCancelled ? "Cancelled" : "Pending")}
 ", infoFont)
                 {
@@ -280,13 +281,13 @@ Customer Email: {customerEmail}", infoFont);
                 {
                     productTable.AddCell(new PdfPCell(new Phrase(orderProduct.Product.Name, infoFont)));
                     productTable.AddCell(new PdfPCell(new Phrase(orderProduct.Quantity.ToString(), infoFont)));
-                    productTable.AddCell(new PdfPCell(new Phrase(orderProduct.UnitPrice.ToString("C"), infoFont)));
-                    productTable.AddCell(new PdfPCell(new Phrase((orderProduct.Quantity * orderProduct.UnitPrice).ToString("C"), infoFont)));
+                    productTable.AddCell(new PdfPCell(new Phrase(orderProduct.UnitPrice.ToString("C", new CultureInfo("en-US")), infoFont)));
+                    productTable.AddCell(new PdfPCell(new Phrase((orderProduct.Quantity * orderProduct.UnitPrice).ToString("C", new CultureInfo("en-US")), infoFont)));
                 }
 
                 var totalCell = new PdfPCell(new Phrase("Total", FontFactory.GetFont("Arial", 12, Font.BOLD))) { Colspan = 3, HorizontalAlignment = Element.ALIGN_RIGHT };
                 productTable.AddCell(totalCell);
-                productTable.AddCell(new PdfPCell(new Phrase(order.TotalAmount.ToString("C"), FontFactory.GetFont("Arial", 12, Font.BOLD))) { HorizontalAlignment = Element.ALIGN_RIGHT });
+                productTable.AddCell(new PdfPCell(new Phrase(order.TotalAmount.ToString("C", new CultureInfo("en-US")), FontFactory.GetFont("Arial", 12, Font.BOLD))) { HorizontalAlignment = Element.ALIGN_RIGHT });
                 document.Add(productTable);
 
                 var paymentTable = new PdfPTable(4) { WidthPercentage = 100, SpacingBefore = 20 };
@@ -297,7 +298,7 @@ Customer Email: {customerEmail}", infoFont);
                 foreach (var payment in order.Payments)
                 {
                     paymentTable.AddCell(new PdfPCell(new Phrase(payment.PaymentMethod.ToString(), infoFont)));
-                    paymentTable.AddCell(new PdfPCell(new Phrase(payment.Amount.ToString("C"), infoFont)));
+                    paymentTable.AddCell(new PdfPCell(new Phrase(payment.Amount.ToString("C", new CultureInfo("en-US")), infoFont)));
                     paymentTable.AddCell(new PdfPCell(new Phrase(payment.PaymentDate.ToString("dd MMMM yyyy"), infoFont)));
                     paymentTable.AddCell(new PdfPCell(new Phrase(payment.Status.ToString(), infoFont)));
                 }
