@@ -107,11 +107,13 @@ namespace OnlineShop.Services.Data
         public async Task<bool> UpdateProductAsync(ProductEditViewModel product, string userId)
         {
             var productEntity = await _productRepository.GetByIdAsync(product.Id);
+            if (productEntity == null) return false;
 
-            if (productEntity.UserId != userId)
-            {
-                return false;
-            }
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return false;
+
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+            if (!isAdmin && productEntity.UserId != userId) return false;
 
             productEntity.Name = product.Name;
             productEntity.Description = product.Description;

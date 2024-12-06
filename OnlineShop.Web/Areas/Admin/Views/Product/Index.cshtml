@@ -31,11 +31,36 @@
                 {
                     foreach (var product in Model)
                     {
-                        <tr>
+                        <tr class="@(product.IsOnSale ? "table-warning" : "")">
                             <td>@product.Id</td>
-                            <td><img src="@product.ImageUrl" style="height: 100px; width: 100px;" /></td>
+                            <td>
+                                <div class="position-relative">
+                                    <img src="@product.ImageUrl" style="height: 100px; width: 100px;" class="rounded" />
+                                    @if (product.IsOnSale)
+                                    {
+                                        <span class="badge bg-danger position-absolute top-0 start-0">
+                                            Sale @product.DiscountPercentage% Off
+                                        </span>
+                                    }
+                                </div>
+                            </td>
                             <td>@product.Name</td>
-                            <td>@product.Price.ToString("C2", new CultureInfo("en-US"))</td>
+                            <td>
+                                @if (product.IsOnSale)
+                                {
+                                    <span class="text-decoration-line-through text-muted">
+                                        @product.Price.ToString("C2", new CultureInfo("en-US"))
+                                    </span>
+                                    <br />
+                                    <span class="text-danger fw-bold">
+                                        @string.Format(new CultureInfo("en-US"), "{0:C2}", product.Price * (1 - product.DiscountPercentage / 100.0m))
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span>@product.Price.ToString("C2", new CultureInfo("en-US"))</span>
+                                }
+                            </td>
                             <td>@product.StockQuantity</td>
                             <td>
                                 <a href="@Url.Action("Edit", "Product", new { id = product.Id, area = "Admin" })" class="btn btn-warning btn-sm">Edit</a>

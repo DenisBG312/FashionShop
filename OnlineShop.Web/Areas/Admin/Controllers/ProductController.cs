@@ -107,7 +107,7 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
                 return Forbid();
             }
 
-            return RedirectToAction("Details", new { id = model.Id });
+            return RedirectToAction("Index");
         }
 
 
