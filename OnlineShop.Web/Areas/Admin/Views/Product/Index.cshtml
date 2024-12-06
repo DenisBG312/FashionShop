@@ -1,6 +1,7 @@
 ﻿@using System.Globalization
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model IEnumerable<OnlineShop.Data.Models.Product>
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<OnlineShop.Data.Models.Product>
 
 @{
     ViewData["Title"] = "Product Management";
@@ -26,24 +27,47 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var product in Model)
+                @if (Model.Any())
+                {
+                    foreach (var product in Model)
+                    {
+                        <tr>
+                            <td>@product.Id</td>
+                            <td><img src="@product.ImageUrl" style="height: 100px; width: 100px;" /></td>
+                            <td>@product.Name</td>
+                            <td>@product.Price.ToString("C2", new CultureInfo("en-US"))</td>
+                            <td>@product.StockQuantity</td>
+                            <td>
+                                <a href="@Url.Action("Edit", "Product", new { id = product.Id, area = "Admin" })" class="btn btn-warning btn-sm">Edit</a>
+                                <a href="@Url.Action("Details", "Product", new { id = product.Id, area = "Admin" })" class="btn btn-info btn-sm">Details</a>
+                                <a href="javascript:void(0);" onclick="confirmDelete(@product.Id)" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
                 {
                     <tr>
-                        <td>@product.Id</td>
-                        <td><img src="@product.ImageUrl" style="height: 100px; width: 100px;"/></td>
-                        <td>@product.Name</td>
-                        <td>@product.Price.ToString("C2", new CultureInfo("en-US"))</td>
-                        <td>@product.StockQuantity</td>
-                        <td>
-                            <a href="@Url.Action("Edit", "Product", new { id = product.Id, area = "Admin" })" class="btn btn-warning btn-sm">Edit</a>
-                            <a href="@Url.Action("Details", "Product", new { id = product.Id, area = "Admin" })" class="btn btn-info btn-sm">Details</a>
-                            <a href="javascript:void(0);" onclick="confirmDelete(@product.Id)" class="btn btn-danger btn-sm">Delete</a>
-                        </td>
+                        <td colspan="6" class="text-center">No products found.</td>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
+
+    <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+                 new PagedListRenderOptions
+        {
+            UlElementClasses = new[] { "pagination" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" },
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+            DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded
+        })
+    </nav>
 </div>
 
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">

@@ -17,6 +17,7 @@ namespace OnlineShop.Services.Data.Interfaces
         Task<ProductEditViewModel?> GetEditProductViewModelAsync(int productId, string userId);
         Task<bool> UpdateProductAsync(ProductEditViewModel product, string userId);
         Task<List<SelectListItem>> GetGendersAsync();
+        Task<IEnumerable<Product>> GetAllProductsAsync();
         Task<List<SelectListItem>> GetClothingTypesAsync();
         Task SubmitReview(int productId, string userId, int rating, string comment);
         Task<ProductDetailsViewModel?> ViewDetailsAboutProductAsync(int id, string userId);

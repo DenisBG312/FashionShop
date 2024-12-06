@@ -23,6 +23,7 @@ namespace OnlineShop.Services.Data
         private readonly IRepository<Review, int> _reviewRepository;
         private readonly IRepository<ClothingType, int> _clothingTypeRepository;
         private readonly IRepository<Gender, int> _genderRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
 
         public ProductService(BaseRepository<Product, int> productRepository, BaseRepository<Review, int> reviewRepository, UserManager<ApplicationUser> userManager, BaseRepository<Gender, int> genderRepository, BaseRepository<ClothingType, int> clothingTypeRepository)
         {
@@ -30,10 +31,11 @@ namespace OnlineShop.Services.Data
             _reviewRepository = reviewRepository;
             _genderRepository = genderRepository;
             _clothingTypeRepository = clothingTypeRepository;
+            _userManager = userManager;
         }
         public async Task<IEnumerable<Product>> GetProductsAsync(int? genderId, int? clothingTypeId, string searchTerm)
         {
-            var productsQuery = await _productRepository.GetAllAsync();
+            IQueryable<Product> productsQuery = _productRepository.GetAllAttached();
 
             if (genderId.HasValue)
             {
@@ -74,8 +76,14 @@ namespace OnlineShop.Services.Data
         public async Task<ProductEditViewModel?> GetEditProductViewModelAsync(int productId, string userId)
         {
             var product = await _productRepository.GetByIdAsync(productId);
+            if (product == null) return null;
 
-            if (product == null || product.UserId != userId) return null;
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return null;
+
+            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
+
+            if (!isAdmin && product.UserId != userId) return null;
 
             var productEditViewModel = new ProductEditViewModel
             {
@@ -130,6 +138,11 @@ namespace OnlineShop.Services.Data
                 Value = g.Id.ToString(),
                 Text = g.Name
             }).ToList();
+        }
+
+        public async Task<IEnumerable<Product>> GetAllProductsAsync()
+        {
+            return await _productRepository.GetAllAsync();
         }
 
         public async Task<List<SelectListItem>> GetClothingTypesAsync()

@@ -8,6 +8,7 @@ using OnlineShop.Web.ViewModels.Product;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using OnlineShop.Data.Models;
+using X.PagedList.Extensions;
 
 namespace OnlineShop.Web.Areas.Admin.Controllers
 {
@@ -24,11 +25,12 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
             _productService = productService;
             _userManager = userManager;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int pageSize = 4)
         {
-            var products = await _context.Products.ToListAsync();
-            
-            return View(products);
+            int pageNumber = page ?? 1;
+            var products = await _productService.GetAllProductsAsync();
+            var pagedProducts = products.ToPagedList(pageNumber, pageSize);
+            return View(pagedProducts);
         }
 
         [HttpGet]
