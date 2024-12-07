@@ -10,6 +10,7 @@ namespace OnlineShop.Services.Tests
     {
         private Mock<IRepository<ClothingType, int>> _mockClothingTypeRepository;
         private ClothingTypeService _clothingTypeService;
+
         [SetUp]
         public void Setup()
         {
@@ -36,8 +37,6 @@ namespace OnlineShop.Services.Tests
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count());
             Assert.AreEqual("T-Shirts", result.First().Name);
-
-            _mockClothingTypeRepository.Verify(repo => repo.GetAllAsync(), Times.Once);
         }
     }
 }

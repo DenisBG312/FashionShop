@@ -14,7 +14,7 @@ namespace OnlineShop.Services.Data
     {
         private readonly IRepository<Gender, int> _genderRepository;
 
-        public GenderService(BaseRepository<Gender, int> genderRepository)
+        public GenderService(IRepository<Gender, int> genderRepository)
         {
             _genderRepository = genderRepository;
         }
