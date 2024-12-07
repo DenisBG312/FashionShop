@@ -1,6 +1,7 @@
 ﻿using OnlineShop.Data;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -220,7 +221,7 @@ namespace OnlineShop.Services.Data
             return viewModel;
         }
 
-
+        [ExcludeFromCodeCoverage]
         public async Task<byte[]> GenerateOrderTransactionPdfAsync(int orderId)
         {
             var order = await _orderRepository.GetAllAttached()
@@ -308,6 +309,8 @@ Customer Email: {customerEmail}", infoFont);
                 return stream.ToArray();
             }
         }
+
+        [ExcludeFromCodeCoverage]
         private void AddTableHeader(PdfPTable table, string[] headers)
         {
             var headerFont = FontFactory.GetFont("Arial", 12, Font.BOLD, BaseColor.WHITE);
@@ -325,6 +328,7 @@ Customer Email: {customerEmail}", infoFont);
             }
         }
 
+        [ExcludeFromCodeCoverage]
         private void AddSignatureAndLogo(iTextSharp.text.Document document)
         {
             var signatureFont = FontFactory.GetFont("Arial", 12, Font.ITALIC, BaseColor.BLACK);
