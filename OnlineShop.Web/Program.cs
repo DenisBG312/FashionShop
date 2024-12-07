@@ -25,6 +25,7 @@ builder.Services.AddScoped(typeof(BaseRepository<,>));
 
 builder.Services.AddScoped<IRepository<ClothingType, int>, BaseRepository<ClothingType, int>>();
 builder.Services.AddScoped<IRepository<Gender, int>, BaseRepository<Gender, int>>();
+builder.Services.AddScoped<IRepository<Order, int>, BaseRepository<Order, int>>();
 
 builder.Services.RegisterUserDefinedServices(typeof(IProductService).Assembly);
 

@@ -25,11 +25,9 @@ namespace OnlineShop.Services.Data
     public class OrderService : IOrderService
     {
         private readonly IRepository<Order, int> _orderRepository;
-        private readonly UserManager<ApplicationUser> _userManager;
-        public OrderService(BaseRepository<Order, int> orderRepository, UserManager<ApplicationUser> userManager)
+        public OrderService(IRepository<Order, int> orderRepository)
         {
             _orderRepository = orderRepository;
-            _userManager = userManager;
         }
 
 
@@ -42,7 +40,7 @@ namespace OnlineShop.Services.Data
                 .Include(o => o.Payments)
                 .ToListAsync();
 
-            var orderIndexViewModels = new List<OrderIndexViewModel>();
+            List<OrderIndexViewModel> orderIndexViewModels = new List<OrderIndexViewModel>();
 
             foreach (var order in userOrders)
             {
