@@ -6,7 +6,7 @@ using OnlineShop.Services.Data;
 
 namespace OnlineShop.Services.Tests
 {
-    public class Tests
+    public class ClothingTypeServiceTests
     {
         private Mock<IRepository<ClothingType, int>> _mockClothingTypeRepository;
         private ClothingTypeService _clothingTypeService;
