@@ -25,7 +25,7 @@ namespace OnlineShop.Services.Data
         private readonly IRepository<Gender, int> _genderRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProductService(BaseRepository<Product, int> productRepository, BaseRepository<Review, int> reviewRepository, UserManager<ApplicationUser> userManager, BaseRepository<Gender, int> genderRepository, BaseRepository<ClothingType, int> clothingTypeRepository)
+        public ProductService(IRepository<Product, int> productRepository, IRepository<Review, int> reviewRepository, UserManager<ApplicationUser> userManager, IRepository<Gender, int> genderRepository, IRepository<ClothingType, int> clothingTypeRepository)
         {
             _productRepository = productRepository;
             _reviewRepository = reviewRepository;

@@ -11,6 +11,7 @@ using OnlineShop.Services.Data.Interfaces;
 using OnlineShop.Web.Data;
 using OnlineShop.Web.Infrastructure.Extensions;
 using System.Globalization;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,13 +24,21 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddScoped(typeof(BaseRepository<,>));
 
+builder.Services.AddScoped<IRepository<Product, int>, BaseRepository<Product, int>>();
 builder.Services.AddScoped<IRepository<ClothingType, int>, BaseRepository<ClothingType, int>>();
 builder.Services.AddScoped<IRepository<Gender, int>, BaseRepository<Gender, int>>();
 builder.Services.AddScoped<IRepository<Order, int>, BaseRepository<Order, int>>();
+builder.Services.AddScoped<IRepository<ShoppingCart, int>, BaseRepository<ShoppingCart, int>>();
+builder.Services.AddScoped<IRepository<Review, int>, BaseRepository<Review, int>>();
+builder.Services.AddScoped<IRepository<Payment, int>, BaseRepository<Payment, int>>();
+builder.Services.AddScoped<IRepository<OrderProduct, int>, BaseRepository<OrderProduct, int>>();
 
 builder.Services.RegisterUserDefinedServices(typeof(IProductService).Assembly);
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(cfg =>
+{
+    cfg.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+});
 
 
 

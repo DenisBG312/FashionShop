@@ -32,23 +32,18 @@
 
 <div class="container my-5">
     <h1 class="text-center mb-5">@Resource.OurProducts</h1>
-
-    <!-- Filtering Options -->
     <div class="row mb-4 text-center">
-        <!-- Center the row -->
         <div class="col-md-4">
-            <h5>@Resource.FilterGender  <i class="fa-solid fa-venus-mars"></i>:</h5>
+            <h5>@Resource.FilterGender <i class="fa-solid fa-venus-mars"></i>:</h5>
             <div class="d-flex justify-content-center flex-wrap">
-                <!-- Center buttons -->
                 <a href="@Url.Action("Index", "Product", new { genderId = "1", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "1" ? "active" : "")">@Resource.Men</a>
                 <a href="@Url.Action("Index", "Product", new { genderId = "2", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "2" ? "active" : "")">@Resource.Women</a>
                 <a href="@Url.Action("Index", "Product", new { genderId = "3", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "3" ? "active" : "")">@Resource.Kids</a>
             </div>
         </div>
         <div class="col-md-4">
-            <h5>@Resource.FilterClothingType  <i class="fa-solid fa-shirt"></i>:</h5>
+            <h5>@Resource.FilterClothingType <i class="fa-solid fa-shirt"></i>:</h5>
             <div class="d-flex justify-content-center flex-wrap">
-                <!-- Center buttons -->
                 <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "1" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "1" ? "active" : "")">@Resource.T_Shirts</a>
                 <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "2" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "2" ? "active" : "")">@Resource.Jackets</a>
                 <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "3" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "3" ? "active" : "")">@Resource.Shoes</a>
@@ -58,43 +53,32 @@
             </div>
         </div>
         <div class="col-md-4">
-            <!-- Single Reset Button -->
-            <h5>&nbsp;</h5> <!-- Just for spacing -->
             <div class="d-flex justify-content-center">
-                <!-- Center the reset button -->
-                <a href="@Url.Action("Index", "Product", new { genderId = "", clothingTypeId = "" })" class="btn btn-outline-danger">@Resource.ResetFilters  <i class="fa-solid fa-trash-can-arrow-up"></i></a>
+                <a href="@Url.Action("Index", "Product", new { genderId = "", clothingTypeId = "" })" class="btn btn-outline-danger">@Resource.ResetFilters <i class="fa-solid fa-trash-can-arrow-up"></i></a>
             </div>
         </div>
     </div>
 
-    <!-- Product Grid -->
     <div class="row g-4">
         @if (Model.Any())
         {
             foreach (var product in Model)
             {
                 <div class="col-sm-6 col-md-4">
-                    <!-- Card Styling -->
                     <div class="card product-card shadow-sm" style="border-radius: 15px; overflow: hidden; position: relative;">
-                        <!-- On Sale Badge -->
                         @if (product.IsOnSale && product.DiscountPercentage.HasValue)
                         {
                             <span class="badge bg-danger text-white position-absolute" style="top: 10px; left: 10px; z-index: 10; font-size: 0.9rem; padding: 5px 10px; border-radius: 5px;">
                                 @Resource.OnSale  @product.DiscountPercentage<i class="fa-solid fa-percent"></i>
                             </span>
                         }
-
-                        <!-- Product Image -->
                         <div class="card-img-top p-3 text-center bg-light" style="height: 280px;">
                             <img src="@product.ImageUrl" alt="@product.Name" class="img-fluid" style="max-height: 100%; width: auto; object-fit: contain;">
                         </div>
 
-                        <!-- Card Body -->
                         <div class="card-body text-center">
-                            <!-- Product Name -->
                             <h5 class="card-title font-weight-bold">@product.Name</h5>
 
-                            <!-- Product Price -->
                             <p class="card-text text-success fw-bold" style="font-size: 1.2rem;">
                                 @if (product.IsOnSale && product.DiscountPercentage.HasValue)
                                 {
@@ -109,10 +93,8 @@
                                 }
                             </p>
 
-                            <!-- Stock Quantity -->
                             <p class="card-text text-muted">@Resource.Stock: <strong>@product.StockQuantity</strong></p>
 
-                            <!-- View Details Button -->
                             <a href="@Url.Action("Details", "Product", new { id = product.Id })" class="btn btn-outline-primary rounded-pill px-4">
                                 @Resource.ViewDetails <i class="fa-solid fa-circle-info"></i>
                             </a>

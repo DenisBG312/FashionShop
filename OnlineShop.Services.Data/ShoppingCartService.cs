@@ -23,7 +23,7 @@ namespace OnlineShop.Services.Data
         private readonly IRepository<Payment, int> _paymentRepository;
         private readonly IRepository<OrderProduct, int> _orderProductRepository;
 
-        public ShoppingCartService(BaseRepository<ShoppingCart, int> shoppingCartRepository, BaseRepository<Product, int> productRepository, BaseRepository<Order, int> orderRepository, BaseRepository<Payment, int> paymentRepository, BaseRepository<OrderProduct, int> orderProductRepository)
+        public ShoppingCartService(IRepository<ShoppingCart, int> shoppingCartRepository, IRepository<Product, int> productRepository, IRepository<Order, int> orderRepository, IRepository<Payment, int> paymentRepository, IRepository<OrderProduct, int> orderProductRepository)
         {
             _shoppingCartRepository = shoppingCartRepository;
             _productRepository = productRepository;
