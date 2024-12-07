@@ -13,7 +13,7 @@ namespace OnlineShop.Services.Data
     public class ClothingTypeService : IClothingTypeService
     {
         private readonly IRepository<ClothingType, int> _clothingTypeRepository;
-        public ClothingTypeService(BaseRepository<ClothingType, int> clothingTypeRepository)
+        public ClothingTypeService(IRepository<ClothingType, int> clothingTypeRepository)
         {
             _clothingTypeRepository = clothingTypeRepository;
         }
