@@ -21,5 +21,6 @@ namespace OnlineShop.Services.Data.Interfaces
         Task<List<SelectListItem>> GetClothingTypesAsync();
         Task SubmitReview(int productId, string userId, int rating, string comment);
         Task<ProductDetailsViewModel?> ViewDetailsAboutProductAsync(int id, string userId);
+        Task<bool> DeleteProductAsync(int id);
     }
 }

@@ -205,5 +205,19 @@ namespace OnlineShop.Services.Data
 
             return productDetailsViewModel;
         }
+
+        public async Task<bool> DeleteProductAsync(int id)
+        {
+            var product = await _productRepository.GetByIdAsync(id);
+
+            if (product == null)
+            {
+                return false;
+            }
+
+            await _productRepository.DeleteAsync(product.Id);
+            await _productRepository.SaveChangesAsync();
+            return true;
+        }
     }
 }

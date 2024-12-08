@@ -18,8 +18,6 @@
     @if (SignInManager.IsSignedIn(User))
     {
         var user = await UserManager.GetUserAsync(User);
-
-        // Check if user is null (it shouldn't be, but it's always good to add a safety check)
         if (user != null)
         {
             if (String.IsNullOrEmpty(user.ProfileImgUrl))

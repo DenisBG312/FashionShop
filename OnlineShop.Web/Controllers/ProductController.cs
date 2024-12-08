@@ -33,10 +33,10 @@ namespace OnlineShop.Web.Controllers
         {
             var products = await _productService.GetProductsAsync(genderId, clothingTypeId, searchTerm);
 
-            var pagedProducts = products.ToPagedList(page, pageSize); // Ensure to use ToPagedList
+            var pagedProducts = products.ToPagedList(page, pageSize);
 
-            ViewBag.GenderId = genderId; // Pass genderId to the view
-            ViewBag.ClothingTypeId = clothingTypeId; // Pass clothingTypeId to the view
+            ViewBag.GenderId = genderId;
+            ViewBag.ClothingTypeId = clothingTypeId;
 
             return View(pagedProducts);
         }

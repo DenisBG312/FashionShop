@@ -124,6 +124,31 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
             return View(productDetails);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var isDeleted = await _productService.DeleteProductAsync(id);
+
+                if (isDeleted)
+                {
+                    TempData["SuccessMessage"] = "Product deleted successfully.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to delete the product. Please try again.";
+                }
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "An error occurred while trying to delete the product.";
+                return RedirectToAction("Index");
+            }
+        }
+
 
         public string? GetUserId()
         {
