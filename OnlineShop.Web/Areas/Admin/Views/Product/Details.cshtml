@@ -1,0 +1,90 @@
+﻿@using System.Globalization
+@model OnlineShop.Web.ViewModels.Product.ProductDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container my-5">
+    <div class="row">
+        <!-- Left Column: Product Image and Basic Info -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src="@Model.ImageUrl" alt="@Model.Name" class="card-img-top" />
+                }
+                else
+                {
+                    <img src="https://via.placeholder.com/400" alt="No Image Available" class="card-img-top" />
+                }
+            </div>
+        </div>
+
+        <!-- Right Column: Product Details and Reviews -->
+        <div class="col-md-6">
+            <div class="card shadow-sm p-4">
+                <h2 class="mb-4">@Model.Name</h2>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="text-muted">Posted by <strong>@Model.PostedBy</strong></div>
+                    <div class="text-primary">@Model.Gender</div>
+                </div>
+
+                <p class="lead">Price: <strong>@Model.Price.ToString("C", new CultureInfo("en-US"))</strong></p>
+
+                @if (Model.IsOnSale)
+                {
+                    <p class="text-success">On Sale: <strong>@Model.DiscountPercentage% OFF</strong></p>
+                }
+
+                <p class="mt-4"><strong>Stock Quantity:</strong> @Model.StockQuantity</p>
+
+                <p class="mt-4"><strong>Description:</strong></p>
+                <p>@Model.Description</p>
+
+                <div class="mt-4">
+                    <a href="@Url.Action("Edit", "Product", new { id = Model.Id })" class="btn btn-primary btn-lg me-2">
+                        Edit Product
+                    </a>
+                    <a href="@Url.Action("Delete", "Product", new { id = Model.Id })" class="btn btn-danger btn-lg"
+                       onclick="return confirm('Are you sure you want to delete this product?')">
+                        Delete Product
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Reviews Section -->
+    <div class="mt-5">
+        <h3 class="mb-4">Reviews</h3>
+
+        @if (Model.Reviews != null && Model.Reviews.Any())
+        {
+            <ul class="list-unstyled">
+                @foreach (var review in Model.Reviews)
+                {
+                    <li class="media mb-4">
+                        <img src="https://via.placeholder.com/50" alt="@review.User.UserName" class="mr-3 rounded-circle">
+                        <div class="media-body">
+                            <h5 class="mt-0 mb-1">@review.User.UserName</h5>
+                            <p>@review.Comment</p>
+                        </div>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No reviews yet for this product. Be the first to leave a review!</p>
+        }
+
+        <div class="mt-4">
+            <a href="@Url.Action("CreateReview", "Review", new { productId = Model.Id })" class="btn btn-info">
+                Leave a Review
+            </a>
+        </div>
+    </div>
+</div>
+

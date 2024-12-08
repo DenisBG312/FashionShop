@@ -110,6 +110,20 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Details(int id)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var productDetails = await _productService.ViewDetailsAboutProductAsync(id, userId);
+
+            if (productDetails == null)
+            {
+                return NotFound();
+            }
+
+            return View(productDetails);
+        }
+
 
         public string? GetUserId()
         {
