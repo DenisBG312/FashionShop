@@ -1,14 +1,12 @@
 ﻿@{
     ViewData["Title"] = "Admin Dashboard";
-    Layout = "~/Views/Shared/_Layout.cshtml";  // Use the shared layout
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container mt-5">
     <h1 class="mb-5 text-center text-primary">Admin Dashboard</h1>
 
-    <!-- Dashboard Cards -->
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-        <!-- Users Section -->
         <div class="col">
             <div class="card h-100 shadow border-primary">
                 <div class="card-header bg-primary text-white text-center py-3">
@@ -34,7 +32,6 @@
             </div>
         </div>
 
-        <!-- Orders Section -->
         <div class="col">
             <div class="card h-100 shadow border-danger">
                 <div class="card-header bg-danger text-white text-center py-3">
@@ -43,35 +40,6 @@
                 <div class="card-body d-flex flex-column justify-content-between">
                     <p class="card-text">Track and manage customer orders. View order details, process cancellations, and more.</p>
                     <a href="@Url.Action("Index", "Order", new { area = "Admin" })" class="btn btn-outline-danger w-100">Go to Orders</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Additional Sections -->
-    <div class="row row-cols-1 row-cols-md-2 g-4 mt-5">
-        <!-- Reports Section -->
-        <div class="col">
-            <div class="card h-100 shadow border-warning">
-                <div class="card-header bg-warning text-dark text-center py-3">
-                    <h5 class="card-title mb-0">Reports</h5>
-                </div>
-                <div class="card-body d-flex flex-column justify-content-between">
-                    <p class="card-text">Generate and view detailed reports to track sales, performance, and other key metrics.</p>
-                    <a href="@Url.Action("Reports", "Dashboard", new { area = "Admin" })" class="btn btn-outline-warning w-100">View Reports</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Settings Section -->
-        <div class="col">
-            <div class="card h-100 shadow border-secondary">
-                <div class="card-header bg-secondary text-white text-center py-3">
-                    <h5 class="card-title mb-0">Settings</h5>
-                </div>
-                <div class="card-body d-flex flex-column justify-content-between">
-                    <p class="card-text">Adjust global settings such as payment options, shipping methods, and more to keep the store running smoothly.</p>
-                    <a href="@Url.Action("Settings", "Dashboard", new { area = "Admin" })" class="btn btn-outline-secondary w-100">Go to Settings</a>
                 </div>
             </div>
         </div>
