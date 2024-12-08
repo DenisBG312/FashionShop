@@ -348,5 +348,7 @@ namespace OnlineShop.Services.Tests
             Assert.AreEqual(200, result.Payments.First().Amount);
             Assert.AreEqual(Status.Pending, result.Payments.First().Status);
         }
+
+
     }
 }
