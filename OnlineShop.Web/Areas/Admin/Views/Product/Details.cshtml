@@ -7,7 +7,6 @@
 
 <div class="container my-5">
     <div class="row">
-        <!-- Left Column: Product Image and Basic Info -->
         <div class="col-md-6">
             <div class="card shadow-sm">
                 @if (!string.IsNullOrEmpty(Model.ImageUrl))
@@ -21,7 +20,6 @@
             </div>
         </div>
 
-        <!-- Right Column: Product Details and Reviews -->
         <div class="col-md-6">
             <div class="card shadow-sm p-4">
                 <h2 class="mb-4">@Model.Name</h2>
@@ -31,7 +29,23 @@
                     <div class="text-primary">@Model.Gender</div>
                 </div>
 
-                <p class="lead">Price: <strong>@Model.Price.ToString("C", new CultureInfo("en-US"))</strong></p>
+                <div class="fs-5 mb-5">
+                    @if (Model.IsOnSale && Model.DiscountPercentage.HasValue)
+                    {
+                        <span class="text-muted text-decoration-line-through">
+                            @Model.Price.ToString("C", new CultureInfo("en-US"))
+                        </span>
+                        <span class="text-success fw-bold" style="font-size: 1.5rem;">
+                            @((Model.Price - (Model.Price * (Model.DiscountPercentage ?? 0) / 100)).ToString("C", new CultureInfo("en-US")))
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="text-success fw-bold" style="font-size: 1.5rem;">
+                            @Model.Price.ToString("C", new CultureInfo("en-US"))
+                        </span>
+                    }
+                </div>
 
                 @if (Model.IsOnSale)
                 {
@@ -57,4 +71,3 @@
         </div>
     </div>
 </div>
-

@@ -7,7 +7,7 @@ namespace OnlineShop.Web.ViewModels.Product
     public class CreateProductViewModel
     {
         [Required(ErrorMessage = "Product name is required.")]
-        [StringLength(100, MinimumLength = 5, ErrorMessage = "Product name cannot exceed 100 characters.")]
+        [StringLength(100, MinimumLength = 5, ErrorMessage = "Product name must be between {2} and {1} characters.")]
         public string Name { get; set; } = null!;
 
         [Required(ErrorMessage = "Description is required.")]

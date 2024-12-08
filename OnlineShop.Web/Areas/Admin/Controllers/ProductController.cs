@@ -139,14 +139,14 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
                 {
                     TempData["ErrorMessage"] = "Failed to delete the product. Please try again.";
                 }
-
-                return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = "An error occurred while trying to delete the product.";
-                return RedirectToAction("Index");
+                Console.WriteLine(ex.Message);
             }
+
+            return RedirectToAction("Index", "Product");
         }
 
 
