@@ -47,17 +47,19 @@
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
-                                <tr>
-                                    <th>Product Name</th>
-                                    <th>Quantity</th>
-                                    <th>Price</th>
-                                    <th>Subtotal</th>
-                                </tr>
+                            <tr>
+                                <th>Product Image</th>
+                                <th>Product Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th>Subtotal</th>
+                            </tr>
                             </thead>
                             <tbody>
                                 @foreach (var product in Model.Products)
                                 {
                                     <tr>
+                                        <td><img src="@product.ImageUrl" alt="product-image" style="height: 100px; width: 100px"/></td>
                                         <td>@product.Name</td>
                                         <td>@product.Quantity</td>
                                         <td>@product.Price.ToString("C", new CultureInfo("en-US"))</td>

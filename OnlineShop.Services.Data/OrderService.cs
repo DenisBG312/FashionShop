@@ -175,6 +175,7 @@ namespace OnlineShop.Services.Data
                 Products = order.OrderProducts.Select(op => new ProductDetailsAdminViewModel()
                 {
                     Name = op.Product.Name,
+                    ImageUrl = op.Product.ImageUrl,
                     Quantity = op.Quantity,
                     Price = op.UnitPrice
                 }).ToList(),
