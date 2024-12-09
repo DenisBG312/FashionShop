@@ -1,0 +1,113 @@
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model OnlineShop.Web.ViewModels.Order.OrderDetailsViewAdminModel
+
+<div class="container my-4">
+    <h2 class="text-center mb-4">Order Details</h2>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Order Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Order ID:</strong> @Model.OrderId</p>
+                            <p><strong>Order Date:</strong> @Model.OrderDate.ToString("yyyy-MM-dd HH:mm")</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Total Amount:</strong> @Model.TotalAmount.ToString("C", new CultureInfo("en-US"))</p>
+                            <p>
+                                <strong>Status:</strong>
+                                <span class="badge @(Model.IsCompleted ? "bg-success" : (Model.IsCancelled ? "bg-danger" : "bg-warning"))">
+                                    @(Model.IsCompleted ? "Completed" : (Model.IsCancelled ? "Cancelled" : "Pending"))
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <p><strong>User:</strong> @Model.UserName</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Products in Order</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in Model.Products)
+                                {
+                                    <tr>
+                                        <td>@product.Name</td>
+                                        <td>@product.Quantity</td>
+                                        <td>@product.Price.ToString("C", new CultureInfo("en-US"))</td>
+                                        <td>@((product.Quantity * product.Price).ToString("C", new CultureInfo("en-US")))</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Payment Information</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Payment Method</th>
+                                    <th>Amount</th>
+                                    <th>Payment Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var payment in Model.Payments)
+                                {
+                                    <tr>
+                                        <td>@payment.PaymentMethod</td>
+                                        <td>@payment.Amount.ToString("C", new CultureInfo("en-US"))</td>
+                                        <td>@payment.PaymentDate.ToString("yyyy-MM-dd HH:mm")</td>
+                                        <td>
+                                            <span class="badge @(payment.Status == "Completed" ? "bg-success" : "bg-warning")">@payment.Status</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a asp-action="Index" asp-controller="Order" class="btn btn-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Orders
+        </a>
+    </div>
+</div>

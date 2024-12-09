@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Identity;
 using OnlineShop.Data.Repository.Interfaces;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using OnlineShop.Web.ViewModels.Payment;
+using OnlineShop.Web.ViewModels.Product;
 
 namespace OnlineShop.Services.Data
 {
@@ -32,7 +34,42 @@ namespace OnlineShop.Services.Data
         }
 
 
-        public async Task<IEnumerable<OrderIndexViewModel>> GetAllOrders(string userId)
+        public async Task<List<OrderIndexViewModel>> GetAllOrders()
+        {
+            var orders = await _orderRepository.GetAllAttached()
+                .Include(o => o.OrderProducts)
+                .ThenInclude(o => o.Product)
+                .Include(p => p.Payments)
+                .Include(s => s.User)
+                .ToListAsync();
+
+            List<OrderIndexViewModel> orderIndexViewModels = new List<OrderIndexViewModel>();
+
+            foreach (var order in orders)
+            {
+                orderIndexViewModels.Add(new OrderIndexViewModel
+                {
+                    OrderId = order.Id,
+                    CustomOrderNumber = orderIndexViewModels.Count + 1,
+                    OrderDate = order.OrderDate,
+                    TotalAmount = order.Payments.Sum(p => p.Amount),
+                    IsCompleted = order.IsCompleted,
+                    IsCancelled = order.IsCancelled,
+                    Transactions = order.Payments.Select(p => new TransactionViewModel
+                    {
+                        PaymentMethod = p.PaymentMethod.ToString(),
+                        Amount = p.Amount,
+                        PaymentDate = p.PaymentDate,
+                        Status = p.Status.ToString()
+                    }),
+                    UserName = order.User.UserName
+                });
+            }
+
+            return orderIndexViewModels;
+        }
+
+        public async Task<IEnumerable<OrderIndexViewModel>> GetAllOrdersForUser(string userId)
         {
             var userOrders = await _orderRepository.GetAllAttached()
                 .Where(o => o.UserId == userId)
@@ -113,6 +150,42 @@ namespace OnlineShop.Services.Data
             };
 
             return viewModel;
+        }
+
+        public async Task<OrderDetailsViewAdminModel> GetOrderAdminDetails(int id)
+        {
+            var order = await _orderRepository.GetAllAttached()
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .Include(o => o.Payments)
+                .Include(o => o.User)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
+            if (order == null)
+                return null;
+
+            return new OrderDetailsViewAdminModel()
+            {
+                OrderId = order.Id,
+                OrderDate = order.OrderDate,
+                TotalAmount = order.TotalAmount,
+                IsCompleted = order.IsCompleted,
+                IsCancelled = order.IsCancelled,
+                UserName = order.User.UserName,
+                Products = order.OrderProducts.Select(op => new ProductDetailsAdminViewModel()
+                {
+                    Name = op.Product.Name,
+                    Quantity = op.Quantity,
+                    Price = op.UnitPrice
+                }).ToList(),
+                Payments = order.Payments.Select(p => new PaymentDetailsAdminViewModel()
+                {
+                    PaymentMethod = p.PaymentMethod.ToString(),
+                    Amount = p.Amount,
+                    PaymentDate = p.PaymentDate,
+                    Status = p.Status.ToString()
+                }).ToList()
+            };
         }
 
         public async Task<bool> ReactivateOrder(int orderId)

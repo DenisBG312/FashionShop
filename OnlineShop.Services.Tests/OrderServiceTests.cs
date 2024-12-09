@@ -67,7 +67,7 @@ namespace OnlineShop.Services.Tests
                 .Setup(r => r.GetAllAttached())
                 .Returns(orderMockQueryable);
 
-            IEnumerable<OrderIndexViewModel> allOrdersActual = await _orderService.GetAllOrders(userId);
+            IEnumerable<OrderIndexViewModel> allOrdersActual = await _orderService.GetAllOrdersForUser(userId);
 
             Assert.AreEqual(1, allOrdersActual.Count());
             var order = allOrdersActual.First();

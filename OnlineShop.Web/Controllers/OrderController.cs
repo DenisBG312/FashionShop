@@ -27,7 +27,7 @@ namespace OnlineShop.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var orders = await _orderService.GetAllOrders(userId);
+            var orders = await _orderService.GetAllOrdersForUser(userId);
 
             return View(orders.ToList());
         }
