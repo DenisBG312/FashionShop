@@ -193,10 +193,10 @@
     <value> Мъжка Колекция</value>
   </data>
   <data name="MyOrders" xml:space="preserve">
-    <value>Моите поръчки</value>
+    <value>Поръчки</value>
   </data>
   <data name="MyShoppingCart" xml:space="preserve">
-    <value>Моята количка</value>
+    <value>Количка</value>
   </data>
   <data name="OnSale" xml:space="preserve">
     <value>Намаление</value>

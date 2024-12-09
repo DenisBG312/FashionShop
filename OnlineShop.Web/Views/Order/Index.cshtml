@@ -12,69 +12,50 @@
 
     <!-- Set 2 cards per row across all screen sizes -->
     <div class="row row-cols-1 row-cols-md-2 g-4">
-        @foreach (var order in Model)
+        @if (Model.Any())
         {
-            <div class="col">
-                <div class="card shadow-sm border-0 rounded h-100" style="background-color: #f9f9f9;">
-                    <!-- Consistent shadow and neutral background -->
-                    <div class="card-body text-center">
-                        <h5 class="card-title mb-3">@Resource.Order #@order.CustomOrderNumber</h5>
+            @foreach (var order in Model)
+            {
+                <div class="col">
+                    <div class="card shadow-sm border-0 rounded h-100" style="background-color: #f9f9f9;">
+                        <!-- Consistent shadow and neutral background -->
+                        <div class="card-body text-center">
+                            <h5 class="card-title mb-3">@Resource.Order #@order.CustomOrderNumber</h5>
 
-                        <p class="card-text mb-4">
-                            <strong>@Resource.OrderDate:</strong> @order.OrderDate.ToString("MMMM dd, yyyy")<br />
-                            <strong>@Resource.TotalAmount:</strong>
-                            <span class="text-success fw-bold">@order.TotalAmount.ToString("C", new CultureInfo("en-US"))</span> <!-- Eye-catching total -->
-                            <br />
-                            <strong>@Resource.Status:</strong>
-                            <span class="badge rounded-pill @(order.IsCompleted ? "bg-success" : order.IsCancelled ? "bg-danger" : "bg-warning")" style="font-size: 0.9rem;">
-                                @(order.IsCompleted ? $"{Resource.Completed}" : order.IsCancelled ? $"{Resource.Cancelled}" : $"{Resource.Pending}")
-                            </span>
-                        </p>
+                            <p class="card-text mb-4">
+                                <strong>@Resource.OrderDate:</strong> @order.OrderDate.ToString("MMMM dd, yyyy")<br />
+                                <strong>@Resource.TotalAmount:</strong>
+                                <span class="text-success fw-bold">@order.TotalAmount.ToString("C", new CultureInfo("en-US"))</span> <!-- Eye-catching total -->
+                                <br />
+                                <strong>@Resource.Status:</strong>
+                                <span class="badge rounded-pill @(order.IsCompleted ? "bg-success" : order.IsCancelled ? "bg-danger" : "bg-warning")" style="font-size: 0.9rem;">
+                                    @(order.IsCompleted ? $"{Resource.Completed}" : order.IsCancelled ? $"{Resource.Cancelled}" : $"{Resource.Pending}")
+                                </span>
+                            </p>
 
-                        <div class="d-flex justify-content-between">
-                            <a asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-primary px-4">
-                                @Resource.ViewDetails <i class="fa-solid fa-eye"></i>
-                            </a>
-                            @if (!order.IsCancelled && !order.IsCompleted)
-                            {
-                                <a href="javascript:void(0);" onclick="confirmCancel(@order.OrderId)" class="btn btn-danger px-4">
-                                    @Resource.Cancel <i class="fa-solid fa-ban"></i>
+                            <div class="d-flex justify-content-between">
+                                <a asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-primary px-4">
+                                    @Resource.ViewDetails <i class="fa-solid fa-eye"></i>
                                 </a>
-                            }
+                                @if (!order.IsCancelled && !order.IsCompleted)
+                                {
+                                    <form method="post" asp-action="Cancel" asp-route-id="@order.OrderId" asp-area="">
+                                        <button type="submit" class="btn btn-danger px-4">
+                                            @Resource.Cancel <i class="fa-solid fa-ban"></i>
+                                        </button>
+                                    </form>
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                You haven't placed any orders yet! Start adding to your cart and then place an order
             </div>
         }
     </div>
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    function confirmCancel(orderId) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "This will cancel your order.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, cancel it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = '/Order/Cancel'; // Adjust the action to cancel instead of delete
-
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'id';
-                input.value = orderId;
-
-                form.appendChild(input);
-                document.body.appendChild(form);
-                form.submit();
-            }
-        });
-    }
-</script>

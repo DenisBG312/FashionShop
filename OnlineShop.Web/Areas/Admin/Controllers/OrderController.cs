@@ -5,6 +5,8 @@ using OnlineShop.Services.Data.Interfaces;
 using System.Security.Claims;
 using OnlineShop.Data.Models;
 using OnlineShop.Web.ViewModels.Order;
+using X.PagedList.Extensions;
+using static OnlineShop.Common.EntityValidationConstants;
 
 namespace OnlineShop.Web.Areas.Admin.Controllers
 {
@@ -18,10 +20,13 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
             _orderService = orderService;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int pageSize = 5)
         {
+            int pageNumber = page ?? 1;
             var orders = await _orderService.GetAllOrders();
-            return View(orders);
+            var pagedOrders = orders.ToPagedList(pageNumber, pageSize);
+
+            return View(pagedOrders);
         }
 
         [HttpPost]

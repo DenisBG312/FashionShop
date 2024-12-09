@@ -1,4 +1,5 @@
-﻿@model IEnumerable<OnlineShop.Web.Areas.Admin.Models.UserViewModel>
+﻿@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<OnlineShop.Web.Areas.Admin.Models.UserViewModel>
 
 @{
     ViewData["Title"] = "Manage Users";
@@ -25,43 +26,57 @@
     <div class="table-responsive">
         <table class="table table-bordered table-striped table-hover align-middle text-center">
             <thead class="table-dark">
-                <tr>
-                    <th>User Name</th>
-                    <th>Email</th>
-                    <th>Roles</th>
-                    <th>Actions</th>
-                </tr>
+            <tr>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Actions</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var userViewModel in Model)
-                {
-                    <tr>
-                        <td>@userViewModel.User.UserName</td>
-                        <td>@userViewModel.User.Email</td>
-                        <td>
-                            @if (userViewModel.Roles.Contains("Admin"))
-                            {
-                                <span class="badge bg-secondary">Admin</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-light text-dark">User</span>
-                            }
-                        </td>
-                        <td>
-                            <a href="@Url.Action("Details", "User", new { area = "Admin", id = userViewModel.User.Id })" class="btn btn-info btn-sm">
-                                <i class="bi bi-eye"></i> Details
-                            </a>
-                            <a href="@Url.Action("Delete", "User", new { area = "Admin", id = userViewModel.User.Id })" class="btn btn-danger btn-sm">
-                                <i class="bi bi-trash"></i> Delete
-                            </a>
-                            <a href="@Url.Action("AssignRoles", "User", new { area = "Admin", id = userViewModel.User.Id })" class="btn btn-warning btn-sm">
-                                <i class="bi bi-gear"></i> Assign Roles
-                            </a>
-                        </td>
-                    </tr>
-                }
+            @foreach (var userViewModel in Model)
+            {
+                <tr>
+                    <td>@userViewModel.User.UserName</td>
+                    <td>@userViewModel.User.Email</td>
+                    <td>
+                        @if (userViewModel.Roles.Contains("Admin"))
+                        {
+                            <span class="badge bg-secondary">Admin</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-light text-dark">User</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Details", "User", new { area = "Admin", id = userViewModel.User.Id })" class="btn btn-info btn-sm">
+                            <i class="bi bi-eye"></i> Details
+                        </a>
+                        <a href="@Url.Action("Delete", "User", new { area = "Admin", id = userViewModel.User.Id })" class="btn btn-danger btn-sm">
+                            <i class="bi bi-trash"></i> Delete
+                        </a>
+                        <a href="@Url.Action("AssignRoles", "User", new { area = "Admin", id = userViewModel.User.Id })" class="btn btn-warning btn-sm">
+                            <i class="bi bi-gear"></i> Assign Roles
+                        </a>
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     </div>
+    
+    <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+            new PagedListRenderOptions
+            {
+                UlElementClasses = new[] { "pagination" },
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+                DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded
+            })
+    </nav>
 </div>

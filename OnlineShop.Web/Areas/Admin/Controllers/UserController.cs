@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
 using OnlineShop.Data.Models;
 using OnlineShop.Web.Areas.Admin.Models;
+using X.PagedList.Extensions;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace OnlineShop.Web.Areas.Admin.Controllers
 {
@@ -23,8 +25,9 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
             _roleManager = roleManager;
             _context = context;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page, int pageSize = 5)
         {
+            int pageNumber = page ?? 1;
             var users = await _userManager.Users.ToListAsync();
 
             var userViewModels = new List<UserViewModel>();
@@ -39,7 +42,9 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
                     Roles = roles
                 });
             }
-            return View(userViewModels);
+
+            var pagedUsers = userViewModels.ToPagedList(pageNumber, pageSize);
+            return View(pagedUsers);
         }
 
         public async Task<IActionResult> Details(string id)
