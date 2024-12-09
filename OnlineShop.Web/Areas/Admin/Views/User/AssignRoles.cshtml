@@ -17,15 +17,18 @@
             <tbody>
             @for (int i = 0; i < Model.Roles.Count; i++)
             {
-                <tr>
-                    <td>
-                        @Model.Roles[i].RoleName
-                    </td>
-                    <td>
-                        <input asp-for="Roles[i].IsAssigned" type="checkbox" />
-                        <input asp-for="Roles[i].RoleName" type="hidden" />
-                    </td>
-                </tr>
+                if (Model.Roles[i].RoleName == "Admin")
+                {
+                    <tr>
+                        <td>
+                            @Model.Roles[i].RoleName
+                        </td>
+                        <td>
+                            <input asp-for="Roles[i].IsAssigned" type="checkbox" />
+                            <input asp-for="Roles[i].RoleName" type="hidden" />
+                        </td>
+                    </tr>
+                }
             }
             </tbody>
         </table>

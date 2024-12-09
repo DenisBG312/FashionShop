@@ -182,7 +182,7 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var roles = await _roleManager.Roles.ToListAsync();
+            var roles = await _roleManager.Roles.Where(r => r.Name == "Admin").ToListAsync();
             var userRoles = await _userManager.GetRolesAsync(user);
 
             var model = new AssignRolesViewModel
@@ -211,11 +211,24 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
             }
 
             var currentRoles = await _userManager.GetRolesAsync(user);
-            var rolesToAdd = model.Roles.Where(r => r.IsAssigned && !currentRoles.Contains(r.RoleName)).Select(r => r.RoleName);
-            var rolesToRemove = model.Roles.Where(r => !r.IsAssigned && currentRoles.Contains(r.RoleName)).Select(r => r.RoleName);
 
-            await _userManager.AddToRolesAsync(user, rolesToAdd);
-            await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
+            var rolesToAdd = model.Roles
+                .Where(r => r.RoleName == "Admin" && r.IsAssigned && !currentRoles.Contains(r.RoleName))
+                .Select(r => r.RoleName);
+
+            var rolesToRemove = model.Roles
+                .Where(r => r.RoleName == "Admin" && !r.IsAssigned && currentRoles.Contains(r.RoleName))
+                .Select(r => r.RoleName);
+
+            if (rolesToAdd.Any())
+            {
+                await _userManager.AddToRolesAsync(user, rolesToAdd);
+            }
+
+            if (rolesToRemove.Any())
+            {
+                await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
+            }
 
             TempData["SuccessMessage"] = $"Roles have been updated for {user.UserName}.";
             return RedirectToAction(nameof(Index));

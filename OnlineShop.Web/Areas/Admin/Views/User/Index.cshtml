@@ -39,9 +39,9 @@
                         <td>@userViewModel.User.UserName</td>
                         <td>@userViewModel.User.Email</td>
                         <td>
-                            @if (userViewModel.Roles.Any())
+                            @if (userViewModel.Roles.Contains("Admin"))
                             {
-                                <span class="badge bg-secondary">@string.Join(", ", userViewModel.Roles)</span>
+                                <span class="badge bg-secondary">Admin</span>
                             }
                             else
                             {
