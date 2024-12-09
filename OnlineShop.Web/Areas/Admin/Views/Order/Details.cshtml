@@ -2,6 +2,10 @@
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model OnlineShop.Web.ViewModels.Order.OrderDetailsViewAdminModel
 
+@{
+    ViewData["Title"] = $"Details For Order #{Model.OrderId}";
+}
+
 <div class="container my-4">
     <h2 class="text-center mb-4">Order Details</h2>
 
@@ -36,7 +40,7 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="card shadow">
-                <div class="card-header bg-secondary text-white">
+                <div class="card-header bg-secondary text-primary">
                     <h5 class="mb-0">Products in Order</h5>
                 </div>
                 <div class="card-body">
