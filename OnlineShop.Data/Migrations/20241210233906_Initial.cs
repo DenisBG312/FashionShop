@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace OnlineShop.Web.Data.Migrations
+namespace OnlineShop.Data.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -13,25 +13,47 @@ namespace OnlineShop.Web.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "FirstName",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
+            migrationBuilder.CreateTable(
+                name: "AspNetRoles",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
 
-            migrationBuilder.AddColumn<string>(
-                name: "LastName",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<string>(
-                name: "ProfileImgUrl",
-                table: "AspNetUsers",
-                type: "nvarchar(max)",
-                nullable: true);
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProfileImgUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "ClothingTypes",
@@ -57,6 +79,112 @@ namespace OnlineShop.Web.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Genders", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -249,11 +377,7 @@ namespace OnlineShop.Web.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ProfileImgUrl", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[,]
-                {
-                    { "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f", 0, "3ed08ec0-5c25-4bf8-8731-87024f2bedef", "bgdenibg@gmail.com", true, "Denis", "Tsranski", false, null, "BGDENIBG@GMAIL.COM", "BGDENIBG@GMAIL.COM", "AQAAAAIAAYagAAAAEJGd78fRY8r9+iTvw1ovPk/40HEHBbgNgXJC/roP4R1c5Yf8hBvPFGd6HHC/Mk321Q==", "+111111111111", true, null, "c869c6e6-fa7d-4792-ba9b-8aa8ab80cb64", false, "bgdenibg@gmail.com" },
-                    { "8a914c36-ea3f-49f0-9ad3-3d32134b2f8c", 0, "26b495f8-6d2e-484a-b114-29bc14c3829c", "admin@onlineshop.com", true, "Admin", "User", false, null, "ADMIN@ONLINESHOP.COM", "ADMIN@ONLINESHOP.COM", "AQAAAAIAAYagAAAAEGVOyvTzBtg53f5s6aRnvzHRaP6XUU2F56CSEkoPcziR/6bvm9OVxIiLnKFfUmTWTA==", null, false, null, "563d1fd3-ecc4-4e71-ad61-d7f7a4ef5f44", false, "admin@onlineshop.com" }
-                });
+                values: new object[] { "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f", 0, "81df7af3-a67d-4940-99f4-6af6c881c0f0", "admin@onlineshop.com", true, "Admin", "User", false, null, "ADMIN@ONLINESHOP.COM", "ADMIN@ONLINESHOP.COM", "AQAAAAIAAYagAAAAELfYJemMkWUhqm+3MQYPq7q6FiTRxTFfBQqICRO1Y56EdOj77AIWb4yxSDF30FolaA==", null, false, null, "6eb0d06e-7705-42f7-96ac-d86b9c671d4b", false, "admin@onlineshop.com" });
 
             migrationBuilder.InsertData(
                 table: "ClothingTypes",
@@ -283,8 +407,8 @@ namespace OnlineShop.Web.Data.Migrations
                 columns: new[] { "Id", "IsCancelled", "IsCompleted", "OrderDate", "TotalAmount", "UserId" },
                 values: new object[,]
                 {
-                    { 1, false, false, new DateTime(2024, 11, 30, 16, 20, 53, 957, DateTimeKind.Local).AddTicks(3219), 150.00m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" },
-                    { 2, false, true, new DateTime(2024, 11, 29, 16, 20, 53, 957, DateTimeKind.Local).AddTicks(3230), 75.50m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" }
+                    { 1, false, false, new DateTime(2024, 12, 11, 1, 39, 5, 458, DateTimeKind.Local).AddTicks(3111), 150.00m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" },
+                    { 2, false, true, new DateTime(2024, 12, 10, 1, 39, 5, 458, DateTimeKind.Local).AddTicks(3120), 75.50m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" }
                 });
 
             migrationBuilder.InsertData(
@@ -299,7 +423,7 @@ namespace OnlineShop.Web.Data.Migrations
             migrationBuilder.InsertData(
                 table: "ShoppingCarts",
                 columns: new[] { "Id", "Amount", "PaymentDate", "Status", "UserId" },
-                values: new object[] { 1, 1575.00m, new DateTime(2024, 11, 30, 16, 20, 53, 958, DateTimeKind.Local).AddTicks(6920), "Active", "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
+                values: new object[] { 1, 1575.00m, new DateTime(2024, 12, 11, 1, 39, 5, 459, DateTimeKind.Local).AddTicks(2874), "Active", "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
 
             migrationBuilder.InsertData(
                 table: "OrdersProducts",
@@ -322,7 +446,7 @@ namespace OnlineShop.Web.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Reviews",
                 columns: new[] { "Id", "Comment", "ProductId", "Rating", "ReviewDate", "UserId" },
-                values: new object[] { 1, "I really liked wearing these shoes. They are very comfortable", 1, 4, new DateTime(2024, 11, 30, 16, 20, 53, 958, DateTimeKind.Local).AddTicks(5953), "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
+                values: new object[] { 1, "I really liked wearing these shoes. They are very comfortable", 1, 4, new DateTime(2024, 12, 11, 1, 39, 5, 459, DateTimeKind.Local).AddTicks(1796), "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
 
             migrationBuilder.InsertData(
                 table: "ShoppingCartsProducts",
@@ -332,6 +456,45 @@ namespace OnlineShop.Web.Data.Migrations
                     { 1, 1, 1 },
                     { 2, 1, 1 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
@@ -388,6 +551,21 @@ namespace OnlineShop.Web.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
                 name: "OrdersProducts");
 
             migrationBuilder.DropTable(
@@ -398,6 +576,9 @@ namespace OnlineShop.Web.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "ShoppingCartsProducts");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Orders");
@@ -414,27 +595,8 @@ namespace OnlineShop.Web.Data.Migrations
             migrationBuilder.DropTable(
                 name: "Genders");
 
-            migrationBuilder.DeleteData(
-                table: "AspNetUsers",
-                keyColumn: "Id",
-                keyValue: "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f");
-
-            migrationBuilder.DeleteData(
-                table: "AspNetUsers",
-                keyColumn: "Id",
-                keyValue: "8a914c36-ea3f-49f0-9ad3-3d32134b2f8c");
-
-            migrationBuilder.DropColumn(
-                name: "FirstName",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "LastName",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "ProfileImgUrl",
-                table: "AspNetUsers");
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

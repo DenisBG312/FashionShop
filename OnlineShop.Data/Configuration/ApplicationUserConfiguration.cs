@@ -14,37 +14,14 @@ namespace OnlineShop.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> builder)
         {
-            builder.HasData(GenerateRegularUser(), GenerateAdminUser());
-        }
-
-        private ApplicationUser GenerateRegularUser()
-        {
-            var user = new ApplicationUser
-            {
-                Id = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
-                FirstName = "Denis",
-                LastName = "Tsranski",
-                Email = "bgdenibg@gmail.com",
-                NormalizedEmail = "BGDENIBG@GMAIL.COM",
-                UserName = "bgdenibg@gmail.com",
-                NormalizedUserName = "BGDENIBG@GMAIL.COM",
-                PhoneNumber = "+111111111111",
-                EmailConfirmed = true,
-                PhoneNumberConfirmed = true,
-                SecurityStamp = Guid.NewGuid().ToString("D")
-            };
-
-            var password = new PasswordHasher<ApplicationUser>();
-            user.PasswordHash = password.HashPassword(user, "Denkata123!");
-
-            return user;
+            builder.HasData(GenerateAdminUser());
         }
 
         private ApplicationUser GenerateAdminUser()
         {
             var admin = new ApplicationUser
             {
-                Id = "8a914c36-ea3f-49f0-9ad3-3d32134b2f8c",
+                Id = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
                 FirstName = "Admin",
                 LastName = "User",
                 Email = "admin@onlineshop.com",

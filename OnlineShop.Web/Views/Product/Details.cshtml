@@ -6,7 +6,7 @@
     ViewData["Title"] = Model.Name;
 }
 
-<section class="py-5">
+<section id="product-details" class="py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-center">
             <div class="col-md-6">
@@ -59,7 +59,7 @@
                     }
                     @if (@Model.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
                     {
-                        <form asp-action="Edit" asp-controller="Product", asp-area="Admin" asp-route-id="@Model.Id" method="get" class="me-3">
+                        <form asp-action="Edit" asp-controller="Product" asp-area="Admin" asp-route-id="@Model.Id" method="get" class="me-3">
                             <button type="submit" class="btn btn-outline-primary flex-shrink-0">
                                 Edit <i class="fa-solid fa-pen-to-square me-1"></i>
                             </button>
@@ -82,83 +82,103 @@
                 </ul>
             </div>
         </div>
+
+        <!-- Scroll to Reviews Section -->
+        <div class="text-center my-4">
+            <a href="#reviews-section" class="btn btn-outline-primary">
+                See Customer Reviews <i class="fa-solid fa-arrow-down"></i>
+            </a>
+        </div>
     </div>
 </section>
 
-<section class="py-5 bg-light">
+<section id="reviews-section" class="py-5 bg-light">
     <div class="container px-4 px-lg-5 mt-5">
-        <h2 class="fw-bolder mb-4">Customer Reviews <i class="fa-solid fa-fire"></i></h2>
+        <div class="text-center mb-5">
+            <h2 class="fw-bolder display-4 text-primary">
+                Customer Reviews <i class="fa-solid fa-fire"></i>
+            </h2>
+            <p class="text-muted fs-5">What our customers say about this product</p>
+        </div>
 
-        @if (Model.Reviews != null && Model.Reviews.Any())
-        {
-            foreach (var review in Model.Reviews)
+        <div class="reviews-section border rounded shadow-sm p-4 bg-white">
+            @if (Model.Reviews != null && Model.Reviews.Any())
             {
-                <div class="card mb-3">
-                    <div class="card-body d-flex">
-                        <div class="me-3">
-                            @if (!string.IsNullOrEmpty(review.User.ProfileImgUrl))
-                            {
-                                <img src="@review.User.ProfileImgUrl" alt="@review.User.UserName's profile image"
-                                     class="rounded-circle" style="width: 110px; height: 110px; object-fit: cover;">
-                            }
-                            else
-                            {
-                                <img src="https://st2.depositphotos.com/5682790/10456/v/450/depositphotos_104564156-stock-illustration-male-user-icon.jpg" alt="Default profile image"
-                                     class="rounded-circle" style="width: 60px; height: 60px; object-fit: cover;">
-                            }
-                        </div>
-
-                        <div>
-                            <h5 class="card-title mb-1">
-                                Rating:
-                                @for (int i = 0; i < review.Rating; i++)
+                foreach (var review in Model.Reviews)
+                {
+                    <div class="card mb-4">
+                        <div class="card-body d-flex align-items-start">
+                            <div class="me-3">
+                                @if (!string.IsNullOrEmpty(review.User.ProfileImgUrl))
                                 {
-                                    <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                    <img src="@review.User.ProfileImgUrl" alt="@review.User.UserName's profile image"
+                                         class="rounded-circle border" style="width: 70px; height: 70px; object-fit: cover;">
                                 }
-                            </h5>
-                            <p class="card-text">@review.Comment</p>
-                            <p class="card-text">
-                                <small class="text-muted">
-                                    Reviewed by <span class="text-primary">@review.User.FirstName @review.User.LastName</span>
-                                    on <span class="text-primary">@review.ReviewDate.ToShortDateString()</span>
-                                </small>
-                            </p>
+                                else
+                                {
+                                    <img src="https://st2.depositphotos.com/5682790/10456/v/450/depositphotos_104564156-stock-illustration-male-user-icon.jpg"
+                                         alt="Default profile image"
+                                         class="rounded-circle border" style="width: 70px; height: 70px; object-fit: cover;">
+                                }
+                            </div>
+
+                            <div class="flex-grow-1">
+                                <h5 class="card-title mb-2">
+                                    @for (int i = 0; i < review.Rating; i++)
+                                    {
+                                        <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+                                    }
+                                </h5>
+                                <p class="card-text">@review.Comment</p>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        Reviewed by <span class="fw-bold">@review.User.FirstName @review.User.LastName</span>
+                                        on <span class="text-primary">@review.ReviewDate.ToShortDateString()</span>
+                                    </small>
+                                </p>
+                            </div>
                         </div>
                     </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-info text-center">
+                    No reviews yet. Be the first to review this product!
                 </div>
             }
-        }
-        else
-        {
-            <p>No reviews yet. Be the first to review this product!</p>
-        }
+        </div>
 
         @if (User.Identity.IsAuthenticated)
         {
-            <form asp-action="SubmitReview" method="post">
-                <div class="form-group">
-                    <label for="rating">Rating</label>
-                    <select id="rating" name="rating" class="form-control">
-                        @for (int i = 1; i <= 5; i++)
-                        {
-                            <option value="@i">@i</option>
-                        }
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="comment">Comment (Optional)</label>
-                    <textarea id="comment" name="comment" class="form-control"></textarea>
-                </div>
-                <input type="hidden" name="productId" value="@Model.Id" />
-                <button type="submit" class="btn btn-primary mt-3">
-                    Submit Review <i class="fa-solid fa-circle-check"></i>
-                </button>
-            </form>
+            <div class="review-form mt-5 p-4 bg-white border rounded shadow-sm">
+                <h4 class="mb-4 text-primary">Write a Review</h4>
+                <form asp-action="SubmitReview" method="post">
+                    <div class="mb-3">
+                        <label for="rating" class="form-label">Rating</label>
+                        <select id="rating" name="rating" class="form-select">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <option value="@i">@i</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">Comment (Optional)</label>
+                        <textarea id="comment" name="comment" class="form-control" rows="3"></textarea>
+                    </div>
+                    <input type="hidden" name="productId" value="@Model.Id" />
+                    <button type="submit" class="btn btn-primary">
+                        Submit Review <i class="fa-solid fa-circle-check"></i>
+                    </button>
+                </form>
+            </div>
         }
         else
         {
-            <p>Please <a asp-area="Identity" asp-page="/Account/Login">log in</a> to leave a review.</p>
+            <div class="alert alert-warning text-center mt-4">
+                Please <a asp-area="Identity" asp-page="/Account/Login" class="text-decoration-underline">log in</a> to leave a review.
+            </div>
         }
     </div>
 </section>
-

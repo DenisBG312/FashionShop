@@ -8,7 +8,6 @@ using OnlineShop.Data.Repository;
 using OnlineShop.Data.Repository.Interfaces;
 using OnlineShop.Services.Data;
 using OnlineShop.Services.Data.Interfaces;
-using OnlineShop.Web.Data;
 using OnlineShop.Web.Infrastructure.Extensions;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
@@ -137,11 +136,5 @@ async Task SeedAdminUserAndRole(WebApplication app)
     if (adminUser != null && !await userManager.IsInRoleAsync(adminUser, "Admin"))
     {
         await userManager.AddToRoleAsync(adminUser, "Admin");
-    }
-
-    var regularUser = await userManager.FindByEmailAsync("bgdenibg@gmail.com");
-    if (regularUser != null && !await userManager.IsInRoleAsync(regularUser, "User"))
-    {
-        await userManager.AddToRoleAsync(regularUser, "User");
     }
 }
