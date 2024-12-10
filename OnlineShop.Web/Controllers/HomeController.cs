@@ -24,24 +24,24 @@ namespace OnlineShop.Web.Controllers
             return View();
         }
 
-        public IActionResult Error(int? statusCode)
+        public IActionResult Error(int? statusCode = null)
+        
         {
-            if (statusCode == null)
+            if (!statusCode.HasValue)
             {
-                return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                return this.View();
             }
 
-            switch (statusCode)
+            if (statusCode == 404)
             {
-                case 404:
-                    return View("Error404");
-                case 500:
-                    return View("Error500");
-                case 403:
-                    return View("Error403");
-                default:
-                    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+                return this.View("Error404");
             }
+            else if (statusCode == 401 || statusCode == 403)
+            {
+                return this.View("Error403");
+            }
+
+            return this.View("Error500");
         }
 
         public IActionResult ChangeLanguage(string lang)

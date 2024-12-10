@@ -1,0 +1,32 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="error-page text-center">
+    <h1>400</h1>
+    <h2>Page Not Found!</h2>
+    <p>It seems you don’t have the necessary permissions to view this page.</p>
+    <a href="/" class="btn btn-primary">Go Back to Home</a>
+</div>
+
+<style>
+    .error-page {
+        margin-top: 100px;
+    }
+
+        .error-page h1 {
+            font-size: 100px;
+            color: #f0ad4e;
+        }
+
+        .error-page h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .error-page p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+</style>

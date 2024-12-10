@@ -59,7 +59,7 @@
                     }
                     @if (@Model.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
                     {
-                        <form asp-action="Edit" asp-controller="Product" asp-route-id="@Model.Id" method="get" class="me-3">
+                        <form asp-action="Edit" asp-controller="Product", asp-area="Admin" asp-route-id="@Model.Id" method="get" class="me-3">
                             <button type="submit" class="btn btn-outline-primary flex-shrink-0">
                                 Edit <i class="fa-solid fa-pen-to-square me-1"></i>
                             </button>

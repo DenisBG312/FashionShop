@@ -95,11 +95,15 @@ app.Use(async (context, next) =>
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
+app.UseStatusCodePagesWithRedirects("/Home/Error/{0}");
 
 app.MapControllerRoute(
     name: "Admin",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "Errors",
+    pattern: "{controller=Home}/{action=Index}/{statusCode?}");
 
 app.MapControllerRoute(
     name: "default",
