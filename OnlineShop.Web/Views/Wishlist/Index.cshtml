@@ -1,0 +1,65 @@
+﻿@model IEnumerable<OnlineShop.Data.Models.ProductWishlist>
+
+@{
+    ViewData["Title"] = "Your Wishlist";
+}
+
+<h2>Your Wishlist</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>On Sale</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-controller="Product" asp-route-id="@item.ProductId">
+                        @item.Product.Name
+                    </a>
+                </td>
+                <td>
+                    @if (item.Product.IsOnSale)
+                    {
+                        <span>Item is On Sale with <span class="text-danger font-weight-bold">@item.Product.DiscountPercentage % OFF!</span></span>
+                    }
+                    else
+                    {
+                        <span>Item not for Sale</span>
+                    }
+                </td>
+                <td>
+                    <form asp-action="RemoveFromWishlist" asp-controller="Wishlist" asp-route-wishlistProductId="@item.Id" method="post">
+                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Your wishlist is empty. Start adding products!</p>
+}

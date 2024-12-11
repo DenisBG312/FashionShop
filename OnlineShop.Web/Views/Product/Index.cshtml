@@ -10,32 +10,14 @@
     var clothingTypeId = ViewContext.HttpContext.Request.Query["clothingTypeId"].ToString();
 }
 
-<style>
-    .badge {
-        font-size: 0.9rem;
-        padding: 5px 10px;
-        border-radius: 5px;
-    }
-
-    .bg-danger {
-        background-color: #dc3545 !important;
-    }
-
-    .position-absolute {
-        position: absolute !important;
-    }
-
-    .text-white {
-        color: #ffffff !important;
-    }
-</style>
-
 <div class="container my-5">
     <h1 class="text-center mb-5">@Resource.OurProducts</h1>
+
+    <!-- Filters Section -->
     <div class="row mb-4 text-center">
         <div class="col-md-4">
             <h5>@Resource.FilterGender <i class="fa-solid fa-venus-mars"></i>:</h5>
-            <div class="d-flex justify-content-center flex-wrap">
+            <div class="btn-group d-flex justify-content-center flex-wrap">
                 <a href="@Url.Action("Index", "Product", new { genderId = "1", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "1" ? "active" : "")">@Resource.Men</a>
                 <a href="@Url.Action("Index", "Product", new { genderId = "2", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "2" ? "active" : "")">@Resource.Women</a>
                 <a href="@Url.Action("Index", "Product", new { genderId = "3", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "3" ? "active" : "")">@Resource.Kids</a>
@@ -43,7 +25,7 @@
         </div>
         <div class="col-md-4">
             <h5>@Resource.FilterClothingType <i class="fa-solid fa-shirt"></i>:</h5>
-            <div class="d-flex justify-content-center flex-wrap">
+            <div class="btn-group d-flex justify-content-center flex-wrap">
                 <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "1" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "1" ? "active" : "")">@Resource.T_Shirts</a>
                 <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "2" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "2" ? "active" : "")">@Resource.Jackets</a>
                 <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "3" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "3" ? "active" : "")">@Resource.Shoes</a>
@@ -59,19 +41,30 @@
         </div>
     </div>
 
+    <!-- Product Grid -->
     <div class="row g-4">
         @if (Model.Any())
         {
             foreach (var product in Model)
             {
                 <div class="col-sm-6 col-md-4">
-                    <div class="card product-card shadow-sm" style="border-radius: 15px; overflow: hidden; position: relative;">
+                    <div class="card product-card shadow-sm border-0 rounded-3">
                         @if (product.IsOnSale && product.DiscountPercentage.HasValue)
                         {
-                            <span class="badge bg-danger text-white position-absolute" style="top: 10px; left: 10px; z-index: 10; font-size: 0.9rem; padding: 5px 10px; border-radius: 5px;">
-                                @Resource.OnSale  @product.DiscountPercentage<i class="fa-solid fa-percent"></i>
+                            <span class="badge bg-danger text-white position-absolute" style="top: 10px; left: 10px;">
+                                @Resource.OnSale @product.DiscountPercentage<i class="fa-solid fa-percent"></i>
                             </span>
                         }
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form asp-action="AddToWishlist" asp-controller="Wishlist" asp-route-productId="@product.Id" method="post" class="position-absolute" style="top: 10px; right: 10px;">
+                                <button type="submit" class="btn btn-dark p-0">
+                                    <i class="fa-solid fa-heart"></i>
+                                </button>
+                            </form>
+                        }
+
                         <div class="card-img-top p-3 text-center bg-light" style="height: 280px;">
                             <img src="@product.ImageUrl" alt="@product.Name" class="img-fluid" style="max-height: 100%; width: auto; object-fit: contain;">
                         </div>
@@ -82,7 +75,8 @@
                             <p class="card-text text-success fw-bold" style="font-size: 1.2rem;">
                                 @if (product.IsOnSale && product.DiscountPercentage.HasValue)
                                 {
-                                    <span class="text-decoration-line-through text-muted">@product.Price.ToString("C", new CultureInfo("en-US"))</span>;
+                                    <span class="text-decoration-line-through text-muted">@product.Price.ToString("C", new CultureInfo("en-US"))</span>
+                                    ;
                                     <span>
                                         @product.DiscountedPrice.ToString("C", new CultureInfo("en-US"))
                                     </span>
@@ -118,18 +112,19 @@
         {
             <h1 class="text-center mt-5">@Resource.WeDon_tCurrently</h1>
         }
+
         <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
             @Html.PagedListPager((X.PagedList.IPagedList?)Model, page => Url.Action("Index", new { page }),
-                new PagedListRenderOptions
-                {
-                    UlElementClasses = new[] { "pagination" },
-                    LiElementClasses = new[] { "page-item" },
-                    PageClasses = new[] { "page-link" },
-                    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-                    DisplayLinkToNextPage = PagedListDisplayMode.Always,
-                    DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
-                    DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded
-                })
+                     new PagedListRenderOptions
+            {
+                UlElementClasses = new[] { "pagination" },
+                LiElementClasses = new[] { "page-item" },
+                PageClasses = new[] { "page-link" },
+                DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+                DisplayLinkToNextPage = PagedListDisplayMode.Always,
+                DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+                DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded
+            })
         </nav>
     </div>
 </div>

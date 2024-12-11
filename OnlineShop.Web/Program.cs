@@ -31,6 +31,7 @@ builder.Services.AddScoped<IRepository<ShoppingCart, int>, BaseRepository<Shoppi
 builder.Services.AddScoped<IRepository<Review, int>, BaseRepository<Review, int>>();
 builder.Services.AddScoped<IRepository<Payment, int>, BaseRepository<Payment, int>>();
 builder.Services.AddScoped<IRepository<OrderProduct, int>, BaseRepository<OrderProduct, int>>();
+builder.Services.AddScoped<IRepository<ProductWishlist, int>, BaseRepository<ProductWishlist, int>>();
 
 builder.Services.RegisterUserDefinedServices(typeof(IProductService).Assembly);
 

@@ -26,6 +26,7 @@ namespace OnlineShop.Data
         public DbSet<Gender> Genders { get; set; }
         public DbSet<ClothingType> ClothingTypes { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<ProductWishlist> ProductWishlists { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
