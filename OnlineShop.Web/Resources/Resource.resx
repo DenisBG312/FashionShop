@@ -193,10 +193,10 @@
     <value>Men's Collection</value>
   </data>
   <data name="MyOrders" xml:space="preserve">
-    <value>My Orders</value>
+    <value>Orders</value>
   </data>
   <data name="MyShoppingCart" xml:space="preserve">
-    <value>My Shopping Cart</value>
+    <value>Shopping Cart</value>
   </data>
   <data name="OnSale" xml:space="preserve">
     <value>On Sale</value>

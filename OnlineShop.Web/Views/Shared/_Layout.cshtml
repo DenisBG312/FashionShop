@@ -24,10 +24,10 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container-fluid">
-                <a href="@Url.Action("Index", "Home")">
-                    <img src="~/images/logo.png" style="max-width: 80px; height: auto;">
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                    <img src="~/images/logo.png" class="img-fluid" style="max-width: 80px;">
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -35,7 +35,7 @@
                 <div class="collapse navbar-collapse" id="navbarColor01">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link ms-5" asp-area="" asp-controller="Home" asp-action="Index">@Resource.Home <i class="fa-solid fa-house"></i></a>
+                            <a class="nav-link ms-3" asp-area="" asp-controller="Home" asp-action="Index">@Resource.Home <i class="fa-solid fa-house"></i></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Product" asp-action="Index">@Resource.Products <i class="fa-solid fa-shirt"></i></a>
@@ -54,16 +54,18 @@
                         }
                     </ul>
 
-                    <ul class="navbar-nav text-end">
+                    <ul class="navbar-nav ms-auto">
                         <li class="nav-item dropdown">
-                            <a class="nav-link text-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 @if (Thread.CurrentThread.CurrentCulture.ToString() == "en")
                                 {
                                     <span>English</span>
                                 }
                                 else
                                 {
-                                    <span>Български </span>
+                                    <span>
+                                        Български
+                                    </span>
                                 }
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
@@ -73,18 +75,14 @@
                         </li>
                     </ul>
 
+                    <form class="d-flex me-3" method="get" action="@Url.Action("Index", "Product")">
+                        <div class="input-group">
+                            <input class="form-control" type="search" placeholder="@Resource.SearchByBrand" name="searchTerm" value="@Context.Request.Query["searchTerm"]" aria-label="Search">
+                            <button class="btn btn-light" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </div>
+                    </form>
 
-                    <div class="d-flex">
-
-                        <form class="d-flex me-2" method="get" action="@Url.Action("Index", "Product")">
-                            <div class="input-group">
-                                <input class="form-control" type="search" placeholder="@Resource.SearchByBrand" name="searchTerm" value="@Context.Request.Query["searchTerm"]" aria-label="Search">
-                                <button class="btn btn-outline-white" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                            </div>
-                        </form>
-
-                        <partial name="_LoginPartial" />
-                    </div>
+                    <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
@@ -95,14 +93,14 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
+    <footer class="border-top footer text-muted bg-primary">
+        <div class="container text-white">
             &copy; @footerYear - OnlineShop.Web
         </div>
     </footer>
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="~/lib/toastr/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

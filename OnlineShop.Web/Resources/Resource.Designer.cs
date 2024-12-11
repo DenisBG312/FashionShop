@@ -286,7 +286,7 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to My Orders.
+        ///   Looks up a localized string similar to Orders.
         /// </summary>
         public static string MyOrders {
             get {
@@ -295,7 +295,7 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to My Shopping Cart.
+        ///   Looks up a localized string similar to Shopping Cart.
         /// </summary>
         public static string MyShoppingCart {
             get {
