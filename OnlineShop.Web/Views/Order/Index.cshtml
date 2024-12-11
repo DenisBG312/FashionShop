@@ -9,8 +9,6 @@
 
 <div class="container mt-5">
     <h1 class="text-center mb-4">@Resource.MyOrders</h1>
-
-    <!-- Set 2 cards per row across all screen sizes -->
     <div class="row row-cols-1 row-cols-md-2 g-4">
         @if (Model.Any())
         {
@@ -18,7 +16,6 @@
             {
                 <div class="col">
                     <div class="card shadow-sm border-0 rounded h-100" style="background-color: #f9f9f9;">
-                        <!-- Consistent shadow and neutral background -->
                         <div class="card-body text-center">
                             <h5 class="card-title mb-3">@Resource.Order #@order.CustomOrderNumber</h5>
 
@@ -53,7 +50,7 @@
         }
         else
         {
-            <div class="alert alert-danger" role="alert">
+            <div class="alert alert-danger text-center mx-auto" style="width: 50%;" role="alert">
                 You haven't placed any orders yet! Start adding to your cart and then place an order
             </div>
         }

@@ -13,14 +13,14 @@
     <div class="table-responsive">
         <table class="table table-striped table-hover align-middle text-center">
             <thead class="table-dark">
-            <tr>
-                <th>Order ID</th>
-                <th>Order Date</th>
-                <th>Total Amount</th>
-                <th>Status</th>
-                <th>User</th>
-                <th>Actions</th>
-            </tr>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Order Date</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>User</th>
+                    <th>Actions</th>
+                </tr>
             </thead>
             <tbody>
             @foreach (var order in Model)
@@ -39,18 +39,31 @@
                         <a asp-action="Details" asp-controller="Order" asp-route-id="@order.OrderId" class="btn btn-info btn-sm">
                             <i class="bi bi-eye"></i> Details
                         </a>
-                        <form asp-action="CancelOrder" asp-controller="Order" asp-route-id="@order.OrderId" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to cancel this order?')">
-                                <i class="bi bi-x-circle"></i> Cancel
-                            </button>
-                        </form>
+                        @if (!order.IsCompleted && !order.IsCancelled)
+                        {
+                            <form asp-action="CancelOrder" asp-controller="Order" asp-route-id="@order.OrderId" method="post" class="d-inline">
+                                <input type="hidden" name="currentPage" value="@Model.PageNumber" />
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to cancel this order?')">
+                                    <i class="bi bi-x-circle"></i> Cancel
+                                </button>
+                            </form>
+                        }
+                        @if (order.IsCancelled)
+                        {
+                            <form asp-action="Reactivate" asp-controller="Order" asp-route-id="@order.OrderId" method="post" class="d-inline">
+                                <input type="hidden" name="currentPage" value="@Model.PageNumber" />
+                                <button type="submit" class="btn btn-success btn-sm">
+                                    <i class="bi bi-x-circle"></i> Reactivate
+                                </button>
+                            </form>
+                        }
                     </td>
                 </tr>
             }
             </tbody>
         </table>
     </div>
-    
+
     <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
         @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
                  new PagedListRenderOptions

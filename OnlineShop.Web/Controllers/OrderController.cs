@@ -46,20 +46,6 @@ namespace OnlineShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Reactivate(int id)
-        {
-            var success = await _orderService.ReactivateOrder(id);
-
-            if (!success)
-            {
-                return NotFound();
-            }
-
-            TempData["SuccessMessage"] = "Order reactivated successfully.";
-            return RedirectToAction("Details", new { id });
-        }
-
-        [HttpPost]
         public async Task<IActionResult> Cancel(int id)
         {
             var success = await _orderService.CancelOrder(id);

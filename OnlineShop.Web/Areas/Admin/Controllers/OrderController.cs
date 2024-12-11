@@ -30,7 +30,7 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CancelOrder(int id)
+        public async Task<IActionResult> CancelOrder(int id, int currentPage)
         {
             var result = await _orderService.CancelOrder(id);
             if (result)
@@ -42,7 +42,23 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
                 TempData["Error"] = "Failed to cancel the order.";
             }
 
-            return RedirectToAction("Index", "Order");
+            return RedirectToAction("Index", "Order", new {page = currentPage});
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Reactivate(int id, int currentPage)
+        {
+            var result = await _orderService.ReactivateOrder(id);
+            if (result)
+            {
+                TempData["Success"] = "Order reactivated successfully.";
+            }
+            else
+            {
+                TempData["Error"] = "Failed to reactivate the order.";
+            }
+
+            return RedirectToAction("Index", "Order", new {page = currentPage});
         }
 
         public async Task<IActionResult> Details(int id)
