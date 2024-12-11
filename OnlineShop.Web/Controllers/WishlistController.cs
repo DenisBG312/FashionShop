@@ -24,6 +24,7 @@ namespace OnlineShop.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddToWishlist(int productId)
         {
             var userId = GetUserId();
