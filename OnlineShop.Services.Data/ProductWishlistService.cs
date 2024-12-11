@@ -13,13 +13,14 @@ namespace OnlineShop.Services.Data
 {
     public class ProductWishlistService : IProductWishlistService
     {
-        private IRepository<ProductWishlist, int> _wishlistRepository;
+        private readonly IRepository<ProductWishlist, int> _wishlistRepository;
         private readonly IRepository<Product, int> _productRepository;
         public ProductWishlistService(IRepository<ProductWishlist, int> wishlistRepository, IRepository<Product, int> productRepository)
         {
             _wishlistRepository = wishlistRepository;
             _productRepository = productRepository;
         }
+
         public async Task<bool> AddToWishlistAsync(string userId, int productId)
         {
             var existingWishlistItem = _wishlistRepository
