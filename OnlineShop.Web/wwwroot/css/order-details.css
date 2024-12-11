@@ -1,0 +1,41 @@
+﻿body {
+    background-color: #f4f4f4;
+}
+
+.card {
+    border-radius: 10px;
+    background: white;
+    transition: transform 0.2s;
+}
+
+    .card:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+.card-header {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: #343a40;
+}
+
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+    .table th, .table td {
+        padding: 12px;
+        vertical-align: middle;
+    }
+
+.btn {
+    padding: 10px 20px;
+}
+
+.badge {
+    padding: 0.5em 1em;
+}
+
+.alert {
+    border-radius: 5px;
+}

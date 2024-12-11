@@ -5,6 +5,8 @@
     ViewData["Title"] = $"Order Details - Order #{Model.OrderId}";
 }
 
+<link href="~/css/order-details.css" rel="stylesheet"/>
+
 <div class="container mt-5">
     <h2 class="mb-4 text-center text-dark">Order Details</h2>
 
@@ -101,48 +103,3 @@
         </div>
     </div>
 </div>
-
-<style>
-    body {
-        background-color: #f4f4f4; /* Soft background color */
-    }
-
-    .card {
-        border-radius: 10px;
-        background: white; /* White background for cards */
-        transition: transform 0.2s; /* Smooth scaling effect */
-    }
-
-        .card:hover {
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
-        }
-
-    .card-header {
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-        background-color: #343a40; /* Dark header */
-    }
-
-    .table {
-        border-radius: 10px;
-        overflow: hidden; /* Ensure rounded corners on the table */
-    }
-
-        .table th, .table td {
-            padding: 12px;
-            vertical-align: middle;
-        }
-
-    .btn {
-        padding: 10px 20px; /* Increase button size */
-    }
-
-    .badge {
-        padding: 0.5em 1em; /* Padding for badges */
-    }
-
-    /* Style for alert messages */
-    .alert {
-        border-radius: 5px;
-    }
-</style>
