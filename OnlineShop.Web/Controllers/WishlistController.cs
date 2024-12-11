@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Services.Data.Interfaces;
 using System.Security.Claims;
+using X.PagedList.Extensions;
 
 namespace OnlineShop.Web.Controllers
 {
@@ -11,12 +12,15 @@ namespace OnlineShop.Web.Controllers
         {
             _wishlistService = wishlistService;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
             var userId = GetUserId();
-            var wishlistItems = await _wishlistService.GetUserWishlistAsync(userId);
+            int pageSize = 4;
 
-            return View(wishlistItems);
+            var wishlistItems = await _wishlistService.GetUserWishlistAsync(userId);
+            var pagedWishlistItems = wishlistItems.ToPagedList(page, pageSize);
+
+            return View(pagedWishlistItems);
         }
 
         [HttpPost]

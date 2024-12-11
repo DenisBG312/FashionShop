@@ -13,7 +13,6 @@
 <div class="container my-5">
     <h1 class="text-center mb-5">@Resource.OurProducts</h1>
 
-    <!-- Filters Section -->
     <div class="row mb-4 text-center">
         <div class="col-md-4">
             <h5>@Resource.FilterGender <i class="fa-solid fa-venus-mars"></i>:</h5>
@@ -41,7 +40,6 @@
         </div>
     </div>
 
-    <!-- Product Grid -->
     <div class="row g-4">
         @if (Model.Any())
         {
@@ -58,11 +56,9 @@
 
                         @if (User.Identity.IsAuthenticated)
                         {
-                            <form asp-action="AddToWishlist" asp-controller="Wishlist" asp-route-productId="@product.Id" method="post" class="position-absolute" style="top: 10px; right: 10px;">
-                                <button type="submit" class="btn btn-dark p-0">
-                                    <i class="fa-solid fa-heart"></i>
-                                </button>
-                            </form>
+                            <a asp-action="AddToWishlist" asp-controller="Wishlist" asp-route-productId="@product.Id" class="position-absolute" style="top: 10px; right: 10px; cursor: pointer;">
+                                <i class="fa-solid fa-heart @(ViewBag.WishlistProductIds.Contains(product.Id) ? "text-danger" : "text-muted")"></i>
+                            </a>
                         }
 
                         <div class="card-img-top p-3 text-center bg-light" style="height: 280px;">

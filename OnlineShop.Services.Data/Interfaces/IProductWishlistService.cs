@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OnlineShop.Data.Models;
+using OnlineShop.Web.ViewModels.Wishlist;
 
 namespace OnlineShop.Services.Data.Interfaces
 {
@@ -11,6 +12,6 @@ namespace OnlineShop.Services.Data.Interfaces
     {
         Task<bool> AddToWishlistAsync(string userId, int productId);
         Task<bool> RemoveFromWishlistAsync(string userId, int productId);
-        Task<IEnumerable<ProductWishlist>> GetUserWishlistAsync(string userId);
+        Task<IEnumerable<GetAllWishlistProductsViewModel>> GetUserWishlistAsync(string userId);
     }
 }

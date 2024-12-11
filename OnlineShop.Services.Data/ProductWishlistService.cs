@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data.Models;
 using OnlineShop.Data.Repository.Interfaces;
 using OnlineShop.Services.Data.Interfaces;
+using OnlineShop.Web.ViewModels.Wishlist;
 
 namespace OnlineShop.Services.Data
 {
@@ -60,14 +61,31 @@ namespace OnlineShop.Services.Data
             return true;
         }
 
-        public async Task<IEnumerable<ProductWishlist>> GetUserWishlistAsync(string userId)
+        public async Task<IEnumerable<GetAllWishlistProductsViewModel>> GetUserWishlistAsync(string userId)
         {
             var result = _wishlistRepository.GetAllAttached()
                 .Include(w => w.Product)
                 .Where(u => u.UserId == userId)
                 .ToList();
 
-            return result;
+            var viewModels = new List<GetAllWishlistProductsViewModel>();
+
+            foreach (var wishlistProduct in result)
+            {
+                var viewModel = new GetAllWishlistProductsViewModel()
+                {
+                    Id = wishlistProduct.Id,
+                    ProductId = wishlistProduct.ProductId,
+                    IsOnSale = wishlistProduct.Product.IsOnSale,
+                    DiscountPercentage = wishlistProduct.Product.DiscountPercentage,
+                    ProductImgUrl = wishlistProduct.Product.ImageUrl,
+                    ProductName = wishlistProduct.Product.Name
+                };
+
+                viewModels.Add(viewModel);
+            }
+
+            return viewModels;
         }
     }
 }

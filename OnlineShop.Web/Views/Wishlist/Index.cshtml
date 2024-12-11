@@ -1,10 +1,12 @@
-﻿@model IEnumerable<OnlineShop.Data.Models.ProductWishlist>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using X.PagedList.Mvc.Core
+@model X.PagedList.IPagedList<OnlineShop.Web.ViewModels.Wishlist.GetAllWishlistProductsViewModel>
 
 @{
     ViewData["Title"] = "Your Wishlist";
 }
 
-<h2>Your Wishlist</h2>
+<h2 class="mt-5">Your Wishlist</h2>
 
 @if (TempData["SuccessMessage"] != null)
 {
@@ -24,38 +26,42 @@
 {
     <table class="table">
         <thead>
-        <tr>
-            <th>Product</th>
-            <th>On Sale</th>
-            <th>Actions</th>
-        </tr>
+            <tr>
+                <th>Product Image</th>
+                <th>Product</th>
+                <th>On Sale</th>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    <a asp-action="Details" asp-controller="Product" asp-route-id="@item.ProductId">
-                        @item.Product.Name
-                    </a>
-                </td>
-                <td>
-                    @if (item.Product.IsOnSale)
-                    {
-                        <span>Item is On Sale with <span class="text-danger font-weight-bold">@item.Product.DiscountPercentage % OFF!</span></span>
-                    }
-                    else
-                    {
-                        <span>Item not for Sale</span>
-                    }
-                </td>
-                <td>
-                    <form asp-action="RemoveFromWishlist" asp-controller="Wishlist" asp-route-wishlistProductId="@item.Id" method="post">
-                        <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                    </form>
-                </td>
-            </tr>
-        }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@item.ProductImgUrl" alt="product image" style="width: 150px; height: 150px;" />
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-controller="Product" asp-route-id="@item.ProductId">
+                            @item.ProductName
+                        </a>
+                    </td>
+                    <td>
+                        @if (item.IsOnSale)
+                        {
+                            <span>Item is On Sale with <span class="text-danger font-weight-bold">@item.DiscountPercentage % OFF!</span></span>
+                        }
+                        else
+                        {
+                            <span>Item not for Sale</span>
+                        }
+                    </td>
+                    <td>
+                        <form asp-action="RemoveFromWishlist" asp-controller="Wishlist" asp-route-wishlistProductId="@item.Id" method="post">
+                            <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
         </tbody>
     </table>
 }
@@ -63,3 +69,17 @@ else
 {
     <p>Your wishlist is empty. Start adding products!</p>
 }
+
+<nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }),
+        new PagedListRenderOptions
+        {
+            UlElementClasses = new[] { "pagination" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" },
+            DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+            DisplayLinkToNextPage = PagedListDisplayMode.Always,
+            DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+            DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded
+        })
+</nav>

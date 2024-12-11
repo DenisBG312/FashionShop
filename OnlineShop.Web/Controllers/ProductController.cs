@@ -19,12 +19,14 @@ namespace OnlineShop.Web.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IProductService _productService;
+        private readonly IProductWishlistService _productWishlistService;
         private const int pageSize = 6;
 
-        public ProductController(UserManager<ApplicationUser> userManager, IProductService productService)
+        public ProductController(UserManager<ApplicationUser> userManager, IProductService productService, IProductWishlistService productWishlistService)
         {
             _userManager = userManager;
             _productService = productService;
+            _productWishlistService = productWishlistService;
         }
 
         [HttpGet]
@@ -33,8 +35,14 @@ namespace OnlineShop.Web.Controllers
         {
             var products = await _productService.GetProductsAsync(genderId, clothingTypeId, searchTerm);
 
+            var userId = GetUserId();
+            var wishlist = await _productWishlistService.GetUserWishlistAsync(userId!);
+
+            var wishlistProductIds = wishlist.Select(p => p.ProductId).ToList();
+
             var pagedProducts = products.ToPagedList(page, pageSize);
 
+            ViewBag.WishlistProductIds = wishlistProductIds;
             ViewBag.GenderId = genderId;
             ViewBag.ClothingTypeId = clothingTypeId;
 
