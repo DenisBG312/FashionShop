@@ -239,7 +239,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4950ec01-1a44-41c1-a211-f65496f20d59",
+                            ConcurrencyStamp = "b2bb98e0-14f9-459e-9229-73da1e022ac7",
                             Email = "admin@onlineshop.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -247,9 +247,9 @@ namespace OnlineShop.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ONLINESHOP.COM",
                             NormalizedUserName = "ADMIN@ONLINESHOP.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHjS+Y8uET3coUjz2ZtIub/OP5dtIIPMP5muLlO01IMMye0XJACYtvKnh4xyd8P75A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEDvorTrUg1CrIcgpckKP6ApytNN7vi7aYEGFuBO69e22qi1siBueoqd1c90aS9cEg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4199afe8-bd2a-4f2b-a0cd-e36eda1f4385",
+                            SecurityStamp = "a1506cc6-f267-47a8-ac4c-93b678e3c933",
                             TwoFactorEnabled = false,
                             UserName = "admin@onlineshop.com"
                         });
@@ -376,7 +376,7 @@ namespace OnlineShop.Data.Migrations
                             Id = 1,
                             IsCancelled = false,
                             IsCompleted = false,
-                            OrderDate = new DateTime(2024, 12, 11, 20, 44, 51, 284, DateTimeKind.Local).AddTicks(9692),
+                            OrderDate = new DateTime(2024, 12, 11, 23, 35, 37, 220, DateTimeKind.Local).AddTicks(6350),
                             TotalAmount = 150.00m,
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         },
@@ -385,7 +385,7 @@ namespace OnlineShop.Data.Migrations
                             Id = 2,
                             IsCancelled = false,
                             IsCompleted = true,
-                            OrderDate = new DateTime(2024, 12, 10, 20, 44, 51, 284, DateTimeKind.Local).AddTicks(9700),
+                            OrderDate = new DateTime(2024, 12, 10, 23, 35, 37, 220, DateTimeKind.Local).AddTicks(6360),
                             TotalAmount = 75.50m,
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });
@@ -626,7 +626,7 @@ namespace OnlineShop.Data.Migrations
                             Comment = "I really liked wearing these shoes. They are very comfortable",
                             ProductId = 1,
                             Rating = 4,
-                            ReviewDate = new DateTime(2024, 12, 11, 20, 44, 51, 285, DateTimeKind.Local).AddTicks(7266),
+                            ReviewDate = new DateTime(2024, 12, 11, 23, 35, 37, 221, DateTimeKind.Local).AddTicks(4381),
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });
                 });
@@ -664,7 +664,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = 1,
                             Amount = 1575.00m,
-                            PaymentDate = new DateTime(2024, 12, 11, 20, 44, 51, 285, DateTimeKind.Local).AddTicks(8139),
+                            PaymentDate = new DateTime(2024, 12, 11, 23, 35, 37, 221, DateTimeKind.Local).AddTicks(5261),
                             Status = "Active",
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });

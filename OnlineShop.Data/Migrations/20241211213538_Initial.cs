@@ -321,6 +321,34 @@ namespace OnlineShop.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductWishlists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsOnSale = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductWishlists", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductWishlists_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductWishlists_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
@@ -377,7 +405,7 @@ namespace OnlineShop.Data.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "ProfileImgUrl", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f", 0, "81df7af3-a67d-4940-99f4-6af6c881c0f0", "admin@onlineshop.com", true, "Admin", "User", false, null, "ADMIN@ONLINESHOP.COM", "ADMIN@ONLINESHOP.COM", "AQAAAAIAAYagAAAAELfYJemMkWUhqm+3MQYPq7q6FiTRxTFfBQqICRO1Y56EdOj77AIWb4yxSDF30FolaA==", null, false, null, "6eb0d06e-7705-42f7-96ac-d86b9c671d4b", false, "admin@onlineshop.com" });
+                values: new object[] { "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f", 0, "b2bb98e0-14f9-459e-9229-73da1e022ac7", "admin@onlineshop.com", true, "Admin", "User", false, null, "ADMIN@ONLINESHOP.COM", "ADMIN@ONLINESHOP.COM", "AQAAAAIAAYagAAAAEEDvorTrUg1CrIcgpckKP6ApytNN7vi7aYEGFuBO69e22qi1siBueoqd1c90aS9cEg==", null, false, null, "a1506cc6-f267-47a8-ac4c-93b678e3c933", false, "admin@onlineshop.com" });
 
             migrationBuilder.InsertData(
                 table: "ClothingTypes",
@@ -407,8 +435,8 @@ namespace OnlineShop.Data.Migrations
                 columns: new[] { "Id", "IsCancelled", "IsCompleted", "OrderDate", "TotalAmount", "UserId" },
                 values: new object[,]
                 {
-                    { 1, false, false, new DateTime(2024, 12, 11, 1, 39, 5, 458, DateTimeKind.Local).AddTicks(3111), 150.00m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" },
-                    { 2, false, true, new DateTime(2024, 12, 10, 1, 39, 5, 458, DateTimeKind.Local).AddTicks(3120), 75.50m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" }
+                    { 1, false, false, new DateTime(2024, 12, 11, 23, 35, 37, 220, DateTimeKind.Local).AddTicks(6350), 150.00m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" },
+                    { 2, false, true, new DateTime(2024, 12, 10, 23, 35, 37, 220, DateTimeKind.Local).AddTicks(6360), 75.50m, "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" }
                 });
 
             migrationBuilder.InsertData(
@@ -423,7 +451,7 @@ namespace OnlineShop.Data.Migrations
             migrationBuilder.InsertData(
                 table: "ShoppingCarts",
                 columns: new[] { "Id", "Amount", "PaymentDate", "Status", "UserId" },
-                values: new object[] { 1, 1575.00m, new DateTime(2024, 12, 11, 1, 39, 5, 459, DateTimeKind.Local).AddTicks(2874), "Active", "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
+                values: new object[] { 1, 1575.00m, new DateTime(2024, 12, 11, 23, 35, 37, 221, DateTimeKind.Local).AddTicks(5261), "Active", "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
 
             migrationBuilder.InsertData(
                 table: "OrdersProducts",
@@ -446,7 +474,7 @@ namespace OnlineShop.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Reviews",
                 columns: new[] { "Id", "Comment", "ProductId", "Rating", "ReviewDate", "UserId" },
-                values: new object[] { 1, "I really liked wearing these shoes. They are very comfortable", 1, 4, new DateTime(2024, 12, 11, 1, 39, 5, 459, DateTimeKind.Local).AddTicks(1796), "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
+                values: new object[] { 1, "I really liked wearing these shoes. They are very comfortable", 1, 4, new DateTime(2024, 12, 11, 23, 35, 37, 221, DateTimeKind.Local).AddTicks(4381), "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f" });
 
             migrationBuilder.InsertData(
                 table: "ShoppingCartsProducts",
@@ -527,6 +555,16 @@ namespace OnlineShop.Data.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductWishlists_ProductId",
+                table: "ProductWishlists",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductWishlists_UserId",
+                table: "ProductWishlists",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_ProductId",
                 table: "Reviews",
                 column: "ProductId");
@@ -570,6 +608,9 @@ namespace OnlineShop.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Payments");
+
+            migrationBuilder.DropTable(
+                name: "ProductWishlists");
 
             migrationBuilder.DropTable(
                 name: "Reviews");
