@@ -7,6 +7,8 @@
 **Fashion Shop** is a modern and fully functional online shopping platform designed to provide users with a seamless shopping experience. Featuring multilingual support, dynamic product listings, and a secure checkout process, this platform is built with scalability and user engagement in mind.
 
 ---
+![Certificate](https://i.ibb.co/DkFwfXx/ASP-NET-Advanced-October-2024-Certificate.png)
+
 
 ## ✨ Features
 
