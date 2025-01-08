@@ -34,6 +34,9 @@
 
 ---
 
+## 🛠️ Database Diagram
+![Database Diagram](https://i.ibb.co/KwQCmhN/image.png)
+
 ## 🚀 Getting Started
 
 Follow these steps to get the project up and running locally:
