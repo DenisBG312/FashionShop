@@ -24,6 +24,7 @@ namespace OnlineShop.Data.Configuration
                 Id = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
                 FirstName = "Admin",
                 LastName = "User",
+                ProfileImgUrl = "https://a0.anyrgb.com/pngimg/1850/1546/admin-administrator-icon-admin%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%82%D0%BE%D1%80-system-administrator-administrator-nuvola-user-profile-hearing-login-internet-forum.png",
                 Email = "admin@onlineshop.com",
                 NormalizedEmail = "ADMIN@ONLINESHOP.COM",
                 UserName = "admin@onlineshop.com",

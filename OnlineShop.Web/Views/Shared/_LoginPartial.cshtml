@@ -4,15 +4,7 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<style>
-    .profile-img {
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-left: 20px;
-    }
-</style>
+<link rel="stylesheet" href="~/css/login.css"/>
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))

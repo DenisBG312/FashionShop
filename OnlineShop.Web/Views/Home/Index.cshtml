@@ -4,6 +4,8 @@
     ViewData["Title"] = "Home Page";
 }
 
+<link rel="stylesheet" href="~/css/home-index.css"/>
+
 <div class="container mt-5">
     <div class="hero text-center mb-5">
         <h1 class="display-3">@Resource.WelcomeToFashionShop</h1>
@@ -59,27 +61,6 @@
         </button>
     </div>
 </div>
-
-<style>
-    .position-relative {
-        position: relative;
-    }
-
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1;
-    }
-
-    .carousel-caption {
-        position: absolute;
-        z-index: 2;
-    }
-</style>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
