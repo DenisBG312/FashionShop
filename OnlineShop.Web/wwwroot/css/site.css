@@ -8,13 +8,11 @@ html {
     }
 }
 
-/* Override the logo size */
 .navbar-brand img.img-fluid {
     max-width: 60px !important;
     max-height: 60px !important;
 }
 
-/* Keep focus styles */
 .btn:focus,
 .btn:active:focus,
 .btn-link.nav-link:focus,
@@ -40,7 +38,6 @@ body {
     line-height: 60px;
 }
 
-/* Navigation font-size adjustments */
 @media (max-width: 1786px) {
     nav ul li {
         font-size: 12px;
@@ -48,7 +45,7 @@ body {
 }
 
 @media (max-width: 1686px) {
-    input.form-control {
+    nav input.form-control {
         display: none;
     }
 
