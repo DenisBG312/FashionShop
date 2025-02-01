@@ -1,5 +1,5 @@
 html {
-    font-size: 14px;
+    font-size: 13px;
 }
 
 @media (min-width: 768px) {
@@ -55,6 +55,10 @@ body {
 }
 
 @media (max-width: 1560px) {
+    nav ul li {
+        font-size: 12px;
+    }
+
     nav ul img.profile-img {
         width: 70px;
         height: 70px;
@@ -72,6 +76,6 @@ body {
 
 @media (max-width: 1366px) {
     nav ul li {
-        font-size: 10px;
+        font-size: 12px;
     }
 }

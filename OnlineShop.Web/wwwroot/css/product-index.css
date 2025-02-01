@@ -1,0 +1,47 @@
+﻿@media (min-width: 1024px) and (max-width: 1366px) {
+    html {
+        font-size: 13px!important;
+    }
+
+    .card {
+        width: 90%;
+        height: auto;
+        margin-bottom: 20px;
+    }
+
+    .product-card {
+        font-size: 0.1rem;
+    }
+
+    .card-img-top {
+        height: 220px;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .card-text {
+        font-size: 0.9rem;
+    }
+
+    .btn-outline-primary {
+        font-size: 0.9rem;
+    }
+
+    .btn-outline-danger {
+        font-size: 0.8rem;
+    }
+
+    .pagination {
+        font-size: 0.9rem;
+    }
+
+    .page-item {
+        margin-right: 5px; 
+    }
+}
