@@ -52,7 +52,7 @@ Follow these steps to get the project up and running locally:
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/DenisBG312/SoftUni_ProjectDefense
+   git clone https://github.com/DenisBG312/FashionShop
    ```
 
 2. Navigate to the project directory:
@@ -60,26 +60,35 @@ Follow these steps to get the project up and running locally:
    ```bash
    cd OnlineShop.Web
    ```
+3. Configure your database connection:
+   - Open `appsettings.json`
+   - Add your **MSSQL connection string** under the `ConnectionStrings` section:
+     
+     ```json
+     "ConnectionStrings": {
+       "DefaultConnection": "Server=YOUR_SERVER;Database=OnlineShop;Trusted_Connection=True;TrustServerCertificate=True;"
+     }
+     ```
 
-3. Restore dependencies:
+4. Restore dependencies:
 
    ```bash
    dotnet restore
    ```
-
-4. Apply migrations to set up the database:
+   
+5. Apply migrations to set up the database:
 
    ```bash
    dotnet ef database update
    ```
 
-5. Run the application:
+6. Run the application:
 
    ```bash
    dotnet run
    ```
 
-6. Open your browser and go to `http://localhost:5000` to view the app.
+7. Open your browser and go to `http://localhost:5000` to view the app.
 
 ---
 
