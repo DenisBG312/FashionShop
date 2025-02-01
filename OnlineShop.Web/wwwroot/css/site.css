@@ -1,24 +1,35 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+/* Override the logo size */
+.navbar-brand img.img-fluid {
+    max-width: 60px !important;
+    max-height: 60px !important;
+}
+
+/* Keep focus styles */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 .footer {
@@ -27,4 +38,43 @@ body {
     width: 100%;
     white-space: nowrap;
     line-height: 60px;
+}
+
+/* Navigation font-size adjustments */
+@media (max-width: 1786px) {
+    nav ul li {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 1686px) {
+    input.form-control {
+        display: none;
+    }
+
+    button.btn.btn-light.glass {
+        display: none;
+    }
+}
+
+@media (max-width: 1560px) {
+    nav ul img.profile-img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .navbar-nav li form button.btn.btn-link {
+        font-size: 15px !important;
+        line-height: 1.2;
+    }
+
+    nav ul li a.nav-link.dropdown-toggle {
+        display: none;
+    }
+}
+
+@media (max-width: 1366px) {
+    nav ul li {
+        font-size: 10px;
+    }
 }

@@ -8,12 +8,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Admin\Data\**" />
     <Compile Remove="Data\**" />
     <Compile Remove="Models\**" />
+    <Content Remove="Areas\Admin\Data\**" />
     <Content Remove="Data\**" />
     <Content Remove="Models\**" />
+    <EmbeddedResource Remove="Areas\Admin\Data\**" />
     <EmbeddedResource Remove="Data\**" />
     <EmbeddedResource Remove="Models\**" />
+    <None Remove="Areas\Admin\Data\**" />
     <None Remove="Data\**" />
     <None Remove="Models\**" />
   </ItemGroup>
@@ -66,7 +70,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
   </ItemGroup>
 
