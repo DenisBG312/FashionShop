@@ -150,28 +150,35 @@
 
         @if (User.Identity.IsAuthenticated)
         {
-            <div class="review-form mt-5 p-4 bg-white border rounded shadow-sm">
-                <h4 class="mb-4 text-primary">Write a Review</h4>
-                <form asp-action="SubmitReview" method="post">
-                    <div class="mb-3">
-                        <label for="rating" class="form-label">Rating</label>
-                        <select id="rating" name="rating" class="form-select">
-                            @for (int i = 1; i <= 5; i++)
-                            {
-                                <option value="@i">@i</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="comment" class="form-label">Comment (Optional)</label>
-                        <textarea id="comment" name="comment" class="form-control" rows="3"></textarea>
-                    </div>
-                    <input type="hidden" name="productId" value="@Model.Id" />
-                    <button type="submit" class="btn btn-primary">
-                        Submit Review <i class="fa-solid fa-circle-check"></i>
-                    </button>
-                </form>
-            </div>
+            @if (!Model.Reviews.Any(x => x.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)))
+            {
+                <div class="review-form mt-5 p-4 bg-white border rounded shadow-sm">
+                    <h4 class="mb-4 text-primary">Write a Review</h4>
+                    <form asp-action="SubmitReview" method="post">
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Rating</label>
+                            <select id="rating" name="rating" class="form-select">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <option value="@i">@i</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="comment" class="form-label">Comment (Optional)</label>
+                            <textarea id="comment" name="comment" class="form-control" rows="3"></textarea>
+                        </div>
+                        <input type="hidden" name="productId" value="@Model.Id" />
+                        <button type="submit" class="btn btn-primary">
+                            Submit Review <i class="fa-solid fa-circle-check"></i>
+                        </button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <h1 class="mt-4 text-center text-danger">You have already given an review!</h1>
+            }
         }
         else
         {
