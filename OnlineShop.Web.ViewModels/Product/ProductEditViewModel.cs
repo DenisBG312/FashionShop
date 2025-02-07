@@ -22,6 +22,7 @@ namespace OnlineShop.Web.ViewModels.Product
         public int StockQuantity { get; set; }
         public string? ImageUrl { get; set; }
         public bool IsOnSale { get; set; }
+        [Range(0, 100, ErrorMessage = "You have to write an integer number between 0 and 100.")]
         public int? DiscountPercentage { get; set; }
         [DisplayName("Gender")]
         

@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using OnlineShop.Data;
-using OnlineShop.Services.Data;
 using OnlineShop.Services.Data.Interfaces;
 using OnlineShop.Web.ViewModels.Product;
 using System.Security.Claims;

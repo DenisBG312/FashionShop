@@ -9,15 +9,19 @@
 
   <ItemGroup>
     <Compile Remove="Areas\Admin\Data\**" />
+    <Compile Remove="Areas\Admin\Views\Shared\**" />
     <Compile Remove="Data\**" />
     <Compile Remove="Models\**" />
     <Content Remove="Areas\Admin\Data\**" />
+    <Content Remove="Areas\Admin\Views\Shared\**" />
     <Content Remove="Data\**" />
     <Content Remove="Models\**" />
     <EmbeddedResource Remove="Areas\Admin\Data\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\Shared\**" />
     <EmbeddedResource Remove="Data\**" />
     <EmbeddedResource Remove="Models\**" />
     <None Remove="Areas\Admin\Data\**" />
+    <None Remove="Areas\Admin\Views\Shared\**" />
     <None Remove="Data\**" />
     <None Remove="Models\**" />
   </ItemGroup>
@@ -67,10 +71,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\Admin\Views\Shared\" />
   </ItemGroup>
 
 </Project>
