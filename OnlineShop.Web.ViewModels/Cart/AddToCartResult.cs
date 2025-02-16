@@ -9,6 +9,6 @@ namespace OnlineShop.Web.ViewModels.Cart
     public class AddToCartResult
     {
         public bool IsSuccess { get; set; }
-        public string ErrorMessage { get; set; }
+        public string ErrorMessage { get; set; } = string.Empty;
     }
 }
