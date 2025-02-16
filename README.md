@@ -9,7 +9,7 @@
 ---
 
 ## ✨ Features
-
+- **Stripe Payment Integration:** Secure online payments using Stripe for seamless order processing.
 - **User Authentication**: Secure login and registration using Microsoft Authentication.
 - **Shopping Cart**: Add, update, and manage items before placing orders.
 - **Wishlist**: Add your favourite products that you wait to be on sale.
@@ -19,7 +19,6 @@
 - **Order History**: Track past transactions with detailed records.
 - **Responsive Design**: Fully optimized for all devices.
 - **PDF Exporting:** When you finish an order you can export pdf with all the order information.
-- **Stripe Payment Integration:** Secure online payments using Stripe for seamless order processing.
 
 ---
 
