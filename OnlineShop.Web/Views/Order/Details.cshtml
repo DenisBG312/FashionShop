@@ -48,30 +48,30 @@
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead class="table-dark">
-                                <tr>
-                                    <th>Product Name</th>
-                                    <th class="text-center">Quantity</th>
-                                    <th class="text-end">Unit Price</th>
-                                </tr>
+                            <tr>
+                                <th>Product Name</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-end">Unit Price</th>
+                            </tr>
                             </thead>
                             <tbody>
-                                @if (Model.OrderProducts != null && Model.OrderProducts.Any())
-                                {
-                                    foreach (var product in Model.OrderProducts)
-                                    {
-                                        <tr>
-                                            <td>@product.ProductName</td>
-                                            <td class="text-center">@product.Quantity</td>
-                                            <td class="text-end">@product.UnitPrice.ToString("C", new CultureInfo("en-US"))</td>
-                                        </tr>
-                                    }
-                                }
-                                else
+                            @if (Model.OrderProducts != null && Model.OrderProducts.Any())
+                            {
+                                foreach (var product in Model.OrderProducts)
                                 {
                                     <tr>
-                                        <td colspan="3" class="text-center">No products found for this order.</td>
+                                        <td>@product.ProductName</td>
+                                        <td class="text-center">@product.Quantity</td>
+                                        <td class="text-end">@product.UnitPrice.ToString("C", new CultureInfo("en-US"))</td>
                                     </tr>
                                 }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="3" class="text-center">No products found for this order.</td>
+                                </tr>
+                            }
                             </tbody>
                         </table>
                     </div>
@@ -84,13 +84,10 @@
                     <div>
                         @if (!Model.IsCompleted && !Model.IsCancelled)
                         {
-                            <form asp-action="FinalizeOrder" asp-route-id="@Model.OrderId" method="post" class="d-inline">
-                                <button type="submit" class="btn btn-success">
-                                    <i class="bi bi-check-circle"></i> Finalize Order
-                                </button>
-                            </form>
+                            <button id="checkout-button" class="btn btn-primary">
+                                <i class="bi bi-credit-card"></i> Pay with Stripe
+                            </button>
                         }
-
                         else if (Model.IsCompleted)
                         {
                             <a asp-action="TransactionHistory" asp-route-id="@Model.OrderId" class="btn btn-info text-white">
@@ -103,3 +100,30 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        var stripe = Stripe('@ViewBag.StripePublishableKey');
+
+        document.getElementById('checkout-button').addEventListener('click', function () {
+            fetch('@Url.Action("CreateCheckoutSession", "Order", new { orderId = Model.OrderId })', {
+                method: 'POST'
+            })
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (session) {
+                    return stripe.redirectToCheckout({ sessionId: session.sessionId });
+                })
+                .then(function (result) {
+                    if (result.error) {
+                        alert(result.error.message);
+                    }
+                })
+                .catch(function (error) {
+                    console.error("Error:", error);
+                });
+        });
+    </script>
+}

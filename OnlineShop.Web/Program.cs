@@ -11,6 +11,9 @@ using OnlineShop.Services.Data.Interfaces;
 using OnlineShop.Web.Infrastructure.Extensions;
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
+using Product = OnlineShop.Data.Models.Product;
+using Review = OnlineShop.Data.Models.Review;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,10 +38,7 @@ builder.Services.AddScoped<IRepository<ProductWishlist, int>, BaseRepository<Pro
 
 builder.Services.RegisterUserDefinedServices(typeof(IProductService).Assembly);
 
-builder.Services.AddControllersWithViews(cfg =>
-{
-    cfg.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-});
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
 
 
 

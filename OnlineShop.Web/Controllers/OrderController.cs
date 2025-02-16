@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 using iTextSharp.text.pdf.draw;
 using OnlineShop.Data.Models.Enums.Payment;
 using OnlineShop.Services.Data.Interfaces;
+using Stripe.Checkout;
+using System.Linq;
 
 namespace OnlineShop.Web.Controllers
 {
@@ -19,11 +21,80 @@ namespace OnlineShop.Web.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderService _orderService;
+        private readonly IConfiguration _configuration;
 
-        public OrderController(IOrderService orderService)
+        public OrderController(IOrderService orderService, IConfiguration configuration)
         {
             _orderService = orderService;
+            _configuration = configuration;
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateCheckoutSession(int orderId)
+        {
+            var order = await _orderService.GetOrderDetails(orderId);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            var domain = "https://localhost:7158";
+
+            var options = new SessionCreateOptions
+            {
+                PaymentMethodTypes = new List<string> { "card" },
+                Mode = "payment",
+                LineItems = order.OrderProducts.Select(item => new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        Currency = "usd",
+                        UnitAmount = (long)(item.UnitPrice * 100),
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = item.ProductName,
+                            Images = new List<string> {item.ImgUrl}
+                        },
+                    },
+                    Quantity = item.Quantity,
+                }).ToList(),
+                SuccessUrl = $"{domain}/Order/CheckoutSuccess?orderId={orderId}&session_id={{CHECKOUT_SESSION_ID}}",
+                CancelUrl = $"{domain}/Order/CheckoutCancel?orderId={orderId}",
+            };
+
+            var service = new SessionService();
+            Session session = await service.CreateAsync(options);
+
+            return Json(new { sessionId = session.Id });
+        }
+
+        public async Task<IActionResult> CheckoutSuccess(int orderId)
+        {
+            try
+            {
+                var success = await _orderService.FinalizeOrder(orderId);
+                if (!success)
+                {
+                    TempData["ErrorMessage"] = "Payment was processed but there was an issue finalizing the order.";
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Payment successful and order finalized!";
+                }
+                return RedirectToAction("Details", new { id = orderId });
+            }
+            catch (Exception ex)
+            {
+                return Content($"An error occurred during CheckoutSuccess: {ex.Message}");
+            }
+        }
+
+        public IActionResult CheckoutCancel(int orderId)
+        {
+            TempData["ErrorMessage"] = "Payment cancelled. Please try again.";
+            return RedirectToAction("Details", new { id = orderId });
+        }
+
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -42,6 +113,7 @@ namespace OnlineShop.Web.Controllers
                 return NotFound();
             }
 
+            ViewBag.StripePublishableKey = _configuration["Stripe:PublishableKey"];
             return View(orderDetails);
         }
 

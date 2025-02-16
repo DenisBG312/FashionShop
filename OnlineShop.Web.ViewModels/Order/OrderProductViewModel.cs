@@ -11,5 +11,6 @@ namespace OnlineShop.Web.ViewModels.Order
         public string ProductName { get; set; } = null!;
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
+        public string ImgUrl { get; set; }
     }
 }

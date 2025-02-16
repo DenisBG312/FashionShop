@@ -144,6 +144,7 @@ namespace OnlineShop.Services.Data
                 OrderProducts = order.OrderProducts.Select(op => new OrderProductViewModel
                 {
                     ProductName = op.Product.Name,
+                    ImgUrl = op.Product.ImageUrl,
                     Quantity = op.Quantity,
                     UnitPrice = op.UnitPrice
                 }).ToList()
