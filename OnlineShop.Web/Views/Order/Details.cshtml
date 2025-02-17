@@ -84,8 +84,8 @@
                     <div>
                         @if (!Model.IsCompleted && !Model.IsCancelled)
                         {
-                            <button id="checkout-button" class="btn btn-primary">
-                                <i class="bi bi-credit-card"></i> Pay with Stripe
+                            <button id="checkout-button" class="btn btn-primary d-flex align-items-center gap-2">
+                                Pay with <i class="fa-brands fa-stripe"></i>
                             </button>
                         }
                         else if (Model.IsCompleted)

@@ -18,6 +18,11 @@
     background-color: #343a40;
 }
 
+#checkout-button i {
+    font-size: 2em;
+    line-height: 1;
+}
+
 .table {
     border-radius: 10px;
     overflow: hidden;
