@@ -64,7 +64,7 @@
                                             <input type="hidden" name="productId" value="@item.ProductId" />
                                             <div class="input-group">
                                                 <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control text-center" style="width: 80px;" />
-                                                <button type="submit" class="btn btn-primary btn-sm ms-2">@Resource.Update</button>
+                                                <button type="submit" class="btn btn-primary btn-sm ms-2">@Resource.Update  &nbsp; <i class="fa-solid fa-pencil"></i></button>
                                             </div>
                                         </form>
                                     </div>
@@ -88,7 +88,7 @@
                                         <input type="hidden" name="shoppingCartId" value="@item.ShoppingCartId" />
                                         <input type="hidden" name="productId" value="@item.ProductId" />
                                         <button type="submit" class="btn btn-danger btn-sm">
-                                            <i class="bi bi-trash"></i> @Resource.Remove
+                                            <i class="bi bi-trash"></i> @Resource.Remove &nbsp; <i class="fa-solid fa-xmark"></i>
                                         </button>
                                     </form>
                                 </td>
@@ -107,8 +107,8 @@
                 <form asp-action="PlaceOrder" method="post">
                     <input type="hidden" name="shoppingCartId" value="@Model.Id" />
 
-                    <button type="submit" class="btn btn-success btn-lg px-4">
-                        <i class="bi bi-check-circle"></i> @Resource.PlaceAnOrder
+                    <button type="submit" class="btn btn-success btn-md px-4">
+                        <i class="bi bi-check-circle"></i> @Resource.PlaceAnOrder &nbsp; <i class="fa-solid fa-cart-shopping"></i>
                     </button>
                 </form>
             </div>
