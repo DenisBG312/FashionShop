@@ -185,7 +185,7 @@ namespace OnlineShop.Services.Tests
                 .Setup(repo => repo.GetAllAttached())
                 .Returns(shoppingCartMockQueryable);
 
-            var result = await _shoppingCartService.PlaceOrderAsync(shoppingCartId, userId, paymentMethod);
+            var result = await _shoppingCartService.PlaceOrderAsync(shoppingCartId, userId);
 
             Assert.That(result.IsSuccess, Is.False);
             Assert.That(result.ErrorMessage, Is.EqualTo("Your shopping cart is empty."));
@@ -227,7 +227,7 @@ namespace OnlineShop.Services.Tests
 
             _mockOrderRepository.Setup(repo => repo.AddAsync(It.IsAny<Order>())).Returns(Task.CompletedTask);
 
-            var result = await _shoppingCartService.PlaceOrderAsync(shoppingCartId, userId, paymentMethod);
+            var result = await _shoppingCartService.PlaceOrderAsync(shoppingCartId, userId);
 
             Assert.That(result.IsSuccess, Is.True);
         }

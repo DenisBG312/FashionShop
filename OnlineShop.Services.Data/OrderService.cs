@@ -57,7 +57,6 @@ namespace OnlineShop.Services.Data
                     IsCancelled = order.IsCancelled,
                     Transactions = order.Payments.Select(p => new TransactionViewModel
                     {
-                        PaymentMethod = p.PaymentMethod.ToString(),
                         Amount = p.Amount,
                         PaymentDate = p.PaymentDate,
                         Status = p.Status.ToString()
@@ -99,7 +98,6 @@ namespace OnlineShop.Services.Data
                     IsCancelled = order.IsCancelled,
                     Transactions = order.Payments.Select(p => new TransactionViewModel
                     {
-                        PaymentMethod = p.PaymentMethod.ToString(),
                         Amount = p.Amount,
                         PaymentDate = p.PaymentDate,
                         Status = p.Status.ToString()
@@ -182,7 +180,6 @@ namespace OnlineShop.Services.Data
                 }).ToList(),
                 Payments = order.Payments.Select(p => new PaymentDetailsAdminViewModel()
                 {
-                    PaymentMethod = p.PaymentMethod.ToString(),
                     Amount = p.Amount,
                     PaymentDate = p.PaymentDate,
                     Status = p.Status.ToString()
@@ -308,16 +305,24 @@ namespace OnlineShop.Services.Data
                 .FirstOrDefaultAsync(o => o.Id == orderId);
 
             if (order == null)
-            {
                 return null;
-            }
 
             using (var stream = new MemoryStream())
             {
-                var document = new iTextSharp.text.Document(PageSize.A4, 40, 40, 40, 40);
+                var document = new Document(PageSize.A4, 40, 40, 50, 40);
                 PdfWriter writer = PdfWriter.GetInstance(document, stream);
                 document.Open();
-                var titleFont = FontFactory.GetFont("Arial", 24, Font.BOLD, BaseColor.BLACK);
+
+                string logoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "logo.png");
+                if (File.Exists(logoPath))
+                {
+                    var logo = Image.GetInstance(logoPath);
+                    logo.ScaleToFit(100f, 50f);
+                    logo.Alignment = Element.ALIGN_LEFT;
+                    document.Add(logo);
+                }
+
+                var titleFont = FontFactory.GetFont("Arial", 26, Font.BOLD, new BaseColor(50, 50, 50));
                 var title = new Paragraph($"Order #{order.Id} - Transaction Details", titleFont)
                 {
                     Alignment = Element.ALIGN_CENTER,
@@ -325,112 +330,139 @@ namespace OnlineShop.Services.Data
                 };
                 document.Add(title);
 
-                var infoFont = FontFactory.GetFont("Arial", 12, Font.NORMAL, BaseColor.DARK_GRAY);
-                var orderInfo = new Paragraph($@"
-Order Date: {order.OrderDate:dd MMMM yyyy}
-Total Amount: {order.TotalAmount.ToString("C", new CultureInfo("en-US"))}
-Order Status: {(order.IsCompleted ? "Completed" : order.IsCancelled ? "Cancelled" : "Pending")}
-", infoFont)
+                var infoFont = FontFactory.GetFont("Arial", 12, Font.NORMAL, BaseColor.BLACK);
+                var orderInfoTable = new PdfPTable(2)
                 {
+                    WidthPercentage = 100,
                     SpacingAfter = 15
                 };
-                document.Add(orderInfo);
+                orderInfoTable.SetWidths(new float[] { 1.5f, 2.5f });
 
-                var sellerEmail = order.OrderProducts.FirstOrDefault()?.Product.User?.Email ?? "N/A";
-                var customerEmail = order.User?.Email ?? "N/A";
+                AddKeyValueCell(orderInfoTable, "Order Date:", order.OrderDate.ToString("dd MMMM yyyy"), infoFont);
+                AddKeyValueCell(orderInfoTable, "Total Amount:", order.TotalAmount.ToString("C", new CultureInfo("en-US")), infoFont);
+                AddKeyValueCell(orderInfoTable, "Order Status:", order.IsCompleted ? "Completed" : order.IsCancelled ? "Cancelled" : "Pending", infoFont);
+                AddKeyValueCell(orderInfoTable, "Seller Email:", order.OrderProducts.FirstOrDefault()?.Product.User?.Email ?? "N/A", infoFont);
+                AddKeyValueCell(orderInfoTable, "Customer Email:", order.User?.Email ?? "N/A", infoFont);
 
+                document.Add(orderInfoTable);
 
-                var userDetails = new Paragraph($@"
-Seller Email: {sellerEmail}
-Customer Email: {customerEmail}", infoFont);
-
-                document.Add(userDetails);
-
-                var productTable = new PdfPTable(4) { WidthPercentage = 100, SpacingBefore = 20, SpacingAfter = 20 };
-                productTable.SetWidths(new float[] { 3f, 2f, 2f, 2f });
-
+                var productTable = new PdfPTable(4)
+                {
+                    WidthPercentage = 100,
+                    SpacingBefore = 20,
+                    SpacingAfter = 20
+                };
+                productTable.SetWidths(new float[] { 3f, 1.5f, 2f, 2f });
                 AddTableHeader(productTable, new[] { "Product", "Quantity", "Unit Price", "Subtotal" });
 
+                bool alternate = false;
                 foreach (var orderProduct in order.OrderProducts)
                 {
-                    productTable.AddCell(new PdfPCell(new Phrase(orderProduct.Product.Name, infoFont)));
-                    productTable.AddCell(new PdfPCell(new Phrase(orderProduct.Quantity.ToString(), infoFont)));
-                    productTable.AddCell(new PdfPCell(new Phrase(orderProduct.UnitPrice.ToString("C", new CultureInfo("en-US")), infoFont)));
-                    productTable.AddCell(new PdfPCell(new Phrase((orderProduct.Quantity * orderProduct.UnitPrice).ToString("C", new CultureInfo("en-US")), infoFont)));
+                    AddStyledCell(productTable, orderProduct.Product.Name, infoFont, alternate);
+                    AddStyledCell(productTable, orderProduct.Quantity.ToString(), infoFont, alternate);
+                    AddStyledCell(productTable, orderProduct.UnitPrice.ToString("C", new CultureInfo("en-US")), infoFont, alternate);
+                    AddStyledCell(productTable, (orderProduct.Quantity * orderProduct.UnitPrice).ToString("C", new CultureInfo("en-US")), infoFont, alternate);
+                    alternate = !alternate;
                 }
-
-                var totalCell = new PdfPCell(new Phrase("Total", FontFactory.GetFont("Arial", 12, Font.BOLD))) { Colspan = 3, HorizontalAlignment = Element.ALIGN_RIGHT };
+                var totalCell = new PdfPCell(new Phrase("Total", FontFactory.GetFont("Arial", 12, Font.BOLD)))
+                {
+                    Colspan = 3,
+                    HorizontalAlignment = Element.ALIGN_RIGHT,
+                    BackgroundColor = new BaseColor(220, 220, 220),
+                    Padding = 8
+                };
                 productTable.AddCell(totalCell);
-                productTable.AddCell(new PdfPCell(new Phrase(order.TotalAmount.ToString("C", new CultureInfo("en-US")), FontFactory.GetFont("Arial", 12, Font.BOLD))) { HorizontalAlignment = Element.ALIGN_RIGHT });
+                productTable.AddCell(new PdfPCell(new Phrase(order.TotalAmount.ToString("C", new CultureInfo("en-US")), FontFactory.GetFont("Arial", 12, Font.BOLD)))
+                {
+                    HorizontalAlignment = Element.ALIGN_RIGHT,
+                    BackgroundColor = new BaseColor(220, 220, 220),
+                    Padding = 8
+                });
                 document.Add(productTable);
 
-                var paymentTable = new PdfPTable(4) { WidthPercentage = 100, SpacingBefore = 20 };
-                paymentTable.SetWidths(new float[] { 3f, 2f, 2f, 2f });
+                var paymentTable = new PdfPTable(3)
+                {
+                    WidthPercentage = 100,
+                    SpacingBefore = 20
+                };
+                paymentTable.SetWidths(new float[] { 2f, 2f, 2f });
+                AddTableHeader(paymentTable, new[] { "Amount", "Payment Date", "Status" });
 
-                AddTableHeader(paymentTable, new[] { "Payment Method", "Amount", "Payment Date", "Status" });
-
+                alternate = false;
                 foreach (var payment in order.Payments)
                 {
-                    paymentTable.AddCell(new PdfPCell(new Phrase(payment.PaymentMethod.ToString(), infoFont)));
-                    paymentTable.AddCell(new PdfPCell(new Phrase(payment.Amount.ToString("C", new CultureInfo("en-US")), infoFont)));
-                    paymentTable.AddCell(new PdfPCell(new Phrase(payment.PaymentDate.ToString("dd MMMM yyyy"), infoFont)));
-                    paymentTable.AddCell(new PdfPCell(new Phrase(payment.Status.ToString(), infoFont)));
+                    AddStyledCell(paymentTable, payment.Amount.ToString("C", new CultureInfo("en-US")), infoFont, alternate);
+                    AddStyledCell(paymentTable, payment.PaymentDate.ToString("dd MMMM yyyy"), infoFont, alternate);
+                    AddStyledCell(paymentTable, payment.Status.ToString(), infoFont, alternate);
+                    alternate = !alternate;
                 }
                 document.Add(paymentTable);
 
-                AddSignatureAndLogo(document);
-                document.Close();
+                var signatureFont = FontFactory.GetFont("Arial", 12, Font.ITALIC, BaseColor.BLACK);
+                var signatureParagraph = new Paragraph("Owner of Website / SEO Signature:", signatureFont)
+                {
+                    SpacingBefore = 20,
+                    Alignment = Element.ALIGN_LEFT
+                };
+                document.Add(signatureParagraph);
 
+                string signaturePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "signature.png");
+                if (File.Exists(signaturePath))
+                {
+                    var signature = Image.GetInstance(signaturePath);
+                    signature.ScaleToFit(150f, 50f);
+                    document.Add(signature);
+                }
+
+                document.Close();
                 return stream.ToArray();
             }
+        }
+
+        private void AddKeyValueCell(PdfPTable table, string key, string value, Font font)
+        {
+            table.AddCell(new PdfPCell(new Phrase(key, FontFactory.GetFont("Arial", 12, Font.BOLD, BaseColor.DARK_GRAY)))
+            {
+                BackgroundColor = new BaseColor(240, 240, 240),
+                Padding = 8,
+                Border = PdfPCell.NO_BORDER
+            });
+            table.AddCell(new PdfPCell(new Phrase(value, font))
+            {
+                BackgroundColor = new BaseColor(250, 250, 250),
+                Padding = 8,
+                Border = PdfPCell.NO_BORDER
+            });
+        }
+
+        private void AddStyledCell(PdfPTable table, string text, Font font, bool alternate = false)
+        {
+            var cell = new PdfPCell(new Phrase(text, font))
+            {
+                Padding = 8,
+                BackgroundColor = alternate ? new BaseColor(245, 245, 245) : BaseColor.WHITE
+            };
+            table.AddCell(cell);
         }
 
         [ExcludeFromCodeCoverage]
         private void AddTableHeader(PdfPTable table, string[] headers)
         {
             var headerFont = FontFactory.GetFont("Arial", 12, Font.BOLD, BaseColor.WHITE);
-            var headerBackground = new BaseColor(100, 149, 237);
-
+            var headerBackground = new BaseColor(70, 130, 180);
             foreach (var header in headers)
             {
                 var cell = new PdfPCell(new Phrase(header, headerFont))
                 {
                     BackgroundColor = headerBackground,
-                    Padding = 8,
+                    Padding = 10,
                     HorizontalAlignment = Element.ALIGN_CENTER
                 };
                 table.AddCell(cell);
             }
         }
 
-        [ExcludeFromCodeCoverage]
-        private void AddSignatureAndLogo(iTextSharp.text.Document document)
-        {
-            var signatureFont = FontFactory.GetFont("Arial", 12, Font.ITALIC, BaseColor.BLACK);
-            var signatureParagraph = new Paragraph("Owner of Website / SEO Signature:", signatureFont)
-            {
-                SpacingBefore = 20,
-                Alignment = Element.ALIGN_LEFT
-            };
-            document.Add(signatureParagraph);
 
-            string signaturePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "signature.png");
-            if (File.Exists(signaturePath))
-            {
-                var signature = Image.GetInstance(signaturePath);
-                signature.ScaleToFit(150f, 50f);
-                document.Add(signature);
-            }
-
-            string logoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", "your_logo.png");
-            if (File.Exists(logoPath))
-            {
-                var logo = Image.GetInstance(logoPath);
-                logo.ScaleToFit(100f, 50f);
-                logo.Alignment = Element.ALIGN_RIGHT;
-                document.Add(logo);
-            }
-        }
 
     }
 }

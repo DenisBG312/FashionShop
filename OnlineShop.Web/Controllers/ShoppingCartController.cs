@@ -85,11 +85,11 @@ namespace OnlineShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PlaceOrder(int shoppingCartId, PaymentMethod paymentMethod)
+        public async Task<IActionResult> PlaceOrder(int shoppingCartId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var result = await _shoppingCartService.PlaceOrderAsync(shoppingCartId, userId, paymentMethod);
+            var result = await _shoppingCartService.PlaceOrderAsync(shoppingCartId, userId);
 
             if (!result.IsSuccess)
             {

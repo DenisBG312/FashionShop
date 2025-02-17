@@ -42,7 +42,7 @@ namespace OnlineShop.Services.Tests
                 },
                 Payments = new List<Payment>
                 {
-                    new Payment { PaymentMethod = PaymentMethod.DebitCard, Amount = 100, Status = Status.Completed }
+                    new Payment { Amount = 100, Status = Status.Completed }
                 }
             }
         };
@@ -155,7 +155,7 @@ namespace OnlineShop.Services.Tests
                     },
                     Payments = new List<Payment>()
                     {
-                        new Payment { PaymentMethod = PaymentMethod.DebitCard, Amount = 100, Status = Status.Completed }
+                        new Payment { Amount = 100, Status = Status.Completed }
                     }
                 }
             };
@@ -230,7 +230,7 @@ namespace OnlineShop.Services.Tests
                     },
                     Payments = new List<Payment>()
                     {
-                        new Payment { PaymentMethod = PaymentMethod.DebitCard, Amount = 100, Status = Status.Completed }
+                        new Payment { Amount = 100, Status = Status.Completed }
                     }
                 }
             };
@@ -268,7 +268,7 @@ namespace OnlineShop.Services.Tests
                 },
                 Payments = new List<Payment>
                 {
-                    new Payment { PaymentMethod = PaymentMethod.DebitCard, Amount = 260, Status = Status.Pending }
+                    new Payment { Amount = 260, Status = Status.Pending }
                 }
             };
 
@@ -306,7 +306,7 @@ namespace OnlineShop.Services.Tests
                     UserId = userId,
                     Payments = new List<Payment>
                     {
-                        new Payment { PaymentMethod = PaymentMethod.DebitCard, Amount = 100, Status = Status.Completed }
+                        new Payment { Amount = 100, Status = Status.Completed }
                     }
                 },
                 new Order
@@ -315,7 +315,7 @@ namespace OnlineShop.Services.Tests
                     UserId = userId,
                     Payments = new List<Payment>
                     {
-                        new Payment { PaymentMethod = PaymentMethod.BankTransfer, Amount = 200, Status = Status.Pending }
+                        new Payment {Amount = 200, Status = Status.Pending }
                     }
                 },
                 new Order
@@ -324,7 +324,7 @@ namespace OnlineShop.Services.Tests
                     UserId = userId,
                     Payments = new List<Payment>
                     {
-                        new Payment { PaymentMethod = PaymentMethod.Cash, Amount = 150, Status = Status.Completed }
+                        new Payment { Amount = 150, Status = Status.Completed }
                     }
                 }
             };

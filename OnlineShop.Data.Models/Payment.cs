@@ -11,8 +11,6 @@ namespace OnlineShop.Data.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public PaymentMethod PaymentMethod { get; set; }
-        [Required]
         [Range(AmountMinValue, AmountMaxValue)]
 
         public decimal Amount { get; set; }

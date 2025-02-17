@@ -26,7 +26,6 @@ namespace OnlineShop.Data.Configuration
                 new Payment()
                 {
                     Id = 1,
-                    PaymentMethod = PaymentMethod.Cash,
                     Amount = 100.20m,
                     PaymentDate = new DateTime(2024, 10, 2),
                     Status = Status.Completed,
@@ -35,7 +34,6 @@ namespace OnlineShop.Data.Configuration
                 new Payment()
                 {
                     Id = 2,
-                    PaymentMethod = PaymentMethod.DebitCard,
                     Amount = 300.10m,
                     PaymentDate = new DateTime(2024, 12, 9),
                     Status = Status.Cancelled,

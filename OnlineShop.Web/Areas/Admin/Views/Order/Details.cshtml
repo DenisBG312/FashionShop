@@ -95,7 +95,6 @@
                                 @foreach (var payment in Model.Payments)
                                 {
                                     <tr>
-                                        <td>@payment.PaymentMethod</td>
                                         <td>@payment.Amount.ToString("C", new CultureInfo("en-US"))</td>
                                         <td>@payment.PaymentDate.ToString("yyyy-MM-dd HH:mm")</td>
                                         <td>

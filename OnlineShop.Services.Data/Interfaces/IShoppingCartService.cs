@@ -20,6 +20,6 @@ namespace OnlineShop.Services.Data.Interfaces
 
         Task<bool> RemoveFromCartAsync(int shoppingCartId, int productId);
 
-        Task<PlaceOrderResult> PlaceOrderAsync(int shoppingCartId, string userId, PaymentMethod paymentMethod);
+        Task<PlaceOrderResult> PlaceOrderAsync(int shoppingCartId, string userId);
     }
 }

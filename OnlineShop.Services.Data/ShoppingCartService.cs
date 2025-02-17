@@ -188,7 +188,7 @@ namespace OnlineShop.Services.Data
 
         }
 
-        public async Task<PlaceOrderResult> PlaceOrderAsync(int shoppingCartId, string userId, PaymentMethod paymentMethod)
+        public async Task<PlaceOrderResult> PlaceOrderAsync(int shoppingCartId, string userId)
         {
             var result = new PlaceOrderResult();
 
@@ -230,7 +230,6 @@ namespace OnlineShop.Services.Data
 
             var payment = new Payment
             {
-                PaymentMethod = paymentMethod,
                 Amount = totalAmount,
                 PaymentDate = DateTime.Now,
                 Status = Status.Pending,
