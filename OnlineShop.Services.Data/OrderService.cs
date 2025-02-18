@@ -319,7 +319,7 @@ namespace OnlineShop.Services.Data
                 }
 
                 var titleFont = FontFactory.GetFont("Arial", 26, Font.BOLD, new BaseColor(50, 50, 50));
-                var title = new Paragraph($"Order #{order.Id} - Transaction Details", titleFont)
+                var title = new Paragraph($"Transaction Details", titleFont)
                 {
                     Alignment = Element.ALIGN_CENTER,
                     SpacingAfter = 20
