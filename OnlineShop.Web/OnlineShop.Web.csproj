@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-OnlineShop.Web-f9f467e7-6303-44ff-956d-ef35cb9a6e87</UserSecretsId>
+    <ApplicationIcon>wwwroot\images\logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
