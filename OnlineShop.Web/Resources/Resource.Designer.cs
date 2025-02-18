@@ -628,7 +628,7 @@ namespace OnlineShop.Web.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Your cart is empty! Start adding products to your cart now.
+        ///   Looks up a localized string similar to Your cart is empty!.
         /// </summary>
         public static string YourCartIsEmpty {
             get {

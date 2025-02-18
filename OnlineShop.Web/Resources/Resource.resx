@@ -307,7 +307,7 @@
     <value>Women's Collection</value>
   </data>
   <data name="YourCartIsEmpty" xml:space="preserve">
-    <value>Your cart is empty! Start adding products to your cart now</value>
+    <value>Your cart is empty!</value>
   </data>
   <data name="YourOne-stopShopForAllYourNeeds" xml:space="preserve">
     <value>Your one-stop shop for all your needs, from essentials to luxury items.</value>
