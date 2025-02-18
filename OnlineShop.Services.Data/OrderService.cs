@@ -50,7 +50,7 @@ namespace OnlineShop.Services.Data
                 orderIndexViewModels.Add(new OrderIndexViewModel
                 {
                     OrderId = order.Id,
-                    CustomOrderNumber = orderIndexViewModels.Count + 1,
+                    CustomOrderNumber = order.Id /* TODO: Make orders GUID */,
                     OrderDate = order.OrderDate,
                     TotalAmount = order.Payments.Sum(p => p.Amount),
                     IsCompleted = order.IsCompleted,
@@ -71,7 +71,7 @@ namespace OnlineShop.Services.Data
         public async Task<IEnumerable<OrderIndexViewModel>> GetAllOrdersForUser(string userId)
         {
             var userOrders = await _orderRepository.GetAllAttached()
-                .Where(o => o.UserId == userId)
+                .Where(o => o.UserId == userId && !o.IsCancelled)
                 .Include(o => o.OrderProducts)
                 .ThenInclude(p => p.Product)
                 .Include(o => o.Payments)
@@ -91,7 +91,7 @@ namespace OnlineShop.Services.Data
                 orderIndexViewModels.Add(new OrderIndexViewModel
                 {
                     OrderId = order.Id,
-                    CustomOrderNumber = orderIndexViewModels.Count + 1,
+                    CustomOrderNumber = order.Id /* TODO: Make Order.Id GUID */,
                     OrderDate = order.OrderDate,
                     TotalAmount = totalAmount,
                     IsCompleted = order.IsCompleted,
@@ -129,12 +129,10 @@ namespace OnlineShop.Services.Data
                 .Include(o => o.OrderProducts)
                 .ToListAsync();
 
-            int userOrderNumber = userOrders.FindIndex(o => o.Id == order.Id) + 1;
-
             var viewModel = new OrderDetailsViewModel
             {
                 OrderId = order.Id,
-                CustomOrderNumber = userOrderNumber,
+                CustomOrderNumber = order.Id /* TODO: Make Order.Id GUID */,
                 OrderDate = order.OrderDate,
                 TotalAmount = order.OrderProducts.Sum(op => op.UnitPrice * op.Quantity),
                 IsCompleted = order.IsCompleted,
@@ -281,12 +279,10 @@ namespace OnlineShop.Services.Data
                 .OrderBy(o => o.Id)
                 .ToListAsync();
 
-            int customOrderNumber = userOrders.FindIndex(o => o.Id == order.Id) + 1;
-
             var viewModel = new OrderTransactionHistoryViewModel
             {
                 OrderId = order.Id,
-                CustomOrderNumber = customOrderNumber,
+                CustomOrderNumber = order.Id /* MAKE Order.Id GUID */,
                 Payments = order.Payments.ToList()
             };
 
