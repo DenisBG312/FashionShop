@@ -111,9 +111,9 @@ Follow these steps to get the project up and running locally:
 
 ![Landing Page](https://github.com/DenisBG312/FashionShop/blob/master/ApplicationScreenshots/home_index.png)
 
-### Product Details
+### Products
 
-![Product Details](https://github.com/DenisBG312/FashionShop/blob/master/ApplicationScreenshots/product_index.png)
+![Products](https://github.com/DenisBG312/FashionShop/blob/master/ApplicationScreenshots/product_index.png)
 
 ### Shopping Cart
 
