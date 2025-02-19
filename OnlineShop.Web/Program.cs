@@ -134,8 +134,16 @@ async Task SeedAdminUserAndRole(WebApplication app)
     }
 
     var adminUser = await userManager.FindByEmailAsync("admin@onlineshop.com");
+
     if (adminUser != null && !await userManager.IsInRoleAsync(adminUser, "Admin"))
     {
         await userManager.AddToRoleAsync(adminUser, "Admin");
+    }
+
+    var regularUser = await userManager.FindByEmailAsync("john@email.com");
+
+    if (regularUser != null && !await userManager.IsInRoleAsync(regularUser, "User"))
+    {
+        await userManager.AddToRoleAsync(regularUser, "User");
     }
 }
