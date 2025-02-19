@@ -109,15 +109,18 @@ Follow these steps to get the project up and running locally:
 
 ### Landing Page
 
-![Landing Page](https://i.ibb.co/GpcgXn8/Landing-page.png)
+![Landing Page](https://github.com/DenisBG312/FashionShop/blob/master/ApplicationScreenshots/home_index.png)
 
 ### Product Details
 
-![Product Details](https://i.ibb.co/phjvmyq/image.png)
+![Product Details](https://github.com/DenisBG312/FashionShop/blob/master/ApplicationScreenshots/product_index.png)
 
 ### Shopping Cart
 
-![Shopping Cart](https://i.ibb.co/Rck0HbW/image.png)
+![Shopping Cart](https://github.com/DenisBG312/FashionShop/blob/master/ApplicationScreenshots/shoppingCart_index.png)
+
+### Stripe Checkout Page
+![Stripe Checkout Page](https://github.com/DenisBG312/FashionShop/blob/master/ApplicationScreenshots/stripe_page.png)
 
 ---
 
