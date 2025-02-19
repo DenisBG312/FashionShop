@@ -24,9 +24,25 @@ namespace OnlineShop.Data.Configuration
                 {
                     Id = 1,
                     ProductId = 1,
-                    UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
+                    UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097",
+                    Rating = 5,
+                    Comment = "I bought these jeans for my wife. She is more than happy, as am I."
+                },
+                new Review()
+                {
+                    Id = 2,
+                    ProductId = 2,
+                    UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097",
+                    Rating = 3,
+                    Comment = "Well the shoes are good but they are not good for running!"
+                },
+                new Review()
+                {
+                    Id = 3,
+                    ProductId = 3,
+                    UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097",
                     Rating = 4,
-                    Comment = "I really liked wearing these shoes. They are very comfortable"
+                    Comment = "Amazing jacket but the sleeves are a little too short"
                 }
             };
         }

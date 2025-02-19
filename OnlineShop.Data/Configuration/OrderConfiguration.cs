@@ -23,18 +23,10 @@ namespace OnlineShop.Data.Configuration
                 new Order
                 {
                     Id = 1,
-                    UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
+                    UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097",
                     OrderDate = DateTime.Now,
-                    TotalAmount = 150.00m,
+                    TotalAmount = 144.98m,
                     IsCompleted = false
-                },
-                new Order
-                {
-                    Id = 2,
-                    UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
-                    OrderDate = DateTime.Now.AddDays(-1),
-                    TotalAmount = 75.50m,
-                    IsCompleted = true
                 }
             };
         }

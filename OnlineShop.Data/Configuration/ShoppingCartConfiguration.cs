@@ -23,8 +23,8 @@ namespace OnlineShop.Data.Configuration
                 new ShoppingCart()
                 {
                     Id = 1,
-                    UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
-                    Amount = 1575.00m,
+                    UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097",
+                    Amount = 104.99m
                 },
             };
         }

@@ -27,14 +27,14 @@ namespace OnlineShop.Data.Configuration
                     OrderId = 1,
                     ProductId = 1,
                     Quantity = 2,
-                    UnitPrice = 19.99m
+                    UnitPrice = 39.99m
                 },
                 new OrderProduct
                 {
                     OrderId = 1,
                     ProductId = 2,
                     Quantity = 1,
-                    UnitPrice = 29.99m
+                    UnitPrice = 65.00m
                 }
             };
         }

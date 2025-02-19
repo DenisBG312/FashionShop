@@ -26,20 +26,11 @@ namespace OnlineShop.Data.Configuration
                 new Payment()
                 {
                     Id = 1,
-                    Amount = 100.20m,
+                    Amount = 144.98m,
                     PaymentDate = new DateTime(2024, 10, 2),
-                    Status = Status.Completed,
+                    Status = Status.Pending,
                     OrderId = 1
                 },
-                new Payment()
-                {
-                    Id = 2,
-                    Amount = 300.10m,
-                    PaymentDate = new DateTime(2024, 12, 9),
-                    Status = Status.Cancelled,
-                    OrderId = 2
-                }
-
             };
 
 

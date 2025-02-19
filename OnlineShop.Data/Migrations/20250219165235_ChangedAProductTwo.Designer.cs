@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineShop.Data;
 
@@ -11,9 +12,11 @@ using OnlineShop.Data;
 namespace OnlineShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250219165235_ChangedAProductTwo")]
+    partial class ChangedAProductTwo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -239,7 +242,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e92632ca-307e-48ee-b3ee-2bbf03a07d59",
+                            ConcurrencyStamp = "ba147e8f-04c4-4ed3-ba5b-824194830fe1",
                             Email = "admin@onlineshop.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -247,10 +250,10 @@ namespace OnlineShop.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ONLINESHOP.COM",
                             NormalizedUserName = "ADMIN@ONLINESHOP.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJHFgYAGChotpik6ayzE7A34kamW4SejXzi7Oup7v6NXTlgGOy8l2l4ozTDdF4nMtQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELedma92SsQ4w8SSiWni/TqewkMs9V5ptCH8l4gGu13MnqeXy0SQcf+dp+uP3kRJ5w==",
                             PhoneNumberConfirmed = false,
                             ProfileImgUrl = "https://a0.anyrgb.com/pngimg/1850/1546/admin-administrator-icon-admin%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%82%D0%BE%D1%80-system-administrator-administrator-nuvola-user-profile-hearing-login-internet-forum.png",
-                            SecurityStamp = "56f4d9cf-6ef9-4e30-98f8-0bdb7715aabb",
+                            SecurityStamp = "71db3017-5621-4a38-9841-b1658e4725c1",
                             TwoFactorEnabled = false,
                             UserName = "admin@onlineshop.com"
                         },
@@ -258,7 +261,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = "9bd65753-4ac3-437f-a1ba-e9320baf1097",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3b69ca28-6e9e-4a6e-8e60-f14a8253716e",
+                            ConcurrencyStamp = "1ee23462-eee6-473b-881b-d7f969652e7e",
                             Email = "john@email.com",
                             EmailConfirmed = true,
                             FirstName = "John",
@@ -266,10 +269,10 @@ namespace OnlineShop.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "JOHN@EMAIL.COM",
                             NormalizedUserName = "JOHN@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFT2XJZjbmPkD66BcyI7fXYYEe5pAl5kC/YNVIQvv/sY/N1T4VfW+hNVkbrplBlOqg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFY9Q7EMd3hMPtP9tJQd/7v2BmUDpt8SZL1Nf2j1wmv/DgjFw2lj02gUtsI32CiIgg==",
                             PhoneNumberConfirmed = false,
                             ProfileImgUrl = "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                            SecurityStamp = "87874c9d-6e4e-40d7-8d1d-268e0e079631",
+                            SecurityStamp = "d50d3a9e-5792-4ed4-b59e-73fc8a9a61ca",
                             TwoFactorEnabled = false,
                             UserName = "john@email.com"
                         });
@@ -396,9 +399,18 @@ namespace OnlineShop.Data.Migrations
                             Id = 1,
                             IsCancelled = false,
                             IsCompleted = false,
-                            OrderDate = new DateTime(2025, 2, 19, 19, 18, 26, 880, DateTimeKind.Local).AddTicks(5736),
-                            TotalAmount = 144.98m,
-                            UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097"
+                            OrderDate = new DateTime(2025, 2, 19, 18, 52, 34, 416, DateTimeKind.Local).AddTicks(179),
+                            TotalAmount = 150.00m,
+                            UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsCancelled = false,
+                            IsCompleted = true,
+                            OrderDate = new DateTime(2025, 2, 18, 18, 52, 34, 416, DateTimeKind.Local).AddTicks(186),
+                            TotalAmount = 75.50m,
+                            UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });
                 });
 
@@ -428,14 +440,14 @@ namespace OnlineShop.Data.Migrations
                             OrderId = 1,
                             ProductId = 1,
                             Quantity = 2,
-                            UnitPrice = 39.99m
+                            UnitPrice = 19.99m
                         },
                         new
                         {
                             OrderId = 1,
                             ProductId = 2,
                             Quantity = 1,
-                            UnitPrice = 65.00m
+                            UnitPrice = 29.99m
                         });
                 });
 
@@ -469,10 +481,18 @@ namespace OnlineShop.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Amount = 144.98m,
+                            Amount = 100.20m,
                             OrderId = 1,
                             PaymentDate = new DateTime(2024, 10, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = 0
+                            Status = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Amount = 300.10m,
+                            OrderId = 2,
+                            PaymentDate = new DateTime(2024, 12, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = 2
                         });
                 });
 
@@ -552,60 +572,6 @@ namespace OnlineShop.Data.Migrations
                             Price = 65.00m,
                             StockQuantity = 40,
                             UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ClothingTypeId = 2,
-                            Description = "Very good-looking jacket for men.",
-                            DiscountPercentage = 25,
-                            GenderId = 1,
-                            ImageUrl = "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=1936&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                            IsOnSale = true,
-                            Name = "Brown Jacket",
-                            Price = 65.00m,
-                            StockQuantity = 40,
-                            UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            ClothingTypeId = 3,
-                            Description = "Leather shoes that are extremely comfortable for men.",
-                            GenderId = 1,
-                            ImageUrl = "https://images.unsplash.com/photo-1638609348722-aa2a3a67db26?q=80&w=1945&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                            IsOnSale = false,
-                            Name = "Leather Shoes",
-                            Price = 55.00m,
-                            StockQuantity = 17,
-                            UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            ClothingTypeId = 1,
-                            Description = "Stylish t-shirt for women.",
-                            GenderId = 2,
-                            ImageUrl = "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                            IsOnSale = false,
-                            Name = "Black T-Shirt",
-                            Price = 24.99m,
-                            StockQuantity = 23,
-                            UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            ClothingTypeId = 1,
-                            Description = "A clothing set for men specially gathered.",
-                            DiscountPercentage = 15,
-                            GenderId = 2,
-                            ImageUrl = "https://images.unsplash.com/photo-1467043237213-65f2da53396f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                            IsOnSale = true,
-                            Name = "Clothing Set",
-                            Price = 24.99m,
-                            StockQuantity = 23,
-                            UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });
                 });
 
@@ -675,29 +641,11 @@ namespace OnlineShop.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Comment = "I bought these jeans for my wife. She is more than happy, as am I.",
+                            Comment = "I really liked wearing these shoes. They are very comfortable",
                             ProductId = 1,
-                            Rating = 5,
-                            ReviewDate = new DateTime(2025, 2, 19, 19, 18, 26, 881, DateTimeKind.Local).AddTicks(6610),
-                            UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Comment = "Well the shoes are good but they are not good for running!",
-                            ProductId = 2,
-                            Rating = 3,
-                            ReviewDate = new DateTime(2025, 2, 19, 19, 18, 26, 881, DateTimeKind.Local).AddTicks(6628),
-                            UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Comment = "Amazing jacket but the sleeves are a little too short",
-                            ProductId = 3,
                             Rating = 4,
-                            ReviewDate = new DateTime(2025, 2, 19, 19, 18, 26, 881, DateTimeKind.Local).AddTicks(6630),
-                            UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097"
+                            ReviewDate = new DateTime(2025, 2, 19, 18, 52, 34, 416, DateTimeKind.Local).AddTicks(6843),
+                            UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });
                 });
 
@@ -733,10 +681,10 @@ namespace OnlineShop.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Amount = 104.99m,
-                            PaymentDate = new DateTime(2025, 2, 19, 19, 18, 26, 881, DateTimeKind.Local).AddTicks(7561),
+                            Amount = 1575.00m,
+                            PaymentDate = new DateTime(2025, 2, 19, 18, 52, 34, 416, DateTimeKind.Local).AddTicks(7763),
                             Status = "Active",
-                            UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097"
+                            UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                         });
                 });
 
