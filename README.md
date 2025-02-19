@@ -125,6 +125,10 @@ Follow these steps to get the project up and running locally:
 
 Below are the credentials for the seeded admin in the application:
 
+### User Account
+- **Username**: john@email.com
+- **Password**: John1234
+
 ### Admin Account
 
 - **Username**: [admin@onlineshop.com](mailto\:admin@onlineshop.com)
