@@ -35,13 +35,13 @@ namespace OnlineShop.Data.Configuration
                 new Product
                 {
                     Id = 2,
-                    Name = "Black Leather Brogan Black Boots",
-                    Description = "Very comfortable boots for women.",
+                    Name = "Men Jacket",
+                    Description = "Very comfortable jacket for men.",
                     Price = 65.00m,
-                    ImageUrl = "https://images.unsplash.com/photo-1605732440685-d0654d81aa30?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    ImageUrl = "https://images-cdn.ubuy.co.in/653b4be936138146b54c2af8-junge-denim-jacket-men-fleece-jacket.jpg",
                     StockQuantity = 40,
-                    GenderId = 2,
-                    ClothingTypeId = 3,
+                    GenderId = 1,
+                    ClothingTypeId = 2,
                     UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                 },
                 new Product
@@ -61,12 +61,12 @@ namespace OnlineShop.Data.Configuration
                 new Product
                 {
                     Id = 4,
-                    Name = "Leather Shoes",
-                    Description = "Leather shoes that are extremely comfortable for men.",
+                    Name = "Patchwork Sneakers",
+                    Description = "Sneakers that are extremely comfortable.",
                     Price = 55.00m,
-                    ImageUrl = "https://images.unsplash.com/photo-1638609348722-aa2a3a67db26?q=80&w=1945&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                    ImageUrl = "https://dimg.dillards.com/is/image/DillardsZoom/mainProduct/kurt-geiger-london-kensington-denim-fabric-sneakers/00000001_zi_4062c067-b0b4-494b-a79a-6e2b6957ae45.jpg",
                     StockQuantity = 17,
-                    GenderId = 1,
+                    GenderId = 2,
                     ClothingTypeId = 3,
                     UserId = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f"
                 },

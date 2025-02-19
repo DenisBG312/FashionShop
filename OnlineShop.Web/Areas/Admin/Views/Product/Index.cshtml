@@ -29,7 +29,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h4 class="mb-0">Manage Your Products</h4>
         <a href="@Url.Action("Create", "Product", new { area = "Admin" })" class="btn btn-success">
-            <i class="bi bi-plus-circle"></i> Add New Product
+            Add New Product <i class="fa-solid fa-plus"></i>
         </a>
     </div>
 
@@ -83,14 +83,14 @@
                             <td>@product.StockQuantity</td>
                             <td>
                                 <a href="@Url.Action("Edit", "Product", new { id = product.Id, area = "Admin" })" class="btn btn-warning btn-sm">
-                                    <i class="bi bi-pencil-square"></i> Edit
+                                    Edit <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
                                 <a href="@Url.Action("Details", "Product", new { id = product.Id, area = "Admin" })" class="btn btn-info btn-sm">
-                                    <i class="bi bi-eye"></i> Details
+                                    Details <i class="fa-solid fa-circle-info"></i>
                                 </a>
                                 <form asp-action="Delete" asp-controller="Product" asp-area="Admin" asp-route-id="@product.Id" method="post" class="d-inline">
                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this product?')">
-                                        <i class="bi bi-trash"></i> Delete
+                                        Delete <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </form>
                             </td>

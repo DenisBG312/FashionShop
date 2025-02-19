@@ -37,14 +37,14 @@
                     <td>@order.UserName</td>
                     <td>
                         <a asp-action="Details" asp-controller="Order" asp-route-id="@order.OrderId" class="btn btn-info btn-sm">
-                            <i class="bi bi-eye"></i> Details
+                                <i class="bi bi-eye"></i> Details <i class="fa-solid fa-circle-info"></i>
                         </a>
                         @if (!order.IsCompleted && !order.IsCancelled)
                         {
                             <form asp-action="CancelOrder" asp-controller="Order" asp-route-id="@order.OrderId" method="post" class="d-inline">
                                 <input type="hidden" name="currentPage" value="@Model.PageNumber" />
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to cancel this order?')">
-                                    <i class="bi bi-x-circle"></i> Cancel
+                                        <i class="bi bi-x-circle"></i> Cancel <i class="fa-solid fa-ban"></i>
                                 </button>
                             </form>
                         }
