@@ -70,7 +70,7 @@ Follow these steps to get the project up and running locally:
    - Add your **MSSQL connection string** under the `ConnectionStrings` section:
      ```json
      "ConnectionStrings": {
-       "DefaultConnection": "Server=YOUR_SERVER;Database=OnlineShop;Trusted_Connection=True;TrustServerCertificate=True;"
+       "DefaultConnection": "Server=YOUR_SERVER;Database=FashionShop;Trusted_Connection=True;TrustServerCertificate=True;"
      }
      ```
 
