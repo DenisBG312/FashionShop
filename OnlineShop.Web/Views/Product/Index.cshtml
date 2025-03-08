@@ -54,36 +54,121 @@
     .original-price {
         font-size: 0.9rem !important;
     }
+
+    .filter-card {
+        transition: all 0.3s ease;
+        background-color: #ffffff;
+    }
+
+    .btn-group .btn {
+        border-radius: 0;
+        flex: 1;
+        padding: 0.75rem 1rem;
+        font-weight: 500;
+    }
+
+        .btn-group .btn:first-child {
+            border-top-left-radius: 0.5rem;
+            border-bottom-left-radius: 0.5rem;
+        }
+
+        .btn-group .btn:last-child {
+            border-top-right-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+        }
+
+    .clothing-type-btn {
+        min-width: 100px;
+        margin: 0.25rem;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        border-radius: 0.5rem;
+    }
+
+    .btn-outline-danger {
+        border-width: 2px;
+        font-weight: 500;
+    }
+
+    @@media (max-width: 767px) {
+        .btn-group {
+            flex-direction: column;
+        }
+
+            .btn-group .btn {
+                border-radius: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+    }
 </style>
 
 <div class="container my-5">
     <h1 class="text-center mb-5">@Resource.OurProducts</h1>
 
-    <div class="row mb-4 text-center">
-        <div class="col-md-4">
-            <h5>@Resource.FilterGender <i class="fa-solid fa-venus-mars"></i>:</h5>
-            <div class="btn-group d-flex justify-content-center flex-wrap">
-                <a href="@Url.Action("Index", "Product", new { genderId = "1", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "1" ? "active" : "")">@Resource.Men</a>
-                <a href="@Url.Action("Index", "Product", new { genderId = "2", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "2" ? "active" : "")">@Resource.Women</a>
-                <a href="@Url.Action("Index", "Product", new { genderId = "3", clothingTypeId })" class="btn btn-outline-primary me-2 @(genderId == "3" ? "active" : "")">@Resource.Kids</a>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <h5>@Resource.FilterClothingType <i class="fa-solid fa-shirt"></i>:</h5>
-            <div class="btn-group d-flex justify-content-center flex-wrap">
-                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "1" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "1" ? "active" : "")">@Resource.T_Shirts</a>
-                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "2" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "2" ? "active" : "")">@Resource.Jackets</a>
-                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "3" })" class="btn btn-outline-primary me-2 @(clothingTypeId == "3" ? "active" : "")">@Resource.Shoes</a>
-                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "4" })" class="btn btn-outline-primary me-2 mt-2 @(clothingTypeId == "4" ? "active" : "")">@Resource.Jeans</a>
-                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "5" })" class="btn btn-outline-primary me-2 mt-2 @(clothingTypeId == "5" ? "active" : "")">@Resource.Shirts</a>
-                <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "6" })" class="btn btn-outline-primary me-2 mt-2 @(clothingTypeId == "6" ? "active" : "")">@Resource.Shorts</a>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="d-flex justify-content-center">
-                <a href="@Url.Action("Index", "Product", new { genderId = "", clothingTypeId = "" })" class="btn btn-outline-danger">
-                    @Resource.ResetFilters <i class="fa-solid fa-trash-can-arrow-up"></i>
-                </a>
+    <div class="row mb-4">
+        <div class="col-lg-10 mx-auto">
+            <div class="card shadow-sm border-0 rounded-3 p-4">
+                <div class="row g-4">
+                    <!-- Gender Filter -->
+                    <div class="col-md-4">
+                        <h5 class="mb-3 text-center">@Resource.FilterGender <i class="fa-solid fa-venus-mars"></i></h5>
+                        <div class="d-flex justify-content-center">
+                            <div class="btn-group btn-group-lg w-100 gap-2">
+                                <a href="@Url.Action("Index", "Product", new { genderId = "1", clothingTypeId })"
+                                   class="btn @(genderId == "1" ? "btn-primary" : "btn-outline-primary")">
+                                    @Resource.Men
+                                </a>
+                                <a href="@Url.Action("Index", "Product", new { genderId = "2", clothingTypeId })"
+                                   class="btn @(genderId == "2" ? "btn-primary" : "btn-outline-primary")">
+                                    @Resource.Women
+                                </a>
+                                <a href="@Url.Action("Index", "Product", new { genderId = "3", clothingTypeId })"
+                                   class="btn @(genderId == "3" ? "btn-primary" : "btn-outline-primary")">
+                                    @Resource.Kids
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clothing Type Filter -->
+                    <div class="col-md-6">
+                        <h5 class="mb-3 text-center">@Resource.FilterClothingType <i class="fa-solid fa-shirt"></i></h5>
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "1" })"
+                               class="btn @(clothingTypeId == "1" ? "btn-primary" : "btn-outline-primary")">
+                                @Resource.T_Shirts
+                            </a>
+                            <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "2" })"
+                               class="btn @(clothingTypeId == "2" ? "btn-primary" : "btn-outline-primary")">
+                                @Resource.Jackets
+                            </a>
+                            <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "3" })"
+                               class="btn @(clothingTypeId == "3" ? "btn-primary" : "btn-outline-primary")">
+                                @Resource.Shoes
+                            </a>
+                            <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "4" })"
+                               class="btn @(clothingTypeId == "4" ? "btn-primary" : "btn-outline-primary")">
+                                @Resource.Jeans
+                            </a>
+                            <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "5" })"
+                               class="btn @(clothingTypeId == "5" ? "btn-primary" : "btn-outline-primary")">
+                                @Resource.Shirts
+                            </a>
+                            <a href="@Url.Action("Index", "Product", new { genderId, clothingTypeId = "6" })"
+                               class="btn @(clothingTypeId == "6" ? "btn-primary" : "btn-outline-primary")">
+                                @Resource.Shorts
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Reset Filters -->
+                    <div class="col-md-2 d-flex align-items-center justify-content-center">
+                        <a href="@Url.Action("Index", "Product", new { genderId = "", clothingTypeId = "" })"
+                           class="btn btn-outline-danger">
+                            <i class="fa-solid fa-trash-can-arrow-up me-1"></i>@Resource.ResetFilters
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

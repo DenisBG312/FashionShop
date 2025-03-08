@@ -38,7 +38,14 @@
                     <p>
                         <strong>Status:</strong>
                         <span class="badge rounded-pill @(Model.IsCompleted ? "bg-success" : Model.IsCancelled ? "bg-danger" : "bg-warning")" style="font-size: 0.9rem;">
-                            @(Model.IsCompleted ? "Completed" : Model.IsCancelled ? "Cancelled" : "Pending")
+                            @if (Model.IsCompleted)
+                            {
+                                <i class="fa-solid fa-circle-check"></i> @("Completed")
+                            }
+                            else
+                            {
+                                <i class="fa-solid fa-hourglass-half"></i> @("Pending")
+                            }
                         </span>
                     </p>
 

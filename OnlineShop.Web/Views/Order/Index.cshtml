@@ -22,13 +22,21 @@
                             <p class="card-text mb-4">
                                 <strong>@Resource.OrderDate:</strong> @order.OrderDate.ToString("MMMM dd, yyyy")<br />
                                 <strong>@Resource.TotalAmount:</strong>
-                                <span class="text-success fw-bold">@order.TotalAmount.ToString("C", new CultureInfo("en-US"))</span> <!-- Eye-catching total -->
+                                <span class="text-success fw-bold">@order.TotalAmount.ToString("C", new CultureInfo("en-US"))</span>
                                 <br />
                                 <strong>@Resource.Status:</strong>
                                 <span class="badge rounded-pill @(order.IsCompleted ? "bg-success" : order.IsCancelled ? "bg-danger" : "bg-warning")" style="font-size: 0.9rem;">
-                                    @(order.IsCompleted ? $"{Resource.Completed}" : order.IsCancelled ? $"{Resource.Cancelled}" : $"{Resource.Pending}")
+                                    @if (order.IsCompleted)
+                                    {
+                                        @Resource.Completed <i class="fa-solid fa-circle-check"></i>
+                                    }
+                                    else
+                                    {
+                                        @Resource.Pending <i class="fa-solid fa-hourglass-half"></i>
+                                    }
                                 </span>
                             </p>
+
 
                             <div class="d-flex justify-content-between">
                                 <a asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-primary px-4">

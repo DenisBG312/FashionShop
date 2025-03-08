@@ -38,7 +38,8 @@ namespace OnlineShop.Web.Controllers
                 return NotFound();
             }
 
-            var domain = "https://localhost:7158";
+            var request = HttpContext.Request;
+            var domain = $"{request.Scheme}://{request.Host}";
 
             var options = new SessionCreateOptions
             {
