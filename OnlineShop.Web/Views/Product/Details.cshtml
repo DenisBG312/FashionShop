@@ -6,33 +6,39 @@
     ViewData["Title"] = Model.Name;
 }
 
+<link rel="stylesheet" href="~/css/product-details.css" />
+
 <section id="product-details" class="py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5 align-items-center">
             <div class="col-md-6">
                 @if (!string.IsNullOrEmpty(Model.ImageUrl))
                 {
-                    <img class="card-img-top mb-5 mb-md-0" src="@Model.ImageUrl" alt="@Model.Name" style="max-height: 700px; object-fit: cover;" />
+                    <div class="product-image-container">
+                        <img class="product-image" src="@Model.ImageUrl" alt="@Model.Name" />
+                    </div>
                 }
                 else
                 {
-                    <p class="text-muted">No image available</p>
+                    <div class="text-center">
+                        <p class="text-muted">No image available</p>
+                    </div>
                 }
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 product-details-container">
                 <div class="small mb-1">SKU: @Model.Id</div>
                 <h1 class="display-5 fw-bolder">@Model.Name</h1>
 
                 @if (Model.IsOnSale && Model.DiscountPercentage.HasValue)
                 {
-                    <div class="badge bg-danger text-white mb-3" style="font-size: 1.2rem; padding: 10px;">On Sale @Model.DiscountPercentage<i class="fa-solid fa-percent"></i></div>
+                    <div class="badge bg-danger text-white mb-3" style="font-size: 1.2rem; padding: 10px;">On Sale @Model.DiscountPercentage<i class="fa-solid fa-percent ms-1"></i></div>
                 }
 
-                <div class="fs-5 mb-5">
+                <div class="fs-5 mb-4 price-display">
                     @if (Model.IsOnSale && Model.DiscountPercentage.HasValue)
                     {
                         <span class="text-muted text-decoration-line-through">@Model.Price.ToString("C", new CultureInfo("en-US"))</span>
-                        <span class="text-success fw-bold" style="font-size: 1.5rem;">
+                        <span class="text-success fw-bold ms-2" style="font-size: 1.5rem;">
                             @((Model.Price - (Model.Price * (Model.DiscountPercentage ?? 0) / 100)).ToString("C", new CultureInfo("en-US")))
                         </span>
                     }
@@ -45,23 +51,23 @@
                 </div>
 
                 <p class="lead">@Model.Description</p>
-                <div class="d-flex">
+                <div class="d-flex product-actions flex-wrap">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post" class="me-3">
+                        <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post" class="me-3 mb-2">
                             <input type="hidden" name="productId" value="@Model.Id" />
                             <input type="hidden" name="quantity" value="1" />
-                            <button type="submit" class="btn btn-outline-primary flex-shrink-0">
+                            <button type="submit" class="btn btn-outline-primary">
                                 <i class="bi-cart-fill me-1"></i>
-                                Add to Cart <i class="fa-solid fa-cart-shopping"></i>
+                                Add to Cart <i class="fa-solid fa-cart-shopping ms-1"></i>
                             </button>
                         </form>
                     }
                     @if (@Model.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier))
                     {
-                        <form asp-action="Edit" asp-controller="Product" asp-area="Admin" asp-route-id="@Model.Id" method="get" class="me-3">
-                            <button type="submit" class="btn btn-outline-primary flex-shrink-0">
-                                Edit <i class="fa-solid fa-pen-to-square me-1"></i>
+                        <form asp-action="Edit" asp-controller="Product" asp-area="Admin" asp-route-id="@Model.Id" method="get" class="mb-2">
+                            <button type="submit" class="btn btn-outline-primary">
+                                Edit <i class="fa-solid fa-pen-to-square ms-1"></i>
                             </button>
                         </form>
                     }
@@ -85,7 +91,7 @@
 
         <div class="text-center my-4">
             <a href="#reviews-section" class="btn btn-outline-primary">
-                See Customer Reviews <i class="fa-solid fa-arrow-down"></i>
+                See Customer Reviews <i class="fa-solid fa-arrow-down ms-1"></i>
             </a>
         </div>
     </div>
@@ -95,7 +101,7 @@
     <div class="container px-4 px-lg-5 mt-5">
         <div class="text-center mb-5">
             <h2 class="fw-bolder display-4 text-primary">
-                Customer Reviews <i class="fa-solid fa-fire"></i>
+                Customer Reviews <i class="fa-solid fa-fire ms-1"></i>
             </h2>
             <p class="text-muted fs-5">What our customers say about this product</p>
         </div>
@@ -106,22 +112,22 @@
                 foreach (var review in Model.Reviews)
                 {
                     <div class="card mb-4">
-                        <div class="card-body d-flex align-items-start">
-                            <div class="me-3">
+                        <div class="card-body d-flex flex-column flex-md-row align-items-center align-items-md-start">
+                            <div class="me-md-3 mb-3 mb-md-0 text-center">
                                 @if (!string.IsNullOrEmpty(review.User.ProfileImgUrl))
                                 {
                                     <img src="@review.User.ProfileImgUrl" alt="@review.User.UserName's profile image"
-                                         class="rounded-circle border" style="width: 70px; height: 70px; object-fit: cover;">
+                                         class="user-profile-img">
                                 }
                                 else
                                 {
                                     <img src="https://st2.depositphotos.com/5682790/10456/v/450/depositphotos_104564156-stock-illustration-male-user-icon.jpg"
                                          alt="Default profile image"
-                                         class="rounded-circle border" style="width: 70px; height: 70px; object-fit: cover;">
+                                         class="user-profile-img">
                                 }
                             </div>
 
-                            <div class="flex-grow-1">
+                            <div class="flex-grow-1 text-center text-md-start">
                                 <h5 class="card-title mb-2">
                                     @for (int i = 0; i < review.Rating; i++)
                                     {
@@ -161,7 +167,7 @@
                                 <option value="" disabled selected>Select rating</option>
                                 @for (int i = 1; i <= 5; i++)
                                 {
-                                    <option value="@i">@i</option>
+                                    <option value="@i">@i Stars</option>
                                 }
                             </select>
                         </div>
@@ -170,15 +176,17 @@
                             <textarea id="comment" name="comment" class="form-control" rows="3"></textarea>
                         </div>
                         <input type="hidden" name="productId" value="@Model.Id" />
-                        <button type="submit" class="btn btn-primary">
-                            Submit Review <i class="fa-solid fa-circle-check"></i>
-                        </button>
+                        <div class="text-center text-md-start">
+                            <button type="submit" class="btn btn-primary">
+                                Submit Review <i class="fa-solid fa-circle-check ms-1"></i>
+                            </button>
+                        </div>
                     </form>
                 </div>
             }
             else
             {
-                <h1 class="mt-4 text-center text-danger">You have already given an review!</h1>
+                <h5 class="mt-4 text-center text-danger">You have already given a review!</h5>
             }
         }
         else
