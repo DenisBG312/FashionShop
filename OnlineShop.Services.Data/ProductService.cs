@@ -71,6 +71,96 @@ namespace OnlineShop.Services.Data
             return products;
         }
 
+        public async Task<List<GenderCountViewModel>> GetGenderCountsAsync(
+            int? clothingTypeId,
+            int? minPrice,
+            int? maxPrice,
+            string searchTerm)
+        {
+            var genders = await _genderRepository.GetAllAsync();
+            IQueryable<Product> query = _productRepository.GetAllAttached();
+
+            if (clothingTypeId.HasValue)
+            {
+                query = query.Where(p => p.ClothingTypeId == clothingTypeId.Value);
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(p => p.Name.Contains(searchTerm));
+            }
+
+            var products = await query.ToListAsync();
+
+            var counts = new List<GenderCountViewModel>();
+
+            foreach (var gender in genders)
+            {
+                var genderProducts = products.Where(p => p.GenderId == gender.Id);
+
+                var filtered = genderProducts.Where(p =>
+                {
+                    decimal price = p.IsOnSale ? p.DiscountedPrice : p.Price;
+                    return (!minPrice.HasValue || price >= minPrice) &&
+                           (!maxPrice.HasValue || price <= maxPrice);
+                });
+
+                counts.Add(new GenderCountViewModel
+                {
+                    Id = gender.Id,
+                    Name = gender.Name,
+                    Count = filtered.Count()
+                });
+            }
+
+            return counts;
+        }
+
+        public async Task<List<ClothingTypeCountViewModel>> GetClothingTypeCountsAsync(
+            int? genderId,
+            int? minPrice,
+            int? maxPrice,
+            string searchTerm)
+        {
+            var clothingTypes = await _clothingTypeRepository.GetAllAsync();
+            IQueryable<Product> query = _productRepository.GetAllAttached();
+
+            if (genderId.HasValue)
+            {
+                query = query.Where(p => p.GenderId == genderId.Value);
+            }
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                query = query.Where(p => p.Name.Contains(searchTerm));
+            }
+
+            var products = await query.ToListAsync();
+
+            var counts = new List<ClothingTypeCountViewModel>();
+
+            foreach (var type in clothingTypes)
+            {
+                var typeProducts = products.Where(p => p.ClothingTypeId == type.Id);
+
+                var filtered = typeProducts.Where(p =>
+                {
+                    decimal price = p.IsOnSale ? p.DiscountedPrice : p.Price;
+                    return (!minPrice.HasValue || price >= minPrice) &&
+                           (!maxPrice.HasValue || price <= maxPrice);
+                });
+
+                counts.Add(new ClothingTypeCountViewModel
+                {
+                    Id = type.Id,
+                    Name = type.Name,
+                    Count = filtered.Count()
+                });
+            }
+
+            return counts;
+        }
+
         public async Task CreateProductAsync(CreateProductViewModel product, string userId)
         {
             var newProduct = new Product

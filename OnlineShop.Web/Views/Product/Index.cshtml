@@ -34,18 +34,19 @@
                             <i class="fa-solid fa-venus-mars"></i>
                         </div>
                         <div class="filter-buttons">
-                            <a asp-action="Index" asp-controller="Product" asp-route-genderId="1" asp-route-clothingTypeId="@clothingTypeId" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" class="filter-button @(genderId == "1" ? "active" : "")">
-                                Men
-                                <span>(123)</span>
-                            </a>
-                            <a asp-action="Index" asp-controller="Product" asp-route-genderId="2" asp-route-clothingTypeId="@clothingTypeId" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" class="filter-button @(genderId == "2" ? "active" : "")">
-                                Women
-                                <span>(145)</span>
-                            </a>
-                            <a asp-action="Index" asp-controller="Product" asp-route-genderId="3" asp-route-clothingTypeId="@clothingTypeId" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" class="filter-button @(genderId == "3" ? "active" : "")">
-                                Kids
-                                <span>(78)</span>
-                            </a>
+                            @foreach (var gender in ViewBag.GenderCounts)
+                            {
+                                <a asp-action="Index"
+                                   asp-controller="Product"
+                                   asp-route-genderId="@gender.Id"
+                                   asp-route-clothingTypeId="@clothingTypeId"
+                                   asp-route-minPrice="@minPrice"
+                                   asp-route-maxPrice="@maxPrice"
+                                   class="filter-button @(genderId == gender.Id.ToString() ? "active" : "")">
+                                    @gender.Name
+                                    <span>(@gender.Count)</span>
+                                </a>
+                            }
                         </div>
                     </div>
 
@@ -57,30 +58,19 @@
                             <i class="fa-solid fa-shirt"></i>
                         </div>
                         <div class="filter-buttons">
-                            <a asp-action="Index" asp-controller="Product" asp-route-genderId="@genderId" asp-route-clothingTypeId="1" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" class="filter-button @(clothingTypeId == "1" ? "active" : "")">
-                                T-Shirts
-                                <span>(56)</span>
-                            </a>
-                            <a asp-action="Index" asp-controller="Product" asp-route-genderId="@genderId" asp-route-clothingTypeId="2" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" class="filter-button @(clothingTypeId == "2" ? "active" : "")">
-                                Jackets
-                                <span>(43)</span>
-                            </a>
-                            <a asp-action="Index" asp-controller="Product" asp-route-genderId="@genderId" asp-route-clothingTypeId="3" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" class="filter-button @(clothingTypeId == "3" ? "active" : "")">
-                                Shoes
-                                <span>(38)</span>
-                            </a>
-                            <a asp-action="Index" asp-controller="Product" asp-route-genderId="@genderId" asp-route-clothingTypeId="4" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" class="filter-button @(clothingTypeId == "4" ? "active" : "")">
-                                Jeans
-                                <span>(25)</span>
-                            </a>
-                            <a asp-action="Index" asp-controller="Product" asp-route-genderId="@genderId" asp-route-clothingTypeId="5" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" class="filter-button @(clothingTypeId == "5" ? "active" : "")">
-                                Shirts
-                                <span>(32)</span>
-                            </a>
-                            <a asp-action="Index" asp-controller="Product" asp-route-genderId="@genderId" asp-route-clothingTypeId="6" asp-route-minPrice="@minPrice" asp-route-maxPrice="@maxPrice" class="filter-button @(clothingTypeId == "6" ? "active" : "")">
-                                Shorts
-                                <span>(19)</span>
-                            </a>
+                            @foreach (var type in ViewBag.ClothingTypeCounts)
+                            {
+                                <a asp-action="Index"
+                                   asp-controller="Product"
+                                   asp-route-genderId="@genderId"
+                                   asp-route-clothingTypeId="@type.Id"
+                                   asp-route-minPrice="@minPrice"
+                                   asp-route-maxPrice="@maxPrice"
+                                   class="filter-button @(clothingTypeId == type.Id.ToString() ? "active" : "")">
+                                    @type.Name
+                                    <span>(@type.Count)</span>
+                                </a>
+                            }
                         </div>
                     </div>
 
@@ -99,11 +89,23 @@
                                 <div class="price-inputs">
                                     <div class="price-input">
                                         <label for="minPrice" class="form-label">Min:</label>
-                                        <input type="number" class="form-control" id="minPrice" name="minPrice" value="@(string.IsNullOrEmpty(minPrice) ? "" : minPrice)" placeholder="$0">
+                                        <input type="number" 
+                                               class="form-control" 
+                                               id="minPrice" 
+                                               name="minPrice" 
+                                               value="@(ViewBag.MinPrice?.ToString() ?? "")" 
+                                               placeholder="$0"
+                                               min="0">
                                     </div>
                                     <div class="price-input">
                                         <label for="maxPrice" class="form-label">Max:</label>
-                                        <input type="number" class="form-control" id="maxPrice" name="maxPrice" value="@(string.IsNullOrEmpty(maxPrice) ? "" : maxPrice)" placeholder="$1000">
+                                        <input type="number" 
+                                               class="form-control" 
+                                               id="maxPrice" 
+                                               name="maxPrice" 
+                                               value="@(ViewBag.MaxPrice?.ToString() ?? "")" 
+                                               placeholder="$1000"
+                                               min="0">
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100 mt-3">Apply Filter</button>
@@ -315,6 +317,30 @@
             $('#sortOrder').on('change', function() {
                 const sortOrder = $(this).val();
                 console.log("Sort by:", sortOrder);
+            });
+
+            $('.price-range-container form').on('submit', function(e) {
+                const min = parseInt($('#minPrice').val()) || 0;
+                const max = parseInt($('#maxPrice').val()) || 0;
+
+                if (min > max) {
+                    $('#minPrice').val(max);
+                    $('#maxPrice').val(min);
+                    $(this).find('button').html('<i class="fa-solid fa-sync-alt spin"></i> Applying...');
+                    setTimeout(() => this.submit(), 500);
+                    e.preventDefault();
+                }
+            });
+
+            $('#minPrice, #maxPrice').on('input', function() {
+                const min = parseInt($('#minPrice').val()) || 0;
+                const max = parseInt($('#maxPrice').val()) || 0;
+
+                $(this).toggleClass('is-invalid',
+                    (this.id === 'minPrice' && min < 0) ||
+                    (this.id === 'maxPrice' && max < 0) ||
+                    (min > max && max !== 0)
+                );
             });
         });
     </script>

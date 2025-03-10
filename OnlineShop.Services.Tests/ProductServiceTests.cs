@@ -83,7 +83,7 @@ namespace OnlineShop.Services.Tests
                 .Setup(r => r.GetAllAttached())
                 .Returns(mockProducts.AsQueryable());
 
-            var result = await _productService.GetProductsAsync(1, 1, "Shirt");
+            var result = await _productService.GetProductsAsync(1, 1, "Shirt", null, null);
 
             Assert.That(result.Count(), Is.EqualTo(1));
             Assert.That(result.First().Name, Is.EqualTo("Shirt"));

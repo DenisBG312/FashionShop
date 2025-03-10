@@ -13,6 +13,10 @@ namespace OnlineShop.Services.Data.Interfaces
     public interface IProductService
     {
         Task<IEnumerable<Product>> GetProductsAsync(int? genderId, int? clothingTypeId, string searchTerm, int? minPrice, int? maxPrice);
+
+        Task<List<GenderCountViewModel>> GetGenderCountsAsync(int? clothingTypeId, int? minPrice, int? maxPrice, string searchTerm);
+        Task<List<ClothingTypeCountViewModel>> GetClothingTypeCountsAsync(int? genderId, int? minPrice, int? maxPrice,
+            string searchTerm);
         Task CreateProductAsync(CreateProductViewModel product, string userId);
         Task<ProductEditViewModel?> GetEditProductViewModelAsync(int productId, string userId);
         Task<bool> UpdateProductAsync(ProductEditViewModel product, string userId);

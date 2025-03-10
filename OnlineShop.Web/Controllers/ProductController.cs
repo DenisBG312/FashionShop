@@ -33,18 +33,45 @@ namespace OnlineShop.Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index(int? genderId, int? clothingTypeId, int? minPrice, int? maxPrice, string searchTerm, int page = 1)
         {
-            var products = await _productService.GetProductsAsync(genderId, clothingTypeId, searchTerm, minPrice, maxPrice);
+            int? sanitizedMinPrice = minPrice;
+            int? sanitizedMaxPrice = maxPrice;
+
+            if (sanitizedMinPrice < 0) sanitizedMinPrice = null;
+            if (sanitizedMaxPrice < 0) sanitizedMaxPrice = null;
+
+            if (sanitizedMinPrice.HasValue && sanitizedMaxPrice.HasValue && sanitizedMinPrice > sanitizedMaxPrice)
+            {
+                (sanitizedMaxPrice, sanitizedMinPrice) = (sanitizedMinPrice, sanitizedMaxPrice);
+            }
+
+
+            var products = await _productService.GetProductsAsync(genderId, clothingTypeId, searchTerm, sanitizedMinPrice, sanitizedMaxPrice);
 
             var userId = GetUserId();
             var wishlist = await _productWishlistService.GetUserWishlistAsync(userId!);
-
             var wishlistProductIds = wishlist.Select(p => p.ProductId).ToList();
 
             var pagedProducts = products.ToPagedList(page, pageSize);
 
+            ViewBag.GenderCounts = await _productService.GetGenderCountsAsync(
+                clothingTypeId,
+                minPrice,
+                maxPrice,
+                searchTerm
+            );
+
+            ViewBag.ClothingTypeCounts = await _productService.GetClothingTypeCountsAsync(
+                genderId,
+                minPrice,
+                maxPrice,
+                searchTerm
+            );
+
             ViewBag.WishlistProductIds = wishlistProductIds;
             ViewBag.GenderId = genderId;
             ViewBag.ClothingTypeId = clothingTypeId;
+            ViewBag.MinPrice = sanitizedMinPrice;
+            ViewBag.MaxPrice = sanitizedMaxPrice;
 
             return View(pagedProducts);
         }
