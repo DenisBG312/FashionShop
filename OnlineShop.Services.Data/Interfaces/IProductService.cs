@@ -12,7 +12,13 @@ namespace OnlineShop.Services.Data.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<Product>> GetProductsAsync(int? genderId, int? clothingTypeId, string searchTerm, int? minPrice, int? maxPrice);
+        Task<IEnumerable<Product>> GetProductsAsync(int? genderId,
+            int? clothingTypeId,
+            string searchTerm,
+            int? minPrice,
+            int? maxPrice,
+            List<int> sizeIds,
+            bool? isOnSale);
 
         Task<List<GenderCountViewModel>> GetGenderCountsAsync(int? clothingTypeId, int? minPrice, int? maxPrice, string searchTerm);
         Task<List<ClothingTypeCountViewModel>> GetClothingTypeCountsAsync(int? genderId, int? minPrice, int? maxPrice,
@@ -21,6 +27,7 @@ namespace OnlineShop.Services.Data.Interfaces
         Task<ProductEditViewModel?> GetEditProductViewModelAsync(int productId, string userId);
         Task<bool> UpdateProductAsync(ProductEditViewModel product, string userId);
         Task<List<SelectListItem>> GetGendersAsync();
+        Task<List<SelectListItem>> GetSizesAsync();
         Task<IEnumerable<Product>> GetAllProductsAsync();
         Task<List<SelectListItem>> GetClothingTypesAsync();
         Task SubmitReview(int productId, string userId, int rating, string comment);

@@ -27,9 +27,8 @@ namespace OnlineShop.Data.Models
         public decimal Price { get; set; }
 
         public string? ImageUrl { get; set; }
-
-        [Required]
-        public int StockQuantity { get; set; }
+        [NotMapped]
+        public int TotalStockQuantity => ProductSizes.Sum(ps => ps.StockQuantity);
         [Required]
         public bool IsOnSale { get; set; }
         public int? DiscountPercentage { get; set; }
@@ -50,7 +49,7 @@ namespace OnlineShop.Data.Models
 
         public ICollection<OrderProduct> OrderProducts { get; set; } = new HashSet<OrderProduct>();
         public ICollection<ShoppingCartProduct> ShoppingCartProducts { get; set; } = new HashSet<ShoppingCartProduct>();
-
         public ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
+        public ICollection<ProductSize> ProductSizes { get; set; } = new HashSet<ProductSize>();
     }
 }

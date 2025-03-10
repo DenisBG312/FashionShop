@@ -80,7 +80,7 @@
                                     <span>@product.Price.ToString("C2", new CultureInfo("en-US"))</span>
                                 }
                             </td>
-                            <td>@product.StockQuantity</td>
+                            <td>@product.TotalStockQuantity</td>
                             <td>
                                 <a href="@Url.Action("Edit", "Product", new { id = product.Id, area = "Admin" })" class="btn btn-warning btn-sm">
                                     Edit <i class="fa-solid fa-pen-to-square"></i>

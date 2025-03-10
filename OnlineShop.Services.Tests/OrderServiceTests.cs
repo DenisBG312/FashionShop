@@ -253,8 +253,8 @@ namespace OnlineShop.Services.Tests
         {
             var mockProducts = new List<Product>
             {
-                new Product { Id = 1, Name = "Laptop", StockQuantity = 10 },
-                new Product { Id = 2, Name = "Mouse", StockQuantity = 5 }
+                new Product { Id = 1, Name = "Laptop"},
+                new Product { Id = 2, Name = "Mouse"}
             };
 
             var mockOrder = new Order
@@ -287,8 +287,6 @@ namespace OnlineShop.Services.Tests
 
             Assert.IsTrue(result, "FinalizeOrder should return true for valid orders.");
             Assert.IsTrue(mockOrder.IsCompleted, "The order's IsCompleted property should be true.");
-            Assert.AreEqual(8, mockProducts[0].StockQuantity, "StockQuantity of Product 1 should be reduced.");
-            Assert.AreEqual(2, mockProducts[1].StockQuantity, "StockQuantity of Product 2 should be reduced.");
             Assert.IsTrue(mockOrder.Payments.All(p => p.Status == Status.Completed), "All payment statuses should be set to Completed.");
         }
 

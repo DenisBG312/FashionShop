@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineShop.Data;
 
@@ -11,9 +12,11 @@ using OnlineShop.Data;
 namespace OnlineShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250310193115_AddedNewEntities")]
+    partial class AddedNewEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -239,7 +242,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5f9f8286-a4b3-40d5-93db-2ff24f9d55e6",
+                            ConcurrencyStamp = "26533d9b-bae4-40e1-aa6b-108e7e190577",
                             Email = "admin@onlineshop.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -247,10 +250,10 @@ namespace OnlineShop.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ONLINESHOP.COM",
                             NormalizedUserName = "ADMIN@ONLINESHOP.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJuYuNEJMrjrh735ZoGEvGOp4XoksFjwFAcBDWXOaUnzsXudFr1wUs0uS4SueXKyJA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENE1qrRm9ozsoezIiCHDMYao36OjadnD3bBSeRBGthycmXus1KCkhm1XWL9TfHveYQ==",
                             PhoneNumberConfirmed = false,
                             ProfileImgUrl = "https://a0.anyrgb.com/pngimg/1850/1546/admin-administrator-icon-admin%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%82%D0%BE%D1%80-system-administrator-administrator-nuvola-user-profile-hearing-login-internet-forum.png",
-                            SecurityStamp = "a0887597-1c97-459c-b5ef-2b8bbed1c569",
+                            SecurityStamp = "e070f07c-2522-4b0c-ac7d-cbf4de716927",
                             TwoFactorEnabled = false,
                             UserName = "admin@onlineshop.com"
                         },
@@ -258,7 +261,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = "9bd65753-4ac3-437f-a1ba-e9320baf1097",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3466f451-c1c7-46e5-834b-a0e5d2ddb8c9",
+                            ConcurrencyStamp = "23c97e5c-e957-4a1e-a00f-26eb3c9767ec",
                             Email = "john@email.com",
                             EmailConfirmed = true,
                             FirstName = "John",
@@ -266,10 +269,10 @@ namespace OnlineShop.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "JOHN@EMAIL.COM",
                             NormalizedUserName = "JOHN@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBlVCPDYpWm8nB4mYvnw6MAosDMa2IXEKQ75kkZxmYR9cAMw3ICmCzMNHRY0LVTLgQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPMjoV9l20CWPJimTInsf5N+dqU+rvss+G4ZcWdCncYO37b7oGTT5VIOGhX1EGzQNg==",
                             PhoneNumberConfirmed = false,
                             ProfileImgUrl = "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                            SecurityStamp = "066669fe-b44a-4001-b0a7-916f2ab38b0a",
+                            SecurityStamp = "1e88fed7-a4bf-4116-b241-1793805906bc",
                             TwoFactorEnabled = false,
                             UserName = "john@email.com"
                         });
@@ -396,7 +399,7 @@ namespace OnlineShop.Data.Migrations
                             Id = 1,
                             IsCancelled = false,
                             IsCompleted = false,
-                            OrderDate = new DateTime(2025, 3, 10, 21, 39, 34, 531, DateTimeKind.Local).AddTicks(3733),
+                            OrderDate = new DateTime(2025, 3, 10, 21, 31, 12, 370, DateTimeKind.Local).AddTicks(5971),
                             TotalAmount = 144.98m,
                             UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097"
                         });
@@ -687,7 +690,7 @@ namespace OnlineShop.Data.Migrations
                             Comment = "I bought these jeans for my wife. She is more than happy, as am I.",
                             ProductId = 1,
                             Rating = 5,
-                            ReviewDate = new DateTime(2025, 3, 10, 21, 39, 34, 532, DateTimeKind.Local).AddTicks(7107),
+                            ReviewDate = new DateTime(2025, 3, 10, 21, 31, 12, 372, DateTimeKind.Local).AddTicks(1004),
                             UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097"
                         },
                         new
@@ -696,7 +699,7 @@ namespace OnlineShop.Data.Migrations
                             Comment = "Well the shoes are good but they are not good for running!",
                             ProductId = 2,
                             Rating = 3,
-                            ReviewDate = new DateTime(2025, 3, 10, 21, 39, 34, 532, DateTimeKind.Local).AddTicks(7127),
+                            ReviewDate = new DateTime(2025, 3, 10, 21, 31, 12, 372, DateTimeKind.Local).AddTicks(1020),
                             UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097"
                         },
                         new
@@ -705,7 +708,7 @@ namespace OnlineShop.Data.Migrations
                             Comment = "Amazing jacket but the sleeves are a little too short",
                             ProductId = 3,
                             Rating = 4,
-                            ReviewDate = new DateTime(2025, 3, 10, 21, 39, 34, 532, DateTimeKind.Local).AddTicks(7130),
+                            ReviewDate = new DateTime(2025, 3, 10, 21, 31, 12, 372, DateTimeKind.Local).AddTicks(1022),
                             UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097"
                         });
                 });
@@ -743,7 +746,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = 1,
                             Amount = 104.99m,
-                            PaymentDate = new DateTime(2025, 3, 10, 21, 39, 34, 532, DateTimeKind.Local).AddTicks(8347),
+                            PaymentDate = new DateTime(2025, 3, 10, 21, 31, 12, 372, DateTimeKind.Local).AddTicks(2058),
                             Status = "Active",
                             UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097"
                         });
@@ -797,38 +800,6 @@ namespace OnlineShop.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Sizes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "XS"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "S"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "M"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "L"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "XL"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "XXL"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

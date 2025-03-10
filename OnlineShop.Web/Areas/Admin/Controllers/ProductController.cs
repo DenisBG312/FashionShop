@@ -38,28 +38,39 @@ namespace OnlineShop.Web.Areas.Admin.Controllers
             var viewModel = new CreateProductViewModel
             {
                 Genders = await _productService.GetGendersAsync(),
-                ClothingTypes = await _productService.GetClothingTypesAsync()
+                ClothingTypes = await _productService.GetClothingTypesAsync(),
+                Sizes = await _productService.GetSizesAsync()
             };
 
             return View(viewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateProductViewModel product)
+        public async Task<IActionResult> Create(CreateProductViewModel model)
         {
-            ModelState.Remove(nameof(product.Genders));
-            ModelState.Remove(nameof(product.ClothingTypes));
+            ModelState.Remove(nameof(model.Genders));
+            ModelState.Remove(nameof(model.ClothingTypes));
+            ModelState.Remove(nameof(model.Sizes));
+
+            if (model.SelectedSizes == null)
+            {
+                ModelState.AddModelError(nameof(model.SelectedSizes), "Please select at least one size");
+            }
+
+            if (model.StockQuantities.Any(kv => kv.Value <= 0))
+            {
+                ModelState.AddModelError("", "All selected sizes must have a quantity greater than 0");
+            }
 
             if (!ModelState.IsValid)
             {
-                product.Genders = await _productService.GetGendersAsync();
-                product.ClothingTypes = await _productService.GetClothingTypesAsync();
-
-                return View(product);
+                model.Genders = await _productService.GetGendersAsync();
+                model.ClothingTypes = await _productService.GetClothingTypesAsync();
+                model.Sizes = await _productService.GetSizesAsync();
+                return View(model);
             }
 
-            await _productService.CreateProductAsync(product, GetUserId()!);
-
+            await _productService.CreateProductAsync(model, GetUserId()!);
             return RedirectToAction(nameof(Index));
         }
 

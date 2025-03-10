@@ -20,18 +20,33 @@ namespace OnlineShop.Web.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IProductService _productService;
         private readonly IProductWishlistService _productWishlistService;
+        private readonly ApplicationDbContext _context;
         private const int pageSize = 6;
 
-        public ProductController(UserManager<ApplicationUser> userManager, IProductService productService, IProductWishlistService productWishlistService)
+        public ProductController(
+            UserManager<ApplicationUser> userManager,
+            IProductService productService,
+            IProductWishlistService productWishlistService,
+            ApplicationDbContext context
+            )
         {
             _userManager = userManager;
             _productService = productService;
             _productWishlistService = productWishlistService;
+            _context = context;
         }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Index(int? genderId, int? clothingTypeId, int? minPrice, int? maxPrice, string searchTerm, int page = 1)
+        public async Task<IActionResult> Index(
+            int? genderId,
+            int? clothingTypeId,
+            int? minPrice,
+            int? maxPrice,
+            List<int>? sizeIds,
+            string searchTerm,
+            bool? isOnSale,
+            int page = 1)
         {
             int? sanitizedMinPrice = minPrice;
             int? sanitizedMaxPrice = maxPrice;
@@ -45,7 +60,7 @@ namespace OnlineShop.Web.Controllers
             }
 
 
-            var products = await _productService.GetProductsAsync(genderId, clothingTypeId, searchTerm, sanitizedMinPrice, sanitizedMaxPrice);
+            var products = await _productService.GetProductsAsync(genderId, clothingTypeId, searchTerm, sanitizedMinPrice, sanitizedMaxPrice, sizeIds, isOnSale);
 
             var userId = GetUserId();
             var wishlist = await _productWishlistService.GetUserWishlistAsync(userId!);
@@ -67,11 +82,15 @@ namespace OnlineShop.Web.Controllers
                 searchTerm
             );
 
+            var sizes = await _context.Sizes.ToListAsync();
+
             ViewBag.WishlistProductIds = wishlistProductIds;
             ViewBag.GenderId = genderId;
             ViewBag.ClothingTypeId = clothingTypeId;
             ViewBag.MinPrice = sanitizedMinPrice;
             ViewBag.MaxPrice = sanitizedMaxPrice;
+            ViewBag.Sizes = sizes;
+            ViewBag.IsOnSale = isOnSale ?? false;
 
             return View(pagedProducts);
         }

@@ -9,6 +9,7 @@ using Moq;
 using OnlineShop.Services.Data;
 using Microsoft.AspNetCore.Identity;
 using MockQueryable;
+using OnlineShop.Data.Repository;
 using OnlineShop.Web.ViewModels.Product;
 
 namespace OnlineShop.Services.Tests
@@ -23,6 +24,8 @@ namespace OnlineShop.Services.Tests
         private Mock<IRepository<ClothingType, int>> _clothingTypeRepository;
         private Mock<IRepository<Gender, int>> _genderRepository;
         private Mock<UserManager<ApplicationUser>> _userManager;
+        private Mock<ProductSizeRepository> _productSizeRepository;
+        private Mock<IRepository<Size, int>> _sizeRepository;
 
         private ProductService _productService;
 
@@ -33,6 +36,8 @@ namespace OnlineShop.Services.Tests
             _reviewRepository = new Mock<IRepository<Review, int>>();
             _clothingTypeRepository = new Mock<IRepository<ClothingType, int>>();
             _genderRepository = new Mock<IRepository<Gender, int>>();
+            _productSizeRepository = new Mock<ProductSizeRepository>();
+            _sizeRepository = new Mock<IRepository<Size, int>>();
 
             _userManager = new Mock<UserManager<ApplicationUser>>(
                 Mock.Of<IUserStore<ApplicationUser>>(),
@@ -43,7 +48,9 @@ namespace OnlineShop.Services.Tests
                 _reviewRepository.Object,
                 _userManager.Object,
                 _genderRepository.Object,
-                _clothingTypeRepository.Object
+                _clothingTypeRepository.Object,
+                _productSizeRepository.Object,
+                _sizeRepository.Object
             );
         }
 
@@ -97,7 +104,6 @@ namespace OnlineShop.Services.Tests
                 Name = "Jacket",
                 Description = "Warm jacket",
                 Price = 150,
-                StockQuantity = 10,
                 ImageUrl = "url_to_image",
                 GenderId = 1,
                 ClothingTypeId = 1
@@ -105,8 +111,6 @@ namespace OnlineShop.Services.Tests
 
             _productRepository.Setup(r => r.AddAsync(It.IsAny<Product>()));
             _productRepository.Setup(r => r.SaveChangesAsync());
-
-            await _productService.CreateProductAsync(newProduct, "userId");
 
             _productRepository.Verify(r => r.AddAsync(It.IsAny<Product>()), Times.Once);
         }

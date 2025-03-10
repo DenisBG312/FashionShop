@@ -1,6 +1,7 @@
 ﻿@using System.Globalization
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using X.PagedList.Mvc.Core
+@using System.Linq
 @model IEnumerable<OnlineShop.Data.Models.Product>
 
 @{
@@ -115,33 +116,81 @@
 
                     <div class="filter-divider"></div>
 
-                    
+                    <div class="filter-section">
+                        <div class="filter-title">
+                            <span>Size</span>
+                            <i class="fa-solid fa-ruler"></i>
+                        </div>
+                        <form method="get" asp-action="Index" asp-controller="Product">
+                            <!-- Preserve existing filters -->
+                            <input type="hidden" name="genderId" value="@genderId" />
+                            <input type="hidden" name="clothingTypeId" value="@clothingTypeId" />
+                            <input type="hidden" name="minPrice" value="@minPrice" />
+                            <input type="hidden" name="maxPrice" value="@maxPrice" />
+        
+                            <div class="mb-2">
+                                @if (ViewBag.Sizes != null && ViewBag.Sizes.Count > 0)
+                                {
+                                    @foreach (var size in ViewBag.Sizes)
+                                    {
+                                        <div class="custom-checkbox">
+                                            <input type="checkbox" 
+                                                   id="size-@size.Id" 
+                                                   name="sizeIds" 
+                                                   value="@size.Id" 
+                                                   @(Context.Request.Query["sizeIds"].ToString().Split(',').ToList().Contains(size.Id.ToString()) ? "checked" : "") />
+                                            <label for="size-@size.Id">@size.Name</label>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <p class="text-muted">No sizes available.</p>
+                                }
+                            </div>
+        
+                            <button type="submit" class="btn btn-primary w-100 mt-3">
+                                <i class="fa-solid fa-filter me-2"></i>Apply Size Filter
+                            </button>
+                        </form>
+                    </div>
 
                     <div class="filter-divider"></div>
 
                     <div class="filter-section">
                         <div class="filter-title">
-                            <span>Availability</span>
-                            <i class="fa-solid fa-store"></i>
+                            <span>Special offers</span>
+                            <i class="fa-solid fa-tag"></i>
                         </div>
-                        <div class="mb-2">
-                            <div class="custom-checkbox">
-                                <input type="checkbox" id="in-stock" name="availability" value="inStock">
-                                <label for="in-stock">In Stock</label>
+                        <form method="get" asp-action="Index" asp-controller="Product">
+                            <input type="hidden" name="genderId" value="@genderId" />
+                            <input type="hidden" name="clothingTypeId" value="@clothingTypeId" />
+                            <input type="hidden" name="minPrice" value="@minPrice" />
+                            <input type="hidden" name="maxPrice" value="@maxPrice" />
+                            <input type="hidden" name="sizeIds" value="@Context.Request.Query["sizeIds"]" />
+
+                            <div class="mb-2">
+                                <div class="custom-checkbox">
+                                    <input type="checkbox" 
+                                           id="on-sale" 
+                                           name="isOnSale" 
+                                           value="true" 
+                                           @(ViewBag.IsOnSale ? "checked" : "") />
+                                    <label for="on-sale" class="sale-checkbox-label">
+                                        <i class="fa-solid fa-fire me-2 text-danger"></i>On Sale
+                                    </label>
+                                </div>
                             </div>
-                            <div class="custom-checkbox">
-                                <input type="checkbox" id="on-sale" name="availability" value="onSale">
-                                <label for="on-sale">On Sale</label>
-                            </div>
-                        </div>
+        
+                            <button type="submit" class="btn btn-danger w-100 mt-3">
+                                <i class="fa-solid fa-filter me-2"></i>Apply Offers Filter
+                            </button>
+                        </form>
                     </div>
 
-                    @if (!string.IsNullOrEmpty(genderId) || !string.IsNullOrEmpty(clothingTypeId) || !string.IsNullOrEmpty(minPrice) || !string.IsNullOrEmpty(maxPrice))
-                    {
-                        <a asp-action="Index" asp-controller="Product" asp-route-genderId="" asp-route-clothingTypeId="" asp-route-minPrice="" asp-route-maxPrice="" class="reset-button text-center">
-                            <i class="fa-solid fa-xmark me-2"></i>Reset Filters
-                        </a>
-                    }
+                    <a asp-action="Index" asp-controller="Product" asp-route-genderId="" asp-route-clothingTypeId="" asp-route-minPrice="" asp-route-maxPrice="" class="reset-button text-center">
+                        <i class="fa-solid fa-xmark me-2"></i>Reset Filters
+                    </a>
                 </div>
             </div>
         </div>
@@ -218,7 +267,7 @@
                                     </p>
 
                                     <p class="card-text text-muted">
-                                        Stock: <strong>@product.StockQuantity</strong>
+                                        Stock: <strong>@product.TotalStockQuantity</strong>
                                     </p>
 
                                     <div class="mobile-product-actions">

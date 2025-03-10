@@ -1,6 +1,7 @@
-﻿using System.ComponentModel;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace OnlineShop.Web.ViewModels.Product
 {
@@ -22,11 +23,6 @@ namespace OnlineShop.Web.ViewModels.Product
         [DisplayName("Image URL")]
         public string ImageUrl { get; set; } = null!;
 
-        [Required(ErrorMessage = "Stock quantity is required.")]
-        [Range(0, int.MaxValue, ErrorMessage = "Stock quantity cannot be negative.")]
-        [DisplayName("Stock Quantity")]
-        public int StockQuantity { get; set; }
-
         [Required(ErrorMessage = "Gender is required.")]
         [DisplayName("Gender")]
         public int GenderId { get; set; }
@@ -35,7 +31,11 @@ namespace OnlineShop.Web.ViewModels.Product
         [DisplayName("Clothing Type")]
         public int ClothingTypeId { get; set; }
 
-        public List<SelectListItem> Genders { get; set; }
-        public List<SelectListItem> ClothingTypes { get; set; }
+        public List<int> SelectedSizes { get; set; } = new List<int>();
+        public Dictionary<int, int> StockQuantities { get; set; } = new Dictionary<int, int>();
+
+        public List<SelectListItem> Sizes { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> Genders { get; set; } = new List<SelectListItem>();
+        public List<SelectListItem> ClothingTypes { get; set; } = new List<SelectListItem>();
     }
 }

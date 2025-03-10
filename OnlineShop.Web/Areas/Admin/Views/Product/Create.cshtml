@@ -35,11 +35,6 @@
                 <input asp-for="ImageUrl" class="form-control form-control-lg" placeholder="Image URL" />
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
-            <div class="col-md-6">
-                <label asp-for="StockQuantity" class="form-label"></label>
-                <input asp-for="StockQuantity" type="number" class="form-control form-control-lg" placeholder="Stock quantity" />
-                <span asp-validation-for="StockQuantity" class="text-danger"></span>
-            </div>
         </div>
 
         <div class="row mb-3">
@@ -55,6 +50,36 @@
             </div>
         </div>
 
+        <div class="mb-3">
+            <label class="form-label">Select Sizes and Quantities</label>
+            <div class="size-selection border p-3 rounded">
+                @foreach (var size in Model.Sizes)
+                {
+                    <div class="size-option mb-3">
+                        <div class="form-check">
+                            <input type="checkbox"
+                                   class="form-check-input size-checkbox"
+                                   id="size-@size.Value"
+                                   value="@size.Value"
+                                   name="SelectedSizes"
+                            @(Model.SelectedSizes.Contains(int.Parse(size.Value)) ? "checked" : "")>
+                            <label class="form-check-label" for="size-@size.Value">
+                                @size.Text
+                            </label>
+                        </div>
+                        <input type="number"
+                               class="form-control stock-input"
+                               name="StockQuantities[@size.Value]"
+                               min="1"
+                               value="@(Model.StockQuantities.ContainsKey(int.Parse(size.Value)) ? Model.StockQuantities[int.Parse(size.Value)] : 0)"
+                        @(Model.SelectedSizes.Contains(int.Parse(size.Value)) ? "" : "disabled")>
+                    </div>
+                }
+            </div>
+            <span asp-validation-for="SelectedSizes" class="text-danger"></span>
+            <span asp-validation-for="StockQuantities" class="text-danger"></span>
+        </div>
+
         <div class="text-center mt-4">
             <button type="submit" class="btn btn-primary btn-lg">
                 <i class="fa-solid fa-circle-plus me-2"></i>Create Product
@@ -67,4 +92,16 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        $(document).ready(function() {
+            $('.size-checkbox').change(function() {
+                const stockInput = $(this).closest('.size-option').find('.stock-input');
+                if (this.checked) {
+                    stockInput.prop('disabled', false).val(1);
+                } else {
+                    stockInput.prop('disabled', true).val(0);
+                }
+            });
+        });
+    </script>
 }

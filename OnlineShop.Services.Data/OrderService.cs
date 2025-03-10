@@ -238,19 +238,6 @@ namespace OnlineShop.Services.Data
                 return false;
             }
 
-            foreach (var orderProduct in order.OrderProducts)
-            {
-                if (orderProduct.Product == null || orderProduct.Product.StockQuantity < orderProduct.Quantity)
-                {
-                    return false;
-                }
-            }
-
-            foreach (var orderProduct in order.OrderProducts)
-            {
-                orderProduct.Product.StockQuantity -= orderProduct.Quantity;
-            }
-
             order.IsCompleted = true;
             foreach (var payment in order.Payments)
             {

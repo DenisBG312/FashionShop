@@ -23,19 +23,37 @@ namespace OnlineShop.Services.Data
         private readonly IRepository<Review, int> _reviewRepository;
         private readonly IRepository<ClothingType, int> _clothingTypeRepository;
         private readonly IRepository<Gender, int> _genderRepository;
+        private readonly IRepository<Size, int> _sizeRepository;
+        private readonly ProductSizeRepository _productSizeRepository;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public ProductService(IRepository<Product, int> productRepository, IRepository<Review, int> reviewRepository, UserManager<ApplicationUser> userManager, IRepository<Gender, int> genderRepository, IRepository<ClothingType, int> clothingTypeRepository)
+        public ProductService(IRepository<Product, int> productRepository,
+            IRepository<Review, int> reviewRepository,
+            UserManager<ApplicationUser> userManager,
+            IRepository<Gender, int> genderRepository,
+            IRepository<ClothingType, int> clothingTypeRepository,
+            ProductSizeRepository productSizeRepository,
+            IRepository<Size, int> sizeRepository)
         {
             _productRepository = productRepository;
             _reviewRepository = reviewRepository;
             _genderRepository = genderRepository;
             _clothingTypeRepository = clothingTypeRepository;
             _userManager = userManager;
+            _productSizeRepository = productSizeRepository;
+            _sizeRepository = sizeRepository;
         }
-        public async Task<IEnumerable<Product>> GetProductsAsync(int? genderId, int? clothingTypeId, string searchTerm, int? minPrice, int? maxPrice)
+        public async Task<IEnumerable<Product>> GetProductsAsync(
+            int? genderId,
+            int? clothingTypeId,
+            string searchTerm,
+            int? minPrice,
+            int? maxPrice,
+            List<int> sizeIds,
+            bool? isOnSale)
         {
-            IQueryable<Product> productsQuery = _productRepository.GetAllAttached();
+            IQueryable<Product> productsQuery = _productRepository.GetAllAttached()
+                .Include(p => p.ProductSizes);
 
             if (genderId.HasValue)
             {
@@ -50,6 +68,16 @@ namespace OnlineShop.Services.Data
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 productsQuery = productsQuery.Where(p => p.Name.Contains(searchTerm));
+            }
+
+            if (sizeIds != null && sizeIds.Any())
+            {
+                productsQuery = productsQuery.Where(p => p.ProductSizes.Any(ps => sizeIds.Contains(ps.SizeId)));
+            }
+
+            if (isOnSale.HasValue && isOnSale.Value)
+            {
+                productsQuery = productsQuery.Where(p => p.IsOnSale);
             }
 
             var products = await productsQuery.ToListAsync();
@@ -161,21 +189,26 @@ namespace OnlineShop.Services.Data
             return counts;
         }
 
-        public async Task CreateProductAsync(CreateProductViewModel product, string userId)
+        public async Task CreateProductAsync(CreateProductViewModel model, string userId)
         {
-            var newProduct = new Product
+            var product = new Product
             {
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                StockQuantity = product.StockQuantity,
-                ImageUrl = product.ImageUrl,
-                GenderId = product.GenderId,
-                ClothingTypeId = product.ClothingTypeId,
-                UserId = userId
+                Name = model.Name,
+                Description = model.Description,
+                Price = model.Price,
+                ImageUrl = model.ImageUrl,
+                GenderId = model.GenderId,
+                ClothingTypeId = model.ClothingTypeId,
+                UserId = userId,
+                ProductSizes = model.SelectedSizes
+                    .Select(sizeId => new ProductSize
+                    {
+                        SizeId = sizeId,
+                        StockQuantity = model.StockQuantities[sizeId]
+                    }).ToList()
             };
 
-            await _productRepository.AddAsync(newProduct);
+            await _productRepository.AddAsync(product);
             await _productRepository.SaveChangesAsync();
         }
 
@@ -197,7 +230,6 @@ namespace OnlineShop.Services.Data
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,
-                StockQuantity = product.StockQuantity,
                 ImageUrl = product.ImageUrl,
                 GenderId = product.GenderId,
                 ClothingTypeId = product.ClothingTypeId,
@@ -224,7 +256,6 @@ namespace OnlineShop.Services.Data
             productEntity.Name = product.Name;
             productEntity.Description = product.Description;
             productEntity.Price = product.Price;
-            productEntity.StockQuantity = product.StockQuantity;
             productEntity.GenderId = product.GenderId;
             productEntity.ClothingTypeId = product.ClothingTypeId;
             productEntity.ImageUrl = product.ImageUrl;
@@ -248,6 +279,16 @@ namespace OnlineShop.Services.Data
             }).ToList();
         }
 
+        public async Task<List<SelectListItem>> GetSizesAsync()
+        {
+            var sizes = await _sizeRepository.GetAllAsync();
+            return sizes.Select(s => new SelectListItem
+            {
+                Value = s.Id.ToString(),
+                Text = s.Name 
+            }).ToList();
+        }
+
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
             return await _productRepository.GetAllAsync();
@@ -257,10 +298,10 @@ namespace OnlineShop.Services.Data
         {
             var clothingTypes = await _clothingTypeRepository.GetAllAsync();
             return clothingTypes.Select(g => new SelectListItem()
-                {
-                    Value = g.Id.ToString(),
-                    Text = g.Name
-                }).ToList();
+            {
+                Value = g.Id.ToString(),
+                Text = g.Name
+            }).ToList();
         }
 
         public async Task SubmitReview(int productId, string userId, int rating, string comment)
@@ -299,7 +340,6 @@ namespace OnlineShop.Services.Data
                 Description = product.Description,
                 Price = product.Price,
                 ImageUrl = product.ImageUrl,
-                StockQuantity = product.StockQuantity,
                 Gender = product.Gender.Name,
                 ClothingType = product.ClothingType.Name,
                 PostedBy = $"{product.User?.FirstName} {product.User?.LastName}",
