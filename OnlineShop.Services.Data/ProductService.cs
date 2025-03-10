@@ -33,7 +33,7 @@ namespace OnlineShop.Services.Data
             _clothingTypeRepository = clothingTypeRepository;
             _userManager = userManager;
         }
-        public async Task<IEnumerable<Product>> GetProductsAsync(int? genderId, int? clothingTypeId, string searchTerm)
+        public async Task<IEnumerable<Product>> GetProductsAsync(int? genderId, int? clothingTypeId, string searchTerm, int? minPrice, int? maxPrice)
         {
             IQueryable<Product> productsQuery = _productRepository.GetAllAttached();
 
@@ -52,7 +52,23 @@ namespace OnlineShop.Services.Data
                 productsQuery = productsQuery.Where(p => p.Name.Contains(searchTerm));
             }
 
-            return productsQuery.ToList();
+            var products = await productsQuery.ToListAsync();
+
+            if (minPrice.HasValue || maxPrice.HasValue)
+            {
+                products = products.Where(p =>
+                {
+                    decimal effectivePrice = p.IsOnSale ? p.DiscountedPrice : p.Price;
+
+                    bool aboveMinPrice = !minPrice.HasValue || effectivePrice >= minPrice.Value;
+
+                    bool belowMaxPrice = !maxPrice.HasValue || effectivePrice <= maxPrice.Value;
+
+                    return aboveMinPrice && belowMaxPrice;
+                }).ToList();
+            }
+
+            return products;
         }
 
         public async Task CreateProductAsync(CreateProductViewModel product, string userId)

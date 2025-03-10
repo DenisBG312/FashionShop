@@ -31,9 +31,9 @@ namespace OnlineShop.Web.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> Index(int? genderId, int? clothingTypeId, string searchTerm, int page = 1)
+        public async Task<IActionResult> Index(int? genderId, int? clothingTypeId, int? minPrice, int? maxPrice, string searchTerm, int page = 1)
         {
-            var products = await _productService.GetProductsAsync(genderId, clothingTypeId, searchTerm);
+            var products = await _productService.GetProductsAsync(genderId, clothingTypeId, searchTerm, minPrice, maxPrice);
 
             var userId = GetUserId();
             var wishlist = await _productWishlistService.GetUserWishlistAsync(userId!);

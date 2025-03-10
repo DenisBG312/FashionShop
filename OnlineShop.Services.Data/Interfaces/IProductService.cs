@@ -12,7 +12,7 @@ namespace OnlineShop.Services.Data.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<Product>> GetProductsAsync(int? genderId, int? clothingTypeId, string searchTerm);
+        Task<IEnumerable<Product>> GetProductsAsync(int? genderId, int? clothingTypeId, string searchTerm, int? minPrice, int? maxPrice);
         Task CreateProductAsync(CreateProductViewModel product, string userId);
         Task<ProductEditViewModel?> GetEditProductViewModelAsync(int productId, string userId);
         Task<bool> UpdateProductAsync(ProductEditViewModel product, string userId);
