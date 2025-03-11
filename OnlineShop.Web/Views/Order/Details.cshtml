@@ -56,7 +56,8 @@
                         <table class="table table-bordered">
                             <thead class="table-dark">
                             <tr>
-                                <th>Product Name</th>
+                                <th>Product</th>
+                                <th>Size</th>
                                 <th class="text-center">Quantity</th>
                                 <th class="text-end">Unit Price</th>
                             </tr>
@@ -67,7 +68,11 @@
                                 foreach (var product in Model.OrderProducts)
                                 {
                                     <tr>
-                                        <td>@product.ProductName</td>
+                                        <td class="d-flex align-items-center">
+                                            <img src="@product.ImgUrl" alt="@product.ProductName" class="img-thumbnail me-2" style="width: 60px; height: 60px; object-fit: cover;">
+                                            <span>@product.ProductName</span>
+                                        </td>
+                                        <td class="text-center">@product.SizeName</td>
                                         <td class="text-center">@product.Quantity</td>
                                         <td class="text-end">@product.UnitPrice.ToString("C", new CultureInfo("en-US"))</td>
                                     </tr>
@@ -76,7 +81,7 @@
                             else
                             {
                                 <tr>
-                                    <td colspan="3" class="text-center">No products found for this order.</td>
+                                    <td colspan="4" class="text-center">No products found for this order.</td>
                                 </tr>
                             }
                             </tbody>

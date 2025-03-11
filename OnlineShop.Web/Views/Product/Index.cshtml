@@ -10,6 +10,7 @@
     var clothingTypeId = Context.Request.Query["clothingTypeId"].ToString();
     var minPrice = Context.Request.Query["minPrice"].ToString();
     var maxPrice = Context.Request.Query["maxPrice"].ToString();
+    var sortOrder = Context.Request.Query["sortOrder"].ToString();
 }
 
 <link href="~/css/product-index.css" rel="stylesheet" />
@@ -18,6 +19,7 @@
     <h1 class="text-center mb-4">Our Products</h1>
 
     <div class="row">
+        <!-- Filter Sidebar -->
         <div class="col-lg-3">
             <div class="filter-sidebar">
                 <div class="filter-mobile-toggle d-lg-none">
@@ -29,6 +31,7 @@
                 <div id="filterCollapse" class="filter-collapse d-lg-block">
                     <h4 class="mb-3">Filter Products</h4>
 
+                    <!-- Gender Filter -->
                     <div class="filter-section">
                         <div class="filter-title">
                             <span>Gender</span>
@@ -43,6 +46,7 @@
                                    asp-route-clothingTypeId="@clothingTypeId"
                                    asp-route-minPrice="@minPrice"
                                    asp-route-maxPrice="@maxPrice"
+                                   asp-route-sortOrder="@sortOrder"
                                    class="filter-button @(genderId == gender.Id.ToString() ? "active" : "")">
                                     @gender.Name
                                     <span>(@gender.Count)</span>
@@ -53,6 +57,7 @@
 
                     <div class="filter-divider"></div>
 
+                    <!-- Clothing Type Filter -->
                     <div class="filter-section">
                         <div class="filter-title">
                             <span>Clothing Type</span>
@@ -67,6 +72,7 @@
                                    asp-route-clothingTypeId="@type.Id"
                                    asp-route-minPrice="@minPrice"
                                    asp-route-maxPrice="@maxPrice"
+                                   asp-route-sortOrder="@sortOrder"
                                    class="filter-button @(clothingTypeId == type.Id.ToString() ? "active" : "")">
                                     @type.Name
                                     <span>(@type.Count)</span>
@@ -77,6 +83,7 @@
 
                     <div class="filter-divider"></div>
 
+                    <!-- Price Range Filter -->
                     <div class="filter-section">
                         <div class="filter-title">
                             <span>Price Range</span>
@@ -86,27 +93,28 @@
                             <form method="get" asp-action="Index" asp-controller="Product">
                                 <input type="hidden" name="genderId" value="@genderId" />
                                 <input type="hidden" name="clothingTypeId" value="@clothingTypeId" />
+                                <input type="hidden" name="sortOrder" value="@sortOrder" />
 
                                 <div class="price-inputs">
                                     <div class="price-input">
                                         <label for="minPrice" class="form-label">Min:</label>
-                                        <input type="number" 
-                                               class="form-control" 
-                                               id="minPrice" 
-                                               name="minPrice" 
-                                               value="@(ViewBag.MinPrice?.ToString() ?? "")" 
+                                        <input type="number"
+                                               class="form-control"
+                                               id="minPrice"
+                                               name="minPrice"
+                                               value="@minPrice"
                                                placeholder="$0"
-                                               min="0">
+                                               min="0" />
                                     </div>
                                     <div class="price-input">
                                         <label for="maxPrice" class="form-label">Max:</label>
-                                        <input type="number" 
-                                               class="form-control" 
-                                               id="maxPrice" 
-                                               name="maxPrice" 
-                                               value="@(ViewBag.MaxPrice?.ToString() ?? "")" 
+                                        <input type="number"
+                                               class="form-control"
+                                               id="maxPrice"
+                                               name="maxPrice"
+                                               value="@maxPrice"
                                                placeholder="$1000"
-                                               min="0">
+                                               min="0" />
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100 mt-3">Apply Filter</button>
@@ -116,29 +124,30 @@
 
                     <div class="filter-divider"></div>
 
+                    <!-- Size Filter -->
                     <div class="filter-section">
                         <div class="filter-title">
                             <span>Size</span>
                             <i class="fa-solid fa-ruler"></i>
                         </div>
                         <form method="get" asp-action="Index" asp-controller="Product">
-                            <!-- Preserve existing filters -->
                             <input type="hidden" name="genderId" value="@genderId" />
                             <input type="hidden" name="clothingTypeId" value="@clothingTypeId" />
                             <input type="hidden" name="minPrice" value="@minPrice" />
                             <input type="hidden" name="maxPrice" value="@maxPrice" />
-        
+                            <input type="hidden" name="sortOrder" value="@sortOrder" />
+
                             <div class="mb-2">
                                 @if (ViewBag.Sizes != null && ViewBag.Sizes.Count > 0)
                                 {
                                     @foreach (var size in ViewBag.Sizes)
                                     {
                                         <div class="custom-checkbox">
-                                            <input type="checkbox" 
-                                                   id="size-@size.Id" 
-                                                   name="sizeIds" 
-                                                   value="@size.Id" 
-                                                   @(Context.Request.Query["sizeIds"].ToString().Split(',').ToList().Contains(size.Id.ToString()) ? "checked" : "") />
+                                            <input type="checkbox"
+                                                   id="size-@size.Id"
+                                                   name="sizeIds"
+                                                   value="@size.Id"
+                                            @(Context.Request.Query["sizeIds"].ToString().Split(',').ToList().Contains(size.Id.ToString()) ? "checked" : "") />
                                             <label for="size-@size.Id">@size.Name</label>
                                         </div>
                                     }
@@ -148,7 +157,7 @@
                                     <p class="text-muted">No sizes available.</p>
                                 }
                             </div>
-        
+
                             <button type="submit" class="btn btn-primary w-100 mt-3">
                                 <i class="fa-solid fa-filter me-2"></i>Apply Size Filter
                             </button>
@@ -157,6 +166,7 @@
 
                     <div class="filter-divider"></div>
 
+                    <!-- Special Offers Filter -->
                     <div class="filter-section">
                         <div class="filter-title">
                             <span>Special offers</span>
@@ -168,33 +178,36 @@
                             <input type="hidden" name="minPrice" value="@minPrice" />
                             <input type="hidden" name="maxPrice" value="@maxPrice" />
                             <input type="hidden" name="sizeIds" value="@Context.Request.Query["sizeIds"]" />
+                            <input type="hidden" name="sortOrder" value="@sortOrder" />
 
                             <div class="mb-2">
                                 <div class="custom-checkbox">
-                                    <input type="checkbox" 
-                                           id="on-sale" 
-                                           name="isOnSale" 
-                                           value="true" 
-                                           @(ViewBag.IsOnSale ? "checked" : "") />
+                                    <input type="checkbox"
+                                           id="on-sale"
+                                           name="isOnSale"
+                                           value="true"
+                                    @(ViewBag.IsOnSale ? "checked" : "") />
                                     <label for="on-sale" class="sale-checkbox-label">
                                         <i class="fa-solid fa-fire me-2 text-danger"></i>On Sale
                                     </label>
                                 </div>
                             </div>
-        
+
                             <button type="submit" class="btn btn-danger w-100 mt-3">
                                 <i class="fa-solid fa-filter me-2"></i>Apply Offers Filter
                             </button>
                         </form>
                     </div>
 
-                    <a asp-action="Index" asp-controller="Product" asp-route-genderId="" asp-route-clothingTypeId="" asp-route-minPrice="" asp-route-maxPrice="" class="reset-button text-center">
+                    <!-- Reset Filters Link -->
+                    <a asp-action="Index" asp-controller="Product" class="reset-button text-center">
                         <i class="fa-solid fa-xmark me-2"></i>Reset Filters
                     </a>
                 </div>
             </div>
         </div>
 
+        <!-- Product Listing -->
         <div class="col-lg-9">
             <div class="main-title d-flex justify-content-between align-items-center">
                 <h2>Products</h2>
@@ -208,10 +221,10 @@
                 <div class="d-flex align-items-center">
                     <label for="sortOrder" class="me-2">Sort by:</label>
                     <select id="sortOrder" class="form-select sort-dropdown">
-                        <option value="popular">Most Popular</option>
-                        <option value="price-asc">Price: Low to High</option>
-                        <option value="price-desc">Price: High to Low</option>
-                        <option value="newest">Newest</option>
+                        <option value="popular" selected="@(sortOrder == "popular")">Most Popular</option>
+                        <option value="price-asc" selected="@(sortOrder == "price-asc")">Price: Low to High</option>
+                        <option value="price-desc" selected="@(sortOrder == "price-desc")">Price: High to Low</option>
+                        <option value="newest" selected="@(sortOrder == "newest")">Newest</option>
                     </select>
                 </div>
             </div>
@@ -266,10 +279,6 @@
                                         }
                                     </p>
 
-                                    <p class="card-text text-muted">
-                                        Stock: <strong>@product.TotalStockQuantity</strong>
-                                    </p>
-
                                     <div class="mobile-product-actions">
                                         <a asp-action="Details" asp-controller="Product" asp-route-id="@product.Id" class="btn btn-outline-primary rounded-pill px-4">
                                             View Details <i class="fa-solid fa-circle-info"></i>
@@ -280,7 +289,13 @@
                                             <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post" class="mt-3">
                                                 <input type="hidden" name="productId" value="@product.Id" />
                                                 <input type="hidden" name="quantity" value="1" />
-                                                <button type="submit" class="btn btn-success rounded-pill px-4">
+                                                <input type="hidden" name="sizeId" class="selected-size-input" />
+
+                                                <!-- Changed button to trigger modal -->
+                                                <button type="button"
+                                                        class="btn btn-success rounded-pill px-4 add-to-cart-trigger"
+                                                        data-product-id="@product.Id"
+                                                        data-sizes='@Json.Serialize(product.ProductSizes?.Select(ps => new { Id = ps.SizeId, Name = ps.Size?.Name }))'>
                                                     Add to Cart <i class="fa-solid fa-cart-shopping"></i>
                                                 </button>
                                             </form>
@@ -303,19 +318,48 @@
                 }
             </div>
 
+            <!-- Pagination -->
             <nav aria-label="Page navigation" class="d-flex justify-content-center mt-4">
-                @Html.PagedListPager((X.PagedList.IPagedList?)Model, page => Url.Action("Index", new { page, genderId, clothingTypeId, minPrice, maxPrice }),
-                         new PagedListRenderOptions
-                {
-                    UlElementClasses = new[] { "pagination" },
-                    LiElementClasses = new[] { "page-item" },
-                    PageClasses = new[] { "page-link" },
-                    DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
-                    DisplayLinkToNextPage = PagedListDisplayMode.Always,
-                    DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
-                    DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded
-                })
+                @Html.PagedListPager((X.PagedList.IPagedList?)Model, page => Url.Action("Index", new
+                    {
+                        page,
+                        genderId,
+                        clothingTypeId,
+                        minPrice,
+                        maxPrice,
+                        sortOrder
+                    }), new PagedListRenderOptions
+           {
+               UlElementClasses = new[] { "pagination" },
+               LiElementClasses = new[] { "page-item" },
+               PageClasses = new[] { "page-link" },
+               DisplayLinkToPreviousPage = PagedListDisplayMode.Always,
+               DisplayLinkToNextPage = PagedListDisplayMode.Always,
+               DisplayLinkToFirstPage = PagedListDisplayMode.IfNeeded,
+               DisplayLinkToLastPage = PagedListDisplayMode.IfNeeded
+           })
             </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Size Selection Modal -->
+<div class="modal fade" id="sizeSelectionModal" tabindex="-1" aria-labelledby="sizeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="sizeModalLabel">Select Size</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="size-options">
+                    <!-- Size options will be dynamically inserted here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary confirm-size">Add to Cart</button>
+            </div>
         </div>
     </div>
 </div>
@@ -323,6 +367,61 @@
 @section scripts {
     <script>
         $(document).ready(function() {
+            // Size selection modal handling
+            $('.add-to-cart-trigger').on('click', function() {
+                const productId = $(this).data('product-id');
+                const sizes = $(this).data('sizes');
+                const $form = $(this).closest('form');
+
+                // Clear previous size options
+                const $sizeOptions = $('.size-options').empty();
+
+                // Add size options
+                if (sizes && sizes.length > 0) {
+                    sizes.forEach(size => {
+                        $sizeOptions.append(`
+                            <div class="form-check">
+                                <input class="form-check-input size-radio"
+                                       type="radio"
+                                       name="size-${productId}"
+                                       id="size-${size.id}-${productId}"
+                                       value="${size.id}">
+                                <label class="form-check-label" for="size-${size.id}-${productId}">
+                                    ${size.name}
+                                </label>
+                            </div>
+                        `);
+                    });
+                } else {
+                    $sizeOptions.append('<p>No sizes available for this product</p>');
+                }
+
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('sizeSelectionModal'));
+                modal.show();
+
+                // Handle confirm button
+                $('.confirm-size').off('click').on('click', function() {
+                    const selectedSize = $('.size-radio:checked').val();
+                    if (selectedSize) {
+                        $form.find('.selected-size-input').val(selectedSize);
+                        $form.submit();
+                        modal.hide();
+                    } else {
+                        alert('Please select a size before adding to cart');
+                    }
+                });
+            });
+
+            // Sort dropdown handling
+            $('#sortOrder').on('change', function() {
+                const sortOrder = $(this).val();
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('sortOrder', sortOrder);
+                window.location.href = currentUrl.toString();
+            });
+
+            // Mobile card click handling
             if (window.innerWidth <= 767) {
                 $('.product-card').on('click', function(e) {
                     if (!$(e.target).closest('.wishlist-form, .mobile-product-actions').length) {
@@ -332,11 +431,7 @@
                 });
             }
 
-            $('#sortOrder').on('change', function() {
-                const sortOrder = $(this).val();
-                console.log("Sort by:", sortOrder);
-            });
-
+            // Price range validation
             $('.price-range-container form').on('submit', function(e) {
                 const min = parseInt($('#minPrice').val()) || 0;
                 const max = parseInt($('#maxPrice').val()) || 0;

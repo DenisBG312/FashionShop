@@ -91,7 +91,7 @@ namespace OnlineShop.Services.Data
                 orderIndexViewModels.Add(new OrderIndexViewModel
                 {
                     OrderId = order.Id,
-                    CustomOrderNumber = order.Id /* TODO: Make Order.Id GUID */,
+                    CustomOrderNumber = order.Id,
                     OrderDate = order.OrderDate,
                     TotalAmount = totalAmount,
                     IsCompleted = order.IsCompleted,

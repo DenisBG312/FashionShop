@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineShop.Data;
 
@@ -11,9 +12,11 @@ using OnlineShop.Data;
 namespace OnlineShop.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250311104511_AddedNewPropertiesToProduct")]
+    partial class AddedNewPropertiesToProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -239,7 +242,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = "7ec4584c-ea3f-42e3-b862-2fb1e700fb6f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "43ebc70d-92f9-4285-8bdb-eb6eeed2b6cd",
+                            ConcurrencyStamp = "3e12ab5e-c1dd-4f47-9dd4-76b6aaf2e115",
                             Email = "admin@onlineshop.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -247,10 +250,10 @@ namespace OnlineShop.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@ONLINESHOP.COM",
                             NormalizedUserName = "ADMIN@ONLINESHOP.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEC50qj4zIfAC2k5ON2m3LNtfjTbwSmYk7oH9+hpEcavXPDVIIll/VyhbrtOVEbVsBg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEP2t4tFwBpm9xt+uWpk82+utJ3Cd8ypk3SrnPRnBXYJvHxQyTsAyvEvMAjzVaJE9jw==",
                             PhoneNumberConfirmed = false,
                             ProfileImgUrl = "https://a0.anyrgb.com/pngimg/1850/1546/admin-administrator-icon-admin%D0%B8%D1%81%D1%82%D1%80%D0%B0%D1%82%D0%BE%D1%80-system-administrator-administrator-nuvola-user-profile-hearing-login-internet-forum.png",
-                            SecurityStamp = "e1a1636d-1818-458a-b8eb-98b837da19f8",
+                            SecurityStamp = "bf4c6185-1ee8-418f-ab3a-a2563ff2dca0",
                             TwoFactorEnabled = false,
                             UserName = "admin@onlineshop.com"
                         },
@@ -258,7 +261,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = "9bd65753-4ac3-437f-a1ba-e9320baf1097",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "007caa66-5e22-4ad5-b49a-a061f3aaf8af",
+                            ConcurrencyStamp = "61fa0bd3-b653-48c9-9cd4-7745a2b367f9",
                             Email = "john@email.com",
                             EmailConfirmed = true,
                             FirstName = "John",
@@ -266,10 +269,10 @@ namespace OnlineShop.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "JOHN@EMAIL.COM",
                             NormalizedUserName = "JOHN@EMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGDwOkq7GSNc6c8li3cXaS+L7RTeyO3BZPMI2oY9PM3rG2k+BAW4tc403/v24qxbDQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEINaCW6NB5GJfATN0HaczikZvKAhbXsMZVPfDkWKvBpIXvIfZ9bxRdkS5Ot2gJPD6w==",
                             PhoneNumberConfirmed = false,
                             ProfileImgUrl = "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                            SecurityStamp = "a34dd494-482e-4050-b188-8bd42f302370",
+                            SecurityStamp = "e9b47e6c-b19e-4924-b2d8-a78af2affacd",
                             TwoFactorEnabled = false,
                             UserName = "john@email.com"
                         });
@@ -396,7 +399,7 @@ namespace OnlineShop.Data.Migrations
                             Id = 1,
                             IsCancelled = false,
                             IsCompleted = false,
-                            OrderDate = new DateTime(2025, 3, 11, 14, 43, 53, 582, DateTimeKind.Local).AddTicks(9995),
+                            OrderDate = new DateTime(2025, 3, 11, 12, 45, 10, 448, DateTimeKind.Local).AddTicks(6154),
                             TotalAmount = 144.98m,
                             UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097"
                         });
@@ -534,7 +537,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = 1,
                             ClothingTypeId = 4,
-                            CreatedDate = new DateTime(2025, 3, 11, 14, 43, 53, 583, DateTimeKind.Local).AddTicks(7318),
+                            CreatedDate = new DateTime(2025, 3, 11, 12, 45, 10, 449, DateTimeKind.Local).AddTicks(8884),
                             Description = "Very beautiful and comfortable jeans for women.",
                             GenderId = 2,
                             ImageUrl = "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -548,7 +551,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = 2,
                             ClothingTypeId = 2,
-                            CreatedDate = new DateTime(2025, 3, 11, 14, 43, 53, 583, DateTimeKind.Local).AddTicks(7343),
+                            CreatedDate = new DateTime(2025, 3, 11, 12, 45, 10, 449, DateTimeKind.Local).AddTicks(8909),
                             Description = "Very comfortable jacket for men.",
                             GenderId = 1,
                             ImageUrl = "https://images-cdn.ubuy.co.in/653b4be936138146b54c2af8-junge-denim-jacket-men-fleece-jacket.jpg",
@@ -562,7 +565,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = 3,
                             ClothingTypeId = 2,
-                            CreatedDate = new DateTime(2025, 3, 11, 14, 43, 53, 583, DateTimeKind.Local).AddTicks(7347),
+                            CreatedDate = new DateTime(2025, 3, 11, 12, 45, 10, 449, DateTimeKind.Local).AddTicks(8913),
                             Description = "Very good-looking jacket for men.",
                             DiscountPercentage = 25,
                             GenderId = 1,
@@ -577,7 +580,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = 4,
                             ClothingTypeId = 3,
-                            CreatedDate = new DateTime(2025, 3, 11, 14, 43, 53, 583, DateTimeKind.Local).AddTicks(7352),
+                            CreatedDate = new DateTime(2025, 3, 11, 12, 45, 10, 449, DateTimeKind.Local).AddTicks(8920),
                             Description = "Sneakers that are extremely comfortable.",
                             GenderId = 2,
                             ImageUrl = "https://dimg.dillards.com/is/image/DillardsZoom/mainProduct/kurt-geiger-london-kensington-denim-fabric-sneakers/00000001_zi_4062c067-b0b4-494b-a79a-6e2b6957ae45.jpg",
@@ -591,7 +594,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = 5,
                             ClothingTypeId = 1,
-                            CreatedDate = new DateTime(2025, 3, 11, 14, 43, 53, 583, DateTimeKind.Local).AddTicks(7355),
+                            CreatedDate = new DateTime(2025, 3, 11, 12, 45, 10, 449, DateTimeKind.Local).AddTicks(8927),
                             Description = "Stylish t-shirt for women.",
                             GenderId = 2,
                             ImageUrl = "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -605,7 +608,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = 6,
                             ClothingTypeId = 1,
-                            CreatedDate = new DateTime(2025, 3, 11, 14, 43, 53, 583, DateTimeKind.Local).AddTicks(7420),
+                            CreatedDate = new DateTime(2025, 3, 11, 12, 45, 10, 449, DateTimeKind.Local).AddTicks(8939),
                             Description = "A clothing set for men specially gathered.",
                             DiscountPercentage = 15,
                             GenderId = 2,
@@ -705,7 +708,7 @@ namespace OnlineShop.Data.Migrations
                             Comment = "I bought these jeans for my wife. She is more than happy, as am I.",
                             ProductId = 1,
                             Rating = 5,
-                            ReviewDate = new DateTime(2025, 3, 11, 14, 43, 53, 584, DateTimeKind.Local).AddTicks(1864),
+                            ReviewDate = new DateTime(2025, 3, 11, 12, 45, 10, 450, DateTimeKind.Local).AddTicks(3707),
                             UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097"
                         },
                         new
@@ -714,7 +717,7 @@ namespace OnlineShop.Data.Migrations
                             Comment = "Well the shoes are good but they are not good for running!",
                             ProductId = 2,
                             Rating = 3,
-                            ReviewDate = new DateTime(2025, 3, 11, 14, 43, 53, 584, DateTimeKind.Local).AddTicks(1882),
+                            ReviewDate = new DateTime(2025, 3, 11, 12, 45, 10, 450, DateTimeKind.Local).AddTicks(3727),
                             UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097"
                         },
                         new
@@ -723,7 +726,7 @@ namespace OnlineShop.Data.Migrations
                             Comment = "Amazing jacket but the sleeves are a little too short",
                             ProductId = 3,
                             Rating = 4,
-                            ReviewDate = new DateTime(2025, 3, 11, 14, 43, 53, 584, DateTimeKind.Local).AddTicks(1884),
+                            ReviewDate = new DateTime(2025, 3, 11, 12, 45, 10, 450, DateTimeKind.Local).AddTicks(3730),
                             UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097"
                         });
                 });
@@ -761,7 +764,7 @@ namespace OnlineShop.Data.Migrations
                         {
                             Id = 1,
                             Amount = 104.99m,
-                            PaymentDate = new DateTime(2025, 3, 11, 14, 43, 53, 584, DateTimeKind.Local).AddTicks(2813),
+                            PaymentDate = new DateTime(2025, 3, 11, 12, 45, 10, 450, DateTimeKind.Local).AddTicks(4854),
                             Status = "Active",
                             UserId = "9bd65753-4ac3-437f-a1ba-e9320baf1097"
                         });
@@ -775,19 +778,28 @@ namespace OnlineShop.Data.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SizeId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("ShoppingCartId", "ProductId", "SizeId");
+                    b.HasKey("ShoppingCartId", "ProductId");
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("SizeId");
-
                     b.ToTable("ShoppingCartsProducts");
+
+                    b.HasData(
+                        new
+                        {
+                            ShoppingCartId = 1,
+                            ProductId = 1,
+                            Quantity = 1
+                        },
+                        new
+                        {
+                            ShoppingCartId = 1,
+                            ProductId = 2,
+                            Quantity = 1
+                        });
                 });
 
             modelBuilder.Entity("OnlineShop.Data.Models.Size", b =>
@@ -1039,17 +1051,9 @@ namespace OnlineShop.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OnlineShop.Data.Models.Size", "Size")
-                        .WithMany()
-                        .HasForeignKey("SizeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Product");
 
                     b.Navigation("ShoppingCart");
-
-                    b.Navigation("Size");
                 });
 
             modelBuilder.Entity("OnlineShop.Data.Models.ClothingType", b =>

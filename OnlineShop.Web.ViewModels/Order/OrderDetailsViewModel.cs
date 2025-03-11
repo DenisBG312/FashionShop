@@ -15,6 +15,7 @@ namespace OnlineShop.Web.ViewModels.Order
         public decimal TotalAmount { get; set; }
         public bool IsCompleted { get; set; }
         public bool IsCancelled { get; set; }
+        public string SizeName { get; set; }
         public IEnumerable<OrderProductViewModel> OrderProducts { get; set; }
     }
 }

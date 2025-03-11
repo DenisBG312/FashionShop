@@ -35,6 +35,7 @@
                         <thead class="bg-light text-uppercase">
                             <tr>
                                 <th scope="col">@Resource.Product</th>
+                                <th scope="col">Size</th>
                                 <th scope="col">@Resource.Quantity</th>
                                 <th scope="col">@Resource.UnitPrice</th>
                                 <th scope="col">@Resource.TotalPrice</th>
@@ -52,19 +53,39 @@
                                                 <span>@item.Product.Name</span>
                                                 @if (item.Product.IsOnSale && item.Product.DiscountPercentage.HasValue)
                                                 {
-                                                    <span class="badge bg-danger ms-2">@Resource.OnSale @item.Product.DiscountPercentage.Value% OFF</span>
+                                                    <span class="badge bg-danger ms-2">
+                                                        @Resource.OnSale @item.Product.DiscountPercentage.Value% OFF
+                                                    </span>
                                                 }
                                             </div>
                                         </div>
+                                    </td>
+                                    <td>
+                                        @* Display the selected size if available *@
+                                        @if (item.Size != null)
+                                        {
+                                            <span>@item.Size.Name</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">N/A</span>
+                                        }
                                     </td>
                                     <td>
                                         <div class="d-flex align-items-center justify-content-center">
                                             <form asp-action="UpdateQuantity" method="post" class="d-inline-block">
                                                 <input type="hidden" name="shoppingCartId" value="@item.ShoppingCartId" />
                                                 <input type="hidden" name="productId" value="@item.ProductId" />
+                                                @* Include the selected size id if needed by the update action *@
+                                                @if (item.Size != null)
+                                                {
+                                                    <input type="hidden" name="sizeId" value="@item.Size.Id" />
+                                                }
                                                 <div class="input-group">
                                                     <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control text-center" style="width: 80px;" />
-                                                    <button type="submit" class="btn btn-primary btn-sm ms-2">@Resource.Update &nbsp; <i class="fa-solid fa-pencil"></i></button>
+                                                    <button type="submit" class="btn btn-primary btn-sm ms-2">
+                                                        @Resource.Update &nbsp; <i class="fa-solid fa-pencil"></i>
+                                                    </button>
                                                 </div>
                                             </form>
                                         </div>
@@ -72,21 +93,34 @@
                                     @if (item.Product.IsOnSale && item.Product.DiscountPercentage.HasValue)
                                     {
                                         <td>
-                                            <span class="text-danger fw-bold">@item.Product.DiscountedPrice.ToString("C", new CultureInfo("en-US"))</span>
+                                            <span class="text-danger fw-bold">
+                                                @item.Product.DiscountedPrice.ToString("C", new CultureInfo("en-US"))
+                                            </span>
                                         </td>
                                         <td>
-                                            <span class="text-danger fw-bold">@((item.Product.DiscountedPrice * item.Quantity).ToString("C", new CultureInfo("en-US")))</span>
+                                            <span class="text-danger fw-bold">
+                                                @((item.Product.DiscountedPrice * item.Quantity).ToString("C", new CultureInfo("en-US")))
+                                            </span>
                                         </td>
                                     }
                                     else
                                     {
-                                        <td>@item.Product.Price.ToString("C", new CultureInfo("en-US"))</td>
-                                        <td>@((item.Product.Price * item.Quantity).ToString("C", new CultureInfo("en-US")))</td>
+                                        <td>
+                                            @item.Product.Price.ToString("C", new CultureInfo("en-US"))
+                                        </td>
+                                        <td>
+                                            @((item.Product.Price * item.Quantity).ToString("C", new CultureInfo("en-US")))
+                                        </td>
                                     }
                                     <td>
                                         <form asp-action="RemoveFromCart" method="post">
                                             <input type="hidden" name="shoppingCartId" value="@item.ShoppingCartId" />
                                             <input type="hidden" name="productId" value="@item.ProductId" />
+                                            @* Include the size id so that the removal action can consider it if necessary *@
+                                            @if (item.Size != null)
+                                            {
+                                                <input type="hidden" name="sizeId" value="@item.Size.Id" />
+                                            }
                                             <button type="submit" class="btn btn-danger btn-sm">
                                                 <i class="bi bi-trash"></i> @Resource.Remove &nbsp; <i class="fa-solid fa-xmark"></i>
                                             </button>
@@ -109,18 +143,36 @@
                                 <div class="col-8">
                                     <div class="card-body p-2">
                                         <h5 class="card-title mb-1">@item.Product.Name</h5>
+                                        @if (item.Size != null)
+                                        {
+                                            <p class="card-text mb-1">
+                                                <strong>Size:</strong> @item.Size.Name
+                                            </p>
+                                        }
+                                        else
+                                        {
+                                            <p class="card-text mb-1">
+                                                <strong>Size:</strong> N/A
+                                            </p>
+                                        }
                                         @if (item.Product.IsOnSale && item.Product.DiscountPercentage.HasValue)
                                         {
                                             <p class="card-text mb-1">
-                                                <span class="badge bg-danger">@Resource.OnSale @item.Product.DiscountPercentage.Value% OFF</span>
+                                                <span class="badge bg-danger">
+                                                    @Resource.OnSale @item.Product.DiscountPercentage.Value% OFF
+                                                </span>
                                             </p>
                                             <p class="card-text mb-1">
                                                 <strong>@Resource.UnitPrice:</strong>
-                                                <span class="text-danger fw-bold">@item.Product.DiscountedPrice.ToString("C", new CultureInfo("en-US"))</span>
+                                                <span class="text-danger fw-bold">
+                                                    @item.Product.DiscountedPrice.ToString("C", new CultureInfo("en-US"))
+                                                </span>
                                             </p>
                                             <p class="card-text mb-1">
                                                 <strong>@Resource.TotalPrice:</strong>
-                                                <span class="text-danger fw-bold">@((item.Product.DiscountedPrice * item.Quantity).ToString("C", new CultureInfo("en-US")))</span>
+                                                <span class="text-danger fw-bold">
+                                                    @((item.Product.DiscountedPrice * item.Quantity).ToString("C", new CultureInfo("en-US")))
+                                                </span>
                                             </p>
                                         }
                                         else
@@ -140,6 +192,10 @@
                                     <form asp-action="UpdateQuantity" method="post" class="d-flex align-items-center">
                                         <input type="hidden" name="shoppingCartId" value="@item.ShoppingCartId" />
                                         <input type="hidden" name="productId" value="@item.ProductId" />
+                                        @if (item.Size != null)
+                                        {
+                                            <input type="hidden" name="sizeId" value="@item.Size.Id" />
+                                        }
                                         <div class="input-group input-group-sm">
                                             <span class="input-group-text">@Resource.Quantity</span>
                                             <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control text-center" />
@@ -153,6 +209,10 @@
                                     <form asp-action="RemoveFromCart" method="post">
                                         <input type="hidden" name="shoppingCartId" value="@item.ShoppingCartId" />
                                         <input type="hidden" name="productId" value="@item.ProductId" />
+                                        @if (item.Size != null)
+                                        {
+                                            <input type="hidden" name="sizeId" value="@item.Size.Id" />
+                                        }
                                         <button type="submit" class="btn btn-danger btn-sm">
                                             <i class="bi bi-trash"></i> @Resource.Remove
                                         </button>
@@ -168,7 +228,12 @@
 
         <div class="row mt-4">
             <div class="col-lg-6 col-md-7 col-12 mb-3 mb-md-0">
-                <h4 class="text-center text-md-start">@Resource.Total: <strong class="text-success">@Model.Amount.ToString("C", new CultureInfo("en-US"))</strong></h4>
+                <h4 class="text-center text-md-start">
+                    @Resource.Total:
+                    <strong class="text-success">
+                        @Model.Amount.ToString("C", new CultureInfo("en-US"))
+                    </strong>
+                </h4>
             </div>
             <div class="col-lg-6 col-md-5 col-12 text-center text-md-end">
                 <form asp-action="PlaceOrder" method="post" class="order-btn-container">

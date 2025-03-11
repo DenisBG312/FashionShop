@@ -46,6 +46,7 @@ namespace OnlineShop.Web.Controllers
             List<int>? sizeIds,
             string searchTerm,
             bool? isOnSale,
+            string sortOrder,
             int page = 1)
         {
             int? sanitizedMinPrice = minPrice;
@@ -60,7 +61,15 @@ namespace OnlineShop.Web.Controllers
             }
 
 
-            var products = await _productService.GetProductsAsync(genderId, clothingTypeId, searchTerm, sanitizedMinPrice, sanitizedMaxPrice, sizeIds, isOnSale);
+            var products = await _productService.GetProductsAsync(
+                genderId,
+                clothingTypeId,
+                searchTerm,
+                sanitizedMinPrice,
+                sanitizedMaxPrice,
+                sizeIds,
+                isOnSale,
+                sortOrder);
 
             var userId = GetUserId();
             var wishlist = await _productWishlistService.GetUserWishlistAsync(userId!);
@@ -91,6 +100,7 @@ namespace OnlineShop.Web.Controllers
             ViewBag.MaxPrice = sanitizedMaxPrice;
             ViewBag.Sizes = sizes;
             ViewBag.IsOnSale = isOnSale ?? false;
+            ViewBag.SortOrder = sortOrder;
 
             return View(pagedProducts);
         }

@@ -40,11 +40,11 @@ namespace OnlineShop.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddToCart(int productId, int quantity)
+        public async Task<IActionResult> AddToCart(int productId, int quantity, int sizeId)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var result = await _shoppingCartService.AddToCartAsync(userId, productId, quantity);
+            var result = await _shoppingCartService.AddToCartAsync(userId, productId, quantity, sizeId);
 
             if (!result.IsSuccess)
             {
@@ -56,9 +56,9 @@ namespace OnlineShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateQuantity(int shoppingCartId, int productId, int quantity)
+        public async Task<IActionResult> UpdateQuantity(int shoppingCartId, int productId, int quantity, int sizeId)
         {
-            var result = await _shoppingCartService.UpdateQuantityAsync(shoppingCartId, productId, quantity);
+            var result = await _shoppingCartService.UpdateQuantityAsync(shoppingCartId, productId, quantity, sizeId);
 
             if (!result)
             {
@@ -71,9 +71,9 @@ namespace OnlineShop.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RemoveFromCart(int shoppingCartId, int productId)
+        public async Task<IActionResult> RemoveFromCart(int shoppingCartId, int productId, int sizeId)
         {
-            var result = await _shoppingCartService.RemoveFromCartAsync(shoppingCartId, productId);
+            var result = await _shoppingCartService.RemoveFromCartAsync(shoppingCartId, productId, sizeId);
 
             if (!result)
             {

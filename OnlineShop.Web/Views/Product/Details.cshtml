@@ -31,13 +31,17 @@
 
                 @if (Model.IsOnSale && Model.DiscountPercentage.HasValue)
                 {
-                    <div class="badge bg-danger text-white mb-3" style="font-size: 1.2rem; padding: 10px;">On Sale @Model.DiscountPercentage<i class="fa-solid fa-percent ms-1"></i></div>
+                    <div class="badge bg-danger text-white mb-3" style="font-size: 1.2rem; padding: 10px;">
+                        On Sale @Model.DiscountPercentage<i class="fa-solid fa-percent ms-1"></i>
+                    </div>
                 }
 
                 <div class="fs-5 mb-4 price-display">
                     @if (Model.IsOnSale && Model.DiscountPercentage.HasValue)
                     {
-                        <span class="text-muted text-decoration-line-through">@Model.Price.ToString("C", new CultureInfo("en-US"))</span>
+                        <span class="text-muted text-decoration-line-through">
+                            @Model.Price.ToString("C", new CultureInfo("en-US"))
+                        </span>
                         <span class="text-success fw-bold ms-2" style="font-size: 1.5rem;">
                             @((Model.Price - (Model.Price * (Model.DiscountPercentage ?? 0) / 100)).ToString("C", new CultureInfo("en-US")))
                         </span>
@@ -56,6 +60,25 @@
                     {
                         <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post" class="me-3 mb-2">
                             <input type="hidden" name="productId" value="@Model.Id" />
+
+                            @if (Model.AvailableSizes != null && Model.AvailableSizes.Any())
+                            {
+                                <div class="mb-3">
+                                    <label for="size" class="form-label">Select Size</label>
+                                    <select name="sizeId" id="size" class="form-select" required>
+                                        <option value="" disabled selected>Select size</option>
+                                        @foreach (var size in Model.AvailableSizes)
+                                        {
+                                            <option value="@size.Id">@size.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="text-muted">No sizes available</p>
+                            }
+
                             <input type="hidden" name="quantity" value="1" />
                             <button type="submit" class="btn btn-outline-primary">
                                 <i class="bi-cart-fill me-1"></i>

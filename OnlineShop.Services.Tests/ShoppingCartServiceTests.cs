@@ -93,7 +93,7 @@ namespace OnlineShop.Services.Tests
                 .Setup(repo => repo.GetByIdAsync(productId))
                 .ReturnsAsync(product);
 
-            var result = await _shoppingCartService.AddToCartAsync(userId, productId, quantity);
+            var result = await _shoppingCartService.AddToCartAsync(userId, productId, quantity, 2);
 
             Assert.IsTrue(result.IsSuccess);
         }
@@ -128,7 +128,7 @@ namespace OnlineShop.Services.Tests
                 .Setup(repo => repo.GetByIdAsync(productId))
                 .ReturnsAsync(product);
 
-            var result = await _shoppingCartService.AddToCartAsync(userId, productId, quantity);
+            var result = await _shoppingCartService.AddToCartAsync(userId, productId, quantity, 2);
 
             Assert.IsTrue(result.IsSuccess);
         }
@@ -159,7 +159,7 @@ namespace OnlineShop.Services.Tests
                 .Setup(repo => repo.GetByIdAsync(productId))
                 .ReturnsAsync((Product)null!);
 
-            var result = await _shoppingCartService.AddToCartAsync(userId, productId, quantity);
+            var result = await _shoppingCartService.AddToCartAsync(userId, productId, quantity, 2);
 
             Assert.IsFalse(result.IsSuccess);
             Assert.That(result.ErrorMessage, Is.EqualTo("Product not found."));
@@ -258,7 +258,7 @@ namespace OnlineShop.Services.Tests
                 .Setup(repo => repo.GetAllAttached())
                 .Returns(shoppingCartMockQueryable);
 
-            var result = await _shoppingCartService.UpdateQuantityAsync(shoppingCartId, productId, newQuantity);
+            var result = await _shoppingCartService.UpdateQuantityAsync(shoppingCartId, productId, newQuantity, 2);
 
             Assert.IsTrue(result);
             Assert.That(shoppingCart.Amount, Is.EqualTo(500));
@@ -291,7 +291,7 @@ namespace OnlineShop.Services.Tests
                 .Setup(repo => repo.GetAllAttached())
                 .Returns(shoppingCartMockQueryable);
 
-            var result = await _shoppingCartService.RemoveFromCartAsync(shoppingCartId, productId);
+            var result = await _shoppingCartService.RemoveFromCartAsync(shoppingCartId, productId, 2);
 
             Assert.IsTrue(result);
             Assert.IsEmpty(shoppingCart.ShoppingCartProducts);

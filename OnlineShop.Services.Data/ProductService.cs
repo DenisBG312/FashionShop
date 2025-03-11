@@ -14,6 +14,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 using OnlineShop.Data.Repository;
 using OnlineShop.Data.Repository.Interfaces;
+using OnlineShop.Web.ViewModels.Size;
 
 namespace OnlineShop.Services.Data
 {
@@ -50,7 +51,8 @@ namespace OnlineShop.Services.Data
             int? minPrice,
             int? maxPrice,
             List<int> sizeIds,
-            bool? isOnSale)
+            bool? isOnSale,
+            string sortOrder)
         {
             IQueryable<Product> productsQuery = _productRepository.GetAllAttached()
                 .Include(p => p.ProductSizes);
@@ -94,6 +96,25 @@ namespace OnlineShop.Services.Data
 
                     return aboveMinPrice && belowMaxPrice;
                 }).ToList();
+            }
+
+            switch (sortOrder?.ToLower())
+            {
+                case "price-asc":
+                    products = products.OrderBy(p => p.IsOnSale ? p.DiscountedPrice : p.Price).ToList();
+                    break;
+                case "price-desc":
+                    products = products.OrderByDescending(p => p.IsOnSale ? p.DiscountedPrice : p.Price).ToList();
+                    break;
+                case "newest":
+                    products = products.OrderByDescending(p => p.CreatedDate).ToList();
+                    break;
+                case "popular":
+                    products = products.OrderByDescending(p => p.SalesCount).ToList();
+                    break;
+                default:
+                    products = products.OrderBy(p => p.Id).ToList();
+                    break;
             }
 
             return products;
@@ -325,6 +346,8 @@ namespace OnlineShop.Services.Data
                 .Include(p => p.Gender)
                 .Include(p => p.ClothingType)
                 .Include(p => p.User)
+                .Include(p => p.ProductSizes)
+                    .ThenInclude(ps => ps.Size)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null) return null;
@@ -346,7 +369,14 @@ namespace OnlineShop.Services.Data
                 Reviews = reviews.Where(r => r.ProductId == id).ToList(),
                 UserId = product.UserId,
                 DiscountPercentage = product.DiscountPercentage,
-                IsOnSale = product.IsOnSale
+                IsOnSale = product.IsOnSale,
+                AvailableSizes = product.ProductSizes
+                    .Select(ps => new SizeViewModel()
+                    {
+                        Id = ps.Size.Id,
+                        Name = ps.Size.Name
+                    })
+                    .ToList()
             };
 
             return productDetailsViewModel;

@@ -24,6 +24,10 @@ namespace OnlineShop.Data.Models
         public int Quantity { get; set; }
         [Range(AmountMinValue, AmountMaxValue)]
         public decimal UnitPrice { get; set; }
+        [Required]
+        public int SizeId { get; set; }
+        [ForeignKey(nameof(SizeId))]
+        public Size Size { get; set; }
         [NotMapped]
         public decimal TotalPrice => Quantity * UnitPrice;
     }

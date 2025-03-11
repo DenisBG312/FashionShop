@@ -14,11 +14,11 @@ namespace OnlineShop.Services.Data.Interfaces
     {
         Task<ShoppingCart> GetCartAsync(string userId);
 
-        Task<AddToCartResult> AddToCartAsync(string userId, int productId, int quantity);
+        Task<AddToCartResult> AddToCartAsync(string userId, int productId, int quantity, int sizeId);
 
-        Task<bool> UpdateQuantityAsync(int shoppingCartId, int productId, int quantity);
+        Task<bool> UpdateQuantityAsync(int shoppingCartId, int productId, int quantity, int sizeId);
 
-        Task<bool> RemoveFromCartAsync(int shoppingCartId, int productId);
+        Task<bool> RemoveFromCartAsync(int shoppingCartId, int productId, int sizeId);
 
         Task<PlaceOrderResult> PlaceOrderAsync(int shoppingCartId, string userId);
     }

@@ -135,6 +135,7 @@
 }
 
 [data-bs-theme=dark] {
+    /* ReSharper disable once CssNotResolved */
     color-scheme: dark;
     --bs-body-color: #eceeef;
     --bs-body-color-rgb: 236, 238, 239;

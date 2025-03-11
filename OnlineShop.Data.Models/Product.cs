@@ -36,6 +36,10 @@ namespace OnlineShop.Data.Models
             ? Price - (Price * DiscountPercentage.Value / 100)
             : Price;
         [Required]
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        [Required]
+        public int SalesCount { get; set; }
+        [Required]
         public int GenderId { get; set; }
         [ForeignKey(nameof(GenderId))]
         public Gender Gender { get; set; } = null!;

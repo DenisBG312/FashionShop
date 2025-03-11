@@ -12,13 +12,16 @@ namespace OnlineShop.Services.Data.Interfaces
 {
     public interface IProductService
     {
-        Task<IEnumerable<Product>> GetProductsAsync(int? genderId,
+        Task<IEnumerable<Product>> GetProductsAsync(
+            int? genderId,
             int? clothingTypeId,
             string searchTerm,
             int? minPrice,
             int? maxPrice,
             List<int> sizeIds,
-            bool? isOnSale);
+            bool? isOnSale,
+            string sortOrder
+            );
 
         Task<List<GenderCountViewModel>> GetGenderCountsAsync(int? clothingTypeId, int? minPrice, int? maxPrice, string searchTerm);
         Task<List<ClothingTypeCountViewModel>> GetClothingTypeCountsAsync(int? genderId, int? minPrice, int? maxPrice,

@@ -19,7 +19,11 @@ namespace OnlineShop.Data.Models
         [ForeignKey(nameof(ProductId))]
         public Product Product { get; set; } = null!;
         [Required]
-
         public int Quantity { get; set; }
+
+        [Required]
+        public int SizeId { get; set; }
+        [ForeignKey(nameof(SizeId))]
+        public Size Size { get; set; }
     }
 }

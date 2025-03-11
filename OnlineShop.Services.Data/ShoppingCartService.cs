@@ -36,13 +36,15 @@ namespace OnlineShop.Services.Data
             var cart = await _shoppingCartRepository
                 .GetAllAttached()
                 .Include(c => c.ShoppingCartProducts)
-                .ThenInclude(cp => cp.Product)
+                    .ThenInclude(cp => cp.Product)
+                .Include(c => c.ShoppingCartProducts)
+                    .ThenInclude(cp => cp.Size)
                 .FirstOrDefaultAsync(c => c.UserId == userId);
 
             return cart;
         }
 
-        public async Task<AddToCartResult> AddToCartAsync(string userId, int productId, int quantity)
+        public async Task<AddToCartResult> AddToCartAsync(string userId, int productId, int quantity, int sizeId)
         {
             var shoppingCart = await GetCartAsync(userId);
 
@@ -63,8 +65,13 @@ namespace OnlineShop.Services.Data
                 return new AddToCartResult { IsSuccess = false, ErrorMessage = "Product not found." };
             }
 
-            var cartProduct = shoppingCart.ShoppingCartProducts
-                .FirstOrDefault(scp => scp.ProductId == productId);
+            var cartProduct = await _shoppingCartRepository.GetAllAttached()
+                .Include(c => c.ShoppingCartProducts)
+                .Where(sc => sc.Id == shoppingCart.Id)
+                .SelectMany(sc => sc.ShoppingCartProducts)
+                .FirstOrDefaultAsync(scp =>
+                    scp.ProductId == productId &&
+                    scp.SizeId == sizeId);
 
             decimal productPrice = product.Price;
 
@@ -83,7 +90,8 @@ namespace OnlineShop.Services.Data
                 {
                     ShoppingCartId = shoppingCart.Id,
                     ProductId = productId,
-                    Quantity = quantity
+                    Quantity = quantity,
+                    SizeId = sizeId
                 };
                 shoppingCart.ShoppingCartProducts.Add(cartProduct);
             }
@@ -95,7 +103,7 @@ namespace OnlineShop.Services.Data
             return new AddToCartResult { IsSuccess = true };
         }
 
-        public async Task<bool> UpdateQuantityAsync(int shoppingCartId, int productId, int quantity)
+        public async Task<bool> UpdateQuantityAsync(int shoppingCartId, int productId, int quantity, int sizeId)
         {
             var shoppingCart = await _shoppingCartRepository
                 .GetAllAttached()
@@ -109,7 +117,7 @@ namespace OnlineShop.Services.Data
             }
 
             var shoppingCartProduct = shoppingCart.ShoppingCartProducts
-                .FirstOrDefault(scp => scp.ProductId == productId);
+                .FirstOrDefault(scp => scp.ProductId == productId && scp.SizeId == sizeId);
 
             if (shoppingCartProduct == null)
             {
@@ -144,7 +152,7 @@ namespace OnlineShop.Services.Data
             return true;
         }
 
-        public async Task<bool> RemoveFromCartAsync(int shoppingCartId, int productId)
+        public async Task<bool> RemoveFromCartAsync(int shoppingCartId, int productId, int sizeId)
         {
             var shoppingCart = await _shoppingCartRepository
                 .GetAllAttached()
@@ -158,7 +166,7 @@ namespace OnlineShop.Services.Data
             }
 
             var shoppingCartProduct = shoppingCart.ShoppingCartProducts
-                .FirstOrDefault(scp => scp.ProductId == productId);
+                .FirstOrDefault(scp => scp.ProductId == productId && scp.SizeId == sizeId);
 
             if (shoppingCartProduct == null)
             {

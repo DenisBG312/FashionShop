@@ -13,9 +13,9 @@ namespace OnlineShop.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<ShoppingCartProduct> builder)
         {
-            builder.HasKey(sp => new { sp.ShoppingCartId, sp.ProductId });
+            builder.HasKey(sp => new { sp.ShoppingCartId, sp.ProductId, sp.SizeId});
 
-            builder.HasData(GenerateShoppingCartProducts());
+            // builder.HasData(GenerateShoppingCartProducts());
         }
 
         private IEnumerable<ShoppingCartProduct> GenerateShoppingCartProducts()

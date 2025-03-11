@@ -16,6 +16,7 @@ namespace OnlineShop.Web.ViewModels.Order
         public bool IsCompleted { get; set; }
         public bool IsCancelled { get; set; }
         public string? UserName { get; set; }
+        public string SizeName { get; set; }
         public IEnumerable<TransactionViewModel> Transactions { get; set; }
     }
 }
