@@ -13,7 +13,7 @@ namespace OnlineShop.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<OrderProduct> builder)
         {
-            builder.HasKey(op => new { op.OrderId, op.ProductId });
+            builder.HasKey(op => new { op.OrderId, op.ProductId, op.SizeId });
 
             builder.HasData(GenerateOrderProducts());
         }
@@ -26,6 +26,7 @@ namespace OnlineShop.Data.Configuration
                 {
                     OrderId = 1,
                     ProductId = 1,
+                    SizeId = 2,
                     Quantity = 2,
                     UnitPrice = 39.99m
                 },
@@ -33,6 +34,7 @@ namespace OnlineShop.Data.Configuration
                 {
                     OrderId = 1,
                     ProductId = 2,
+                    SizeId = 1,
                     Quantity = 1,
                     UnitPrice = 65.00m
                 }

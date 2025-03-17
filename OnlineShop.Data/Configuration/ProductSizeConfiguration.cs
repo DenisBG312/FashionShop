@@ -14,6 +14,21 @@ namespace OnlineShop.Data.Configuration
         public void Configure(EntityTypeBuilder<ProductSize> builder)
         {
             builder.HasKey(ps => new { ps.ProductId, ps.SizeId });
+
+            builder.HasData(Seed());
+        }
+
+        private List<ProductSize> Seed()
+        {
+            return new List<ProductSize>()
+            {
+                new ProductSize() { SizeId = 1, ProductId = 1, StockQuantity = 10 },
+                new ProductSize() {SizeId = 2, ProductId = 2, StockQuantity = 5},
+                new ProductSize() {SizeId = 3, ProductId = 3, StockQuantity = 19},
+                new ProductSize() { SizeId = 1, ProductId = 4, StockQuantity = 10 },
+                new ProductSize() {SizeId = 4, ProductId = 5, StockQuantity = 5},
+                new ProductSize() {SizeId = 1, ProductId = 6, StockQuantity = 19}
+            };
         }
     }
 }

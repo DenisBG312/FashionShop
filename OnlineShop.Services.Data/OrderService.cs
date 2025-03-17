@@ -38,7 +38,8 @@ namespace OnlineShop.Services.Data
         {
             var orders = await _orderRepository.GetAllAttached()
                 .Include(o => o.OrderProducts)
-                .ThenInclude(o => o.Product)
+                    .ThenInclude(o => o.Product)
+                    .ThenInclude(s => s.ProductSizes)
                 .Include(p => p.Payments)
                 .Include(s => s.User)
                 .ToListAsync();
@@ -73,7 +74,8 @@ namespace OnlineShop.Services.Data
             var userOrders = await _orderRepository.GetAllAttached()
                 .Where(o => o.UserId == userId && !o.IsCancelled)
                 .Include(o => o.OrderProducts)
-                .ThenInclude(p => p.Product)
+                    .ThenInclude(p => p.Product)
+                    .ThenInclude(s => s.ProductSizes)
                 .Include(o => o.Payments)
                 .ToListAsync();
 
@@ -91,7 +93,7 @@ namespace OnlineShop.Services.Data
                 orderIndexViewModels.Add(new OrderIndexViewModel
                 {
                     OrderId = order.Id,
-                    CustomOrderNumber = order.Id,
+                    CustomOrderNumber = order.Id /* TODO: Make Order.Id GUID */,
                     OrderDate = order.OrderDate,
                     TotalAmount = totalAmount,
                     IsCompleted = order.IsCompleted,
@@ -114,6 +116,8 @@ namespace OnlineShop.Services.Data
                 .Include(o => o.Payments)
                 .Include(o => o.OrderProducts)
                 .ThenInclude(op => op.Product)
+                .Include(o => o.OrderProducts)
+                .ThenInclude(op => op.Size)
                 .FirstOrDefaultAsync(o => o.Id == orderId);
 
             if (order == null)
@@ -132,7 +136,7 @@ namespace OnlineShop.Services.Data
             var viewModel = new OrderDetailsViewModel
             {
                 OrderId = order.Id,
-                CustomOrderNumber = order.Id /* TODO: Make Order.Id GUID */,
+                CustomOrderNumber = order.Id,
                 OrderDate = order.OrderDate,
                 TotalAmount = order.OrderProducts.Sum(op => op.UnitPrice * op.Quantity),
                 IsCompleted = order.IsCompleted,
@@ -142,7 +146,8 @@ namespace OnlineShop.Services.Data
                     ProductName = op.Product.Name,
                     ImgUrl = op.Product.ImageUrl,
                     Quantity = op.Quantity,
-                    UnitPrice = op.UnitPrice
+                    UnitPrice = op.UnitPrice,
+                    SizeName = op.Size?.Name ?? "N/A"
                 }).ToList()
             };
 
@@ -230,6 +235,7 @@ namespace OnlineShop.Services.Data
             var order = await _orderRepository.GetAllAttached()
                 .Include(o => o.OrderProducts)
                 .ThenInclude(op => op.Product)
+                .ThenInclude(p => p.ProductSizes)
                 .Include(o => o.Payments)
                 .FirstOrDefaultAsync(o => o.Id == orderId);
 
@@ -242,6 +248,22 @@ namespace OnlineShop.Services.Data
             foreach (var payment in order.Payments)
             {
                 payment.Status = Status.Completed;
+            }
+
+            foreach (var orderProduct in order.OrderProducts)
+            {
+                var product = orderProduct.Product;
+
+                var productSize = product.ProductSizes.FirstOrDefault(ps => ps.SizeId == orderProduct.SizeId);
+                if (productSize != null)
+                {
+                    if (productSize.StockQuantity > 0)
+                    {
+                        productSize.StockQuantity -= 1;
+                    }
+                }
+
+                product.SalesCount += 1;
             }
 
             await _orderRepository.UpdateAsync(order);

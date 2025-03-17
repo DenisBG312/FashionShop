@@ -1,141 +1,141 @@
-﻿@using System.Globalization
-@model OnlineShop.Web.ViewModels.Order.OrderDetailsViewModel
+﻿    @using System.Globalization
+    @model OnlineShop.Web.ViewModels.Order.OrderDetailsViewModel
 
-@{
-    ViewData["Title"] = $"Order Details";
-}
-
-<link href="~/css/order-details.css" rel="stylesheet"/>
-
-<div class="container mt-5">
-    <h2 class="mb-4 text-center text-dark">Order Details</h2>
-
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            @TempData["SuccessMessage"]
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+    @{
+        ViewData["Title"] = $"Order Details";
     }
 
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger" role="alert">
-            @TempData["ErrorMessage"]
-        </div>
-    }
+    <link href="~/css/order-details.css" rel="stylesheet"/>
 
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow border-0 rounded-3">
-                <div class="card-header bg-dark text-white">
-                    <h5 class="mb-0">Order</h5>
-                </div>
+    <div class="container mt-5">
+        <h2 class="mb-4 text-center text-dark">Order Details</h2>
 
-                <div class="card-body">
-                    <p><strong>Order Date:</strong> <span class="text-muted">@Model.OrderDate.ToShortDateString()</span></p>
-                    <p><strong>Total Amount:</strong> <span class="text-success fw-bold">@Model.TotalAmount.ToString("C", new CultureInfo("en-US"))</span></p>
-                    <p>
-                        <strong>Status:</strong>
-                        <span class="badge rounded-pill @(Model.IsCompleted ? "bg-success" : Model.IsCancelled ? "bg-danger" : "bg-warning")" style="font-size: 0.9rem;">
-                            @if (Model.IsCompleted)
-                            {
-                                <i class="fa-solid fa-circle-check"></i> @("Completed")
-                            }
-                            else
-                            {
-                                <i class="fa-solid fa-hourglass-half"></i> @("Pending")
-                            }
-                        </span>
-                    </p>
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["SuccessMessage"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
 
-                    <hr />
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["ErrorMessage"]
+            </div>
+        }
 
-                    <h5 class="mb-3">Products Ordered</h5>
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead class="table-dark">
-                            <tr>
-                                <th>Product</th>
-                                <th>Size</th>
-                                <th class="text-center">Quantity</th>
-                                <th class="text-end">Unit Price</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @if (Model.OrderProducts != null && Model.OrderProducts.Any())
-                            {
-                                foreach (var product in Model.OrderProducts)
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow border-0 rounded-3">
+                    <div class="card-header bg-dark text-white">
+                        <h5 class="mb-0">Order</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <p><strong>Order Date:</strong> <span class="text-muted">@Model.OrderDate.ToShortDateString()</span></p>
+                        <p><strong>Total Amount:</strong> <span class="text-success fw-bold">@Model.TotalAmount.ToString("C", new CultureInfo("en-US"))</span></p>
+                        <p>
+                            <strong>Status:</strong>
+                            <span class="badge rounded-pill @(Model.IsCompleted ? "bg-success" : Model.IsCancelled ? "bg-danger" : "bg-warning")" style="font-size: 0.9rem;">
+                                @if (Model.IsCompleted)
+                                {
+                                    <i class="fa-solid fa-circle-check"></i> @("Completed")
+                                }
+                                else
+                                {
+                                    <i class="fa-solid fa-hourglass-half"></i> @("Pending")
+                                }
+                            </span>
+                        </p>
+
+                        <hr />
+
+                        <h5 class="mb-3">Products Ordered</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-dark">
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Size</th>
+                                    <th class="text-center">Quantity</th>
+                                    <th class="text-end">Unit Price</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @if (Model.OrderProducts != null && Model.OrderProducts.Any())
+                                {
+                                    foreach (var product in Model.OrderProducts)
+                                    {
+                                        <tr>
+                                            <td class="d-flex align-items-center">
+                                                <img src="@product.ImgUrl" alt="@product.ProductName" class="img-thumbnail me-2" style="width: 60px; height: 60px; object-fit: cover;">
+                                                <span>@product.ProductName</span>
+                                            </td>
+                                            <td class="text-center">@product.SizeName</td>
+                                            <td class="text-center">@product.Quantity</td>
+                                            <td class="text-end">@product.UnitPrice.ToString("C", new CultureInfo("en-US"))</td>
+                                        </tr>
+                                    }
+                                }
+                                else
                                 {
                                     <tr>
-                                        <td class="d-flex align-items-center">
-                                            <img src="@product.ImgUrl" alt="@product.ProductName" class="img-thumbnail me-2" style="width: 60px; height: 60px; object-fit: cover;">
-                                            <span>@product.ProductName</span>
-                                        </td>
-                                        <td class="text-center">@product.SizeName</td>
-                                        <td class="text-center">@product.Quantity</td>
-                                        <td class="text-end">@product.UnitPrice.ToString("C", new CultureInfo("en-US"))</td>
+                                        <td colspan="4" class="text-center">No products found for this order.</td>
                                     </tr>
                                 }
-                            }
-                            else
-                            {
-                                <tr>
-                                    <td colspan="4" class="text-center">No products found for this order.</td>
-                                </tr>
-                            }
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
 
-                <div class="card-footer d-flex justify-content-between align-items-center">
-                    <a asp-action="Index" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-left"></i> Back to Orders
-                    </a>
-                    <div>
-                        @if (!Model.IsCompleted && !Model.IsCancelled)
-                        {
-                            <button id="checkout-button" class="btn btn-primary d-flex align-items-center gap-2">
-                                Pay with <i class="fa-brands fa-stripe"></i>
-                            </button>
-                        }
-                        else if (Model.IsCompleted)
-                        {
-                            <a asp-action="TransactionHistory" asp-route-id="@Model.OrderId" class="btn btn-info text-white">
-                                Transaction History <i class="fa-solid fa-clock-rotate-left"></i>
-                            </a>
-                        }
+                    <div class="card-footer d-flex justify-content-between align-items-center">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to Orders
+                        </a>
+                        <div>
+                            @if (!Model.IsCompleted && !Model.IsCancelled)
+                            {
+                                <button id="checkout-button" class="btn btn-primary d-flex align-items-center gap-2">
+                                    Pay with <i class="fa-brands fa-stripe"></i>
+                                </button>
+                            }
+                            else if (Model.IsCompleted)
+                            {
+                                <a asp-action="TransactionHistory" asp-route-id="@Model.OrderId" class="btn btn-info text-white">
+                                    Transaction History <i class="fa-solid fa-clock-rotate-left"></i>
+                                </a>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-@section Scripts {
-    <script src="https://js.stripe.com/v3/"></script>
-    <script>
-        var stripe = Stripe('@ViewBag.StripePublishableKey');
+    @section Scripts {
+        <script src="https://js.stripe.com/v3/"></script>
+        <script>
+            var stripe = Stripe('@ViewBag.StripePublishableKey');
 
-        document.getElementById('checkout-button').addEventListener('click', function () {
-            fetch('@Url.Action("CreateCheckoutSession", "Order", new { orderId = Model.OrderId })', {
-                method: 'POST'
-            })
-                .then(function (response) {
-                    return response.json();
+            document.getElementById('checkout-button').addEventListener('click', function () {
+                fetch('@Url.Action("CreateCheckoutSession", "Order", new { orderId = Model.OrderId })', {
+                    method: 'POST'
                 })
-                .then(function (session) {
-                    return stripe.redirectToCheckout({ sessionId: session.sessionId });
-                })
-                .then(function (result) {
-                    if (result.error) {
-                        alert(result.error.message);
-                    }
-                })
-                .catch(function (error) {
-                    console.error("Error:", error);
-                });
-        });
-    </script>
-}
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (session) {
+                        return stripe.redirectToCheckout({ sessionId: session.sessionId });
+                    })
+                    .then(function (result) {
+                        if (result.error) {
+                            alert(result.error.message);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error("Error:", error);
+                    });
+            });
+        </script>
+    }

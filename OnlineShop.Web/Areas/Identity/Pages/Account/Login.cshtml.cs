@@ -115,7 +115,20 @@ namespace OnlineShop.Web.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    _logger.LogInformation("User logged in. ReturnUrl: {ReturnUrl}", returnUrl);
+
+                    if (!string.IsNullOrEmpty(returnUrl))
+                    {
+                        if (returnUrl.Contains("AddToCart"))
+                        {
+                            returnUrl = Url.Action("Index", "Product", new {area = ""});
+                        }
+                        else if (returnUrl.StartsWith("/Identity"))
+                        {
+                            returnUrl = Url.Content("~/");
+                        }
+                    }
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

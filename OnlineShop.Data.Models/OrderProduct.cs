@@ -20,14 +20,14 @@ namespace OnlineShop.Data.Models
         public int ProductId { get; set; }
         [ForeignKey(nameof(ProductId))]
         public Product Product { get; set; } = null!;
+        [Required]
+        public int SizeId { get; set; }
+        [ForeignKey(nameof(SizeId))]
+        public Size Size { get; set; } = null!;
         [Range(QuantityMinValue, QuantityMaxValue)]
         public int Quantity { get; set; }
         [Range(AmountMinValue, AmountMaxValue)]
         public decimal UnitPrice { get; set; }
-        [Required]
-        public int SizeId { get; set; }
-        [ForeignKey(nameof(SizeId))]
-        public Size Size { get; set; }
         [NotMapped]
         public decimal TotalPrice => Quantity * UnitPrice;
     }

@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineShop.Services.Data.Interfaces;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using X.PagedList.Extensions;
 
 namespace OnlineShop.Web.Controllers
 {
+    [Authorize]
     public class WishlistController : Controller
     {
         private readonly IProductWishlistService _wishlistService;

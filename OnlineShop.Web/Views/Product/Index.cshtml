@@ -15,11 +15,351 @@
 
 <link href="~/css/product-index.css" rel="stylesheet" />
 
+<style>
+
+    .product-card {
+        transition: transform 0.3s ease;
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+    }
+
+        .product-card.on-sale {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffecec 100%);
+            border: 2px solid #ff4444;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .sale-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #ff4444;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 0.25rem;
+        font-size: 0.85rem;
+        font-weight: bold;
+        z-index: 2;
+    }
+
+    .sale-price {
+        color: #d32f2f !important;
+        font-size: 1.3rem !important;
+    }
+
+    .original-price {
+        font-size: 0.9rem !important;
+    }
+
+    .filter-sidebar {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        height: 100%;
+    }
+
+    .filter-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #1a1a1a;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+        .filter-title i {
+            margin-left: 8px;
+        }
+
+    .filter-section {
+        margin-bottom: 20px;
+    }
+
+    .filter-divider {
+        height: 1px;
+        background-color: #dee2e6;
+        margin: 15px 0;
+    }
+
+    .filter-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .filter-button {
+        padding: 8px 16px;
+        border: 2px solid #dee2e6;
+        background-color: white;
+        border-radius: 5px;
+        font-weight: 500;
+        color: #495057;
+        transition: all 0.2s;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+    }
+
+        .filter-button:hover {
+            border-color: #1a1a1a;
+            color: #1a1a1a;
+        }
+
+        .filter-button.active {
+            background-color: #1a1a1a;
+            color: white;
+            border-color: #1a1a1a;
+        }
+
+    .reset-button {
+        background-color: #fff;
+        color: #dc3545;
+        border: 2px solid #dc3545;
+        border-radius: 5px;
+        padding: 8px 20px;
+        font-weight: 500;
+        transition: all 0.2s;
+        width: 100%;
+        margin-top: 15px;
+    }
+
+        .reset-button:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+    .price-range-container {
+        padding: 0 10px;
+    }
+
+    .price-inputs {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+        gap: 10px;
+    }
+
+    .price-input {
+        width: 45%;
+    }
+
+    .main-title {
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #1a1a1a;
+    }
+
+    .products-count {
+        color: #6c757d;
+        font-size: 14px;
+    }
+
+    .filter-mobile-toggle {
+        display: none;
+    }
+
+    @@media (max-width: 991px) {
+        .filter-sidebar {
+            margin-bottom: 20px;
+        }
+
+        .filter-mobile-toggle {
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .filter-collapse {
+            display: none;
+        }
+
+            .filter-collapse.show {
+                display: block;
+            }
+    }
+
+    @@media (max-width: 767px) {
+        .mobile-card-link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .wishlist-form {
+            z-index: 3;
+        }
+
+        .mobile-product-actions {
+            position: relative;
+            z-index: 2;
+        }
+
+        .product-card {
+            cursor: pointer;
+        }
+
+        .btn-group {
+            flex-direction: column;
+        }
+
+            .btn-group .btn {
+                border-radius: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+                .btn-group .btn:first-child {
+                    border-top-left-radius: 0.5rem;
+                    border-bottom-left-radius: 0.5rem;
+                }
+
+                .btn-group .btn:last-child {
+                    border-top-right-radius: 0.5rem;
+                    border-bottom-right-radius: 0.5rem;
+                }
+    }
+
+    .sort-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .sort-dropdown {
+        min-width: 200px;
+    }
+
+    .showing-items {
+        color: #6c757d;
+    }
+
+    .custom-checkbox {
+        display: flex;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+
+        .custom-checkbox input {
+            margin-right: 10px;
+        }
+
+    .btn-primary {
+        background-color: #1a1a1a;
+        border-color: #1a1a1a;
+    }
+
+        .btn-primary:hover {
+            background-color: #333333;
+            border-color: #333333;
+        }
+
+    .btn-outline-primary {
+        color: #1a1a1a;
+        border-color: #1a1a1a;
+    }
+
+        .btn-outline-primary:hover {
+            background-color: #1a1a1a;
+            color: white;
+        }
+
+    .filter-card {
+        transition: all 0.3s ease;
+        background-color: #ffffff;
+    }
+
+    .filter-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .filter-section {
+        margin-bottom: 1.5rem;
+        text-align: center;
+        width: 100%;
+    }
+
+    .reset-button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .filter-mobile-toggle .btn-outline-primary {
+        color: #1a1a1a;
+        border-color: #1a1a1a;
+    }
+
+        .filter-mobile-toggle .btn-outline-primary:hover {
+            background-color: #1a1a1a;
+            color: white;
+        }
+
+    .price-range-container .btn-primary {
+        background-color: #1a1a1a;
+        border-color: #1a1a1a;
+    }
+
+        .price-range-container .btn-primary:hover {
+            background-color: #333333;
+            border-color: #333333;
+        }
+
+    @@keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .spin {
+        animation: spin 1s linear infinite;
+        display: inline-block;
+    }
+
+    .is-invalid {
+        border-color: #dc3545 !important;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right calc(0.375em + 0.1875rem) center;
+        background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem);
+    }
+
+        .is-invalid:focus {
+            box-shadow: 0 0 0 0.25rem rgba(220,53,69,.25);
+        }
+
+    .alert.alert-danger {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        max-width: 400px;
+    }
+
+    .alert.alert-info {
+        position: static;
+        margin: 2rem 0;
+    }
+
+</style>
+
 <div class="container my-5">
     <h1 class="text-center mb-4">Our Products</h1>
 
     <div class="row">
-        <!-- Filter Sidebar -->
         <div class="col-lg-3">
             <div class="filter-sidebar">
                 <div class="filter-mobile-toggle d-lg-none">
@@ -31,7 +371,6 @@
                 <div id="filterCollapse" class="filter-collapse d-lg-block">
                     <h4 class="mb-3">Filter Products</h4>
 
-                    <!-- Gender Filter -->
                     <div class="filter-section">
                         <div class="filter-title">
                             <span>Gender</span>
@@ -57,7 +396,6 @@
 
                     <div class="filter-divider"></div>
 
-                    <!-- Clothing Type Filter -->
                     <div class="filter-section">
                         <div class="filter-title">
                             <span>Clothing Type</span>
@@ -83,7 +421,6 @@
 
                     <div class="filter-divider"></div>
 
-                    <!-- Price Range Filter -->
                     <div class="filter-section">
                         <div class="filter-title">
                             <span>Price Range</span>
@@ -124,7 +461,6 @@
 
                     <div class="filter-divider"></div>
 
-                    <!-- Size Filter -->
                     <div class="filter-section">
                         <div class="filter-title">
                             <span>Size</span>
@@ -166,7 +502,6 @@
 
                     <div class="filter-divider"></div>
 
-                    <!-- Special Offers Filter -->
                     <div class="filter-section">
                         <div class="filter-title">
                             <span>Special offers</span>
@@ -199,7 +534,6 @@
                         </form>
                     </div>
 
-                    <!-- Reset Filters Link -->
                     <a asp-action="Index" asp-controller="Product" class="reset-button text-center">
                         <i class="fa-solid fa-xmark me-2"></i>Reset Filters
                     </a>
@@ -207,7 +541,6 @@
             </div>
         </div>
 
-        <!-- Product Listing -->
         <div class="col-lg-9">
             <div class="main-title d-flex justify-content-between align-items-center">
                 <h2>Products</h2>
@@ -245,14 +578,11 @@
                                     </span>
                                 }
 
-                                @if (User.Identity.IsAuthenticated)
-                                {
-                                    <form asp-action="AddToWishlist" asp-controller="Wishlist" asp-route-productId="@product.Id" method="post" class="position-absolute wishlist-form" style="top: 10px; right: 10px; cursor: pointer;">
-                                        <button type="submit" class="btn btn-link">
-                                            <i class="fa-solid fa-heart @(ViewBag.WishlistProductIds.Contains(product.Id) ? "text-danger" : "text-muted") fa-2x"></i>
-                                        </button>
-                                    </form>
-                                }
+                                <form asp-action="AddToWishlist" asp-controller="Wishlist" asp-route-productId="@product.Id" method="post" class="position-absolute wishlist-form" style="top: 10px; right: 10px; cursor: pointer;">
+                                    <button type="submit" class="btn btn-link">
+                                        <i class="fa-solid fa-heart @(ViewBag.WishlistProductIds.Contains(product.Id) ? "text-danger" : "text-muted") fa-2x"></i>
+                                    </button>
+                                </form>
 
                                 <div class="card-img-top p-3 text-center bg-light" style="height: 280px;">
                                     <img src="@product.ImageUrl" alt="@product.Name" class="img-fluid" style="max-height: 100%; width: auto; object-fit: contain;">
@@ -284,22 +614,18 @@
                                             View Details <i class="fa-solid fa-circle-info"></i>
                                         </a>
 
-                                        @if (User.Identity.IsAuthenticated)
-                                        {
-                                            <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post" class="mt-3">
-                                                <input type="hidden" name="productId" value="@product.Id" />
-                                                <input type="hidden" name="quantity" value="1" />
-                                                <input type="hidden" name="sizeId" class="selected-size-input" />
+                                        <form asp-action="AddToCart" asp-controller="ShoppingCart" method="post" class="mt-3">
+                                            <input type="hidden" name="productId" value="@product.Id" />
+                                            <input type="hidden" name="quantity" value="1" />
+                                            <input type="hidden" name="sizeId" class="selected-size-input" />
 
-                                                <!-- Changed button to trigger modal -->
-                                                <button type="button"
-                                                        class="btn btn-success rounded-pill px-4 add-to-cart-trigger"
-                                                        data-product-id="@product.Id"
-                                                        data-sizes='@Json.Serialize(product.ProductSizes?.Select(ps => new { Id = ps.SizeId, Name = ps.Size?.Name }))'>
-                                                    Add to Cart <i class="fa-solid fa-cart-shopping"></i>
-                                                </button>
-                                            </form>
-                                        }
+                                            <button type="button"
+                                                    class="btn btn-success rounded-pill px-4 add-to-cart-trigger"
+                                                    data-product-id="@product.Id"
+                                                    data-sizes='@Json.Serialize(product.ProductSizes?.Select(ps => new { Id = ps.SizeId, Name = ps.Size?.Name }))'>
+                                                Add to Cart <i class="fa-solid fa-cart-shopping"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -343,7 +669,6 @@
     </div>
 </div>
 
-<!-- Size Selection Modal -->
 <div class="modal fade" id="sizeSelectionModal" tabindex="-1" aria-labelledby="sizeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -353,7 +678,6 @@
             </div>
             <div class="modal-body">
                 <div class="size-options">
-                    <!-- Size options will be dynamically inserted here -->
                 </div>
             </div>
             <div class="modal-footer">
@@ -367,16 +691,20 @@
 @section scripts {
     <script>
         $(document).ready(function() {
-            // Size selection modal handling
+            const isAuthenticated = '@User.Identity.IsAuthenticated'.toLowerCase() === 'true';
+
             $('.add-to-cart-trigger').on('click', function() {
                 const productId = $(this).data('product-id');
                 const sizes = $(this).data('sizes');
                 const $form = $(this).closest('form');
 
-                // Clear previous size options
+                if (!isAuthenticated) {
+                    alert("You must be logged in to add items to your cart. Please log in.");
+                    return;
+                }
+
                 const $sizeOptions = $('.size-options').empty();
 
-                // Add size options
                 if (sizes && sizes.length > 0) {
                     sizes.forEach(size => {
                         $sizeOptions.append(`
@@ -396,11 +724,9 @@
                     $sizeOptions.append('<p>No sizes available for this product</p>');
                 }
 
-                // Show modal
                 const modal = new bootstrap.Modal(document.getElementById('sizeSelectionModal'));
                 modal.show();
 
-                // Handle confirm button
                 $('.confirm-size').off('click').on('click', function() {
                     const selectedSize = $('.size-radio:checked').val();
                     if (selectedSize) {
@@ -413,7 +739,14 @@
                 });
             });
 
-            // Sort dropdown handling
+            $('.wishlist-form').on('submit', function(e) {
+                if (!isAuthenticated) {
+                    e.preventDefault();
+                    alert("You must be logged in to add items to your wishlist. Please log in.");
+                    return;
+                }
+            });
+
             $('#sortOrder').on('change', function() {
                 const sortOrder = $(this).val();
                 const currentUrl = new URL(window.location.href);
@@ -421,7 +754,6 @@
                 window.location.href = currentUrl.toString();
             });
 
-            // Mobile card click handling
             if (window.innerWidth <= 767) {
                 $('.product-card').on('click', function(e) {
                     if (!$(e.target).closest('.wishlist-form, .mobile-product-actions').length) {
@@ -431,7 +763,6 @@
                 });
             }
 
-            // Price range validation
             $('.price-range-container form').on('submit', function(e) {
                 const min = parseInt($('#minPrice').val()) || 0;
                 const max = parseInt($('#maxPrice').val()) || 0;

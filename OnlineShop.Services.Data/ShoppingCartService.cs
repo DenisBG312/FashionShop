@@ -254,7 +254,8 @@ namespace OnlineShop.Services.Data
                     OrderId = order.Id,
                     ProductId = cartProduct.ProductId,
                     Quantity = cartProduct.Quantity,
-                    UnitPrice = cartProduct.Product.Price
+                    UnitPrice = cartProduct.Product.Price,
+                    SizeId = cartProduct.SizeId
                 };
 
                 if (cartProduct.Product.IsOnSale && cartProduct.Product.DiscountPercentage.HasValue)
