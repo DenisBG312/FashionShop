@@ -1,5 +1,7 @@
 # Fashion Shop 🛒
 
+## Project deployed on: http://fashionshop.runasp.net/
+
 &#x20;&#x20;
 
 ## 🌟 Overview
