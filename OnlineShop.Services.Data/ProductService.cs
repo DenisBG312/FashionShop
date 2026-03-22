@@ -395,5 +395,17 @@ namespace OnlineShop.Services.Data
             await _productRepository.SaveChangesAsync();
             return true;
         }
+
+        public async Task<IEnumerable<Product>> GetNewestProductsAsync()
+        {
+            var newestProducts = await _productRepository
+                .GetAllAttached()
+                .OrderByDescending(p => p.CreatedDate)
+                .Take(6)
+                .ToListAsync();
+
+            return newestProducts;
+        }
+
     }
 }

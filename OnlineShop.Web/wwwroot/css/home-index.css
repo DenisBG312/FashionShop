@@ -1,56 +1,415 @@
-﻿.position-relative {
+﻿/* =============================================
+   home-index.css — Fashion Shop Home Page
+   Aesthetic: Luxury editorial, Cormorant serif
+   ============================================= */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'DM Sans', sans-serif;
+    background: #faf9f7;
+    color: #1a1a18;
+}
+
+.page-wrapper {
+    overflow-x: hidden;
+}
+
+/* ── Hero ────────────────────────────────────── */
+.hero {
     position: relative;
+    min-height: 92vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 0;
+    padding: 6rem 6vw 4rem;
+    overflow: hidden;
+    background: #faf9f7;
 }
 
-.overlay {
+.hero-bg-text {
     position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(8rem, 18vw, 18rem);
+    font-weight: 300;
+    color: rgba(26, 26, 24, 0.04);
+    letter-spacing: 0.2em;
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
 }
 
-.carousel-caption {
-    position: absolute;
+.hero-content {
     z-index: 2;
+    max-width: 540px;
 }
 
-@media (max-width: 1440px) {
-    html {
-        font-size: 14px;
+.hero-eyebrow {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #d8d4cc;
+}
+
+.hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 5.5vw, 5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: #1a1a18;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.25rem;
+}
+
+.hero-subtitle {
+    font-size: 1rem;
+    font-weight: 300;
+    color: #666;
+    line-height: 1.7;
+    max-width: 380px;
+    margin-bottom: 2.5rem;
+}
+
+.hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    background: #1a1a18;
+    color: #faf9f7;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background 0.25s, color 0.25s;
+}
+
+    .hero-cta:hover {
+        background: #3d3b36;
+        color: #fff;
     }
 
-    .display-3 {
-        font-size: 2.5rem;
+.hero-image-wrap {
+    z-index: 2;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-left: 3rem;
+}
+
+.hero-image {
+    width: 100%;
+    max-width: 520px;
+    height: 68vh;
+    object-fit: cover;
+    object-position: top center;
+    filter: grayscale(8%) contrast(1.04);
+}
+
+/* ── New Arrivals ────────────────────────────── */
+.new-arrivals {
+    padding: 6rem 6vw;
+    background: #fff;
+}
+
+.section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.section-label {
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #aaa;
+    padding-right: 1.5rem;
+    border-right: 1px solid #e0ddd8;
+}
+
+.section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 400;
+    color: #1a1a18;
+    letter-spacing: -0.01em;
+    flex: 1;
+}
+
+.section-link {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #666;
+    text-decoration: none;
+    padding-bottom: 2px;
+    border-bottom: 1px solid #ccc;
+    transition: color 0.2s, border-color 0.2s;
+}
+
+    .section-link:hover {
+        color: #1a1a18;
+        border-color: #1a1a18;
     }
 
-    .lead {
-        font-size: 1.2rem;
+/* ── Product Grid ────────────────────────────── */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 2px;
+}
+
+/* ── Product Card ────────────────────────────── */
+.product-card {
+    background: #faf9f7;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: background 0.25s;
+}
+
+    .product-card:hover {
+        background: #f3f1ec;
     }
 
-    .btn-lg {
-        font-size: 1rem;
-        padding: 0.5rem 1rem;
+.product-card-link {
+    text-decoration: none;
+    color: inherit;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-image-wrap {
+    position: relative;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    background: #ede9e0;
+}
+
+.product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.product-card:hover .product-image {
+    transform: scale(1.04);
+}
+
+.product-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+}
+
+.sale-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: #1a1a18;
+    color: #faf9f7;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    padding: 4px 9px;
+    text-transform: uppercase;
+    pointer-events: none;
+}
+
+.sold-out-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(250, 249, 247, 0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #888;
+}
+
+/* ── Product Info ────────────────────────────── */
+.product-info {
+    padding: 1.1rem 1.2rem 0.6rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.product-meta {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.product-type,
+.product-gender {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #aaa;
+    font-weight: 400;
+}
+
+    .product-type::after {
+        content: '·';
+        margin-left: 8px;
+        color: #d0cdc5;
+    }
+
+.product-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.18rem;
+    font-weight: 500;
+    color: #1a1a18;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+}
+
+.product-pricing {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.price-regular {
+    font-size: 0.92rem;
+    font-weight: 400;
+    color: #444;
+}
+
+.price-original {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: #aaa;
+    text-decoration: line-through;
+}
+
+.price-sale {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #b85c38;
+}
+
+.low-stock {
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: #b85c38;
+    text-transform: uppercase;
+    margin-top: 2px;
+}
+
+/* ── Add to Cart Button ──────────────────────── */
+.add-to-cart-btn {
+    width: calc(100% - 2.4rem);
+    margin: 0.6rem 1.2rem 1.2rem;
+    padding: 11px 0;
+    background: transparent;
+    border: 1px solid #1a1a18;
+    color: #1a1a18;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.25s, transform 0.25s, background 0.2s, color 0.2s;
+}
+
+.product-card:hover .add-to-cart-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.add-to-cart-btn:hover {
+    background: #1a1a18;
+    color: #faf9f7;
+}
+
+/* ── Responsive ──────────────────────────────── */
+@media (max-width: 900px) {
+    .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding: 4rem 6vw 3rem;
+        text-align: center;
+    }
+
+    .hero-image-wrap {
+        justify-content: center;
+        padding-left: 0;
+        margin-top: 2rem;
+    }
+
+    .hero-image {
+        height: 52vw;
+        max-width: 100%;
+    }
+
+    .hero-subtitle {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-content {
+        max-width: 100%;
+    }
+
+    .hero-bg-text {
+        display: none;
     }
 }
 
-@media (max-width: 1024px) {
-    html {
-        font-size: 13px;
+@media (max-width: 600px) {
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 
-    .carousel img {
-        max-height: 300px; 
+    .add-to-cart-btn {
+        opacity: 1;
+        transform: none;
     }
 
-    .carousel-caption h5 {
-        font-size: 1.2rem;
+    .section-header {
+        flex-direction: column;
+        gap: 0.75rem;
     }
 
-    .carousel-caption p {
-        font-size: 1rem;
+    .section-label {
+        border-right: none;
+        padding-right: 0;
+        border-bottom: 1px solid #e0ddd8;
+        padding-bottom: 0.5rem;
     }
 }
-

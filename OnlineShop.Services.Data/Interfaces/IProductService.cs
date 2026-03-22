@@ -36,5 +36,6 @@ namespace OnlineShop.Services.Data.Interfaces
         Task SubmitReview(int productId, string userId, int rating, string comment);
         Task<ProductDetailsViewModel?> ViewDetailsAboutProductAsync(int id, string userId);
         Task<bool> DeleteProductAsync(int id);
+        Task<IEnumerable<Product>> GetNewestProductsAsync();
     }
 }

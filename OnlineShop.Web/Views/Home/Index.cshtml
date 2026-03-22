@@ -1,19 +1,103 @@
 ﻿@using OnlineShop.Web.Resources
+@using System.Globalization
+@model IEnumerable<OnlineShop.Data.Models.Product>
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<link rel="stylesheet" href="~/css/home-index.css"/>
+<link rel="stylesheet" href="~/css/home-index.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
-<div class="container mt-5">
-    <div class="hero text-center mb-5">
-        <h1 class="display-3">@Resource.WelcomeToFashionShop</h1>
-        <p class="hero-subtitle lead">@Resource.YourOne_stopShopForAllYourNeeds</p>
-        <a href="/Product" class="btn btn-lg btn-outline-primary hero-button">@Resource.ExploreProducts <i class="fa-solid fa-shirt"></i></a>
-    </div>
+<div class="page-wrapper">
 
-    <img src="images/FashionShopLogo.jpg" class="img-fluid d-block mx-auto" width="50%" height="auto" />
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-bg-text">FASHION</div>
+        <div class="hero-content">
+            <span class="hero-eyebrow">New Season</span>
+            <h1 class="hero-title">@Resource.WelcomeToFashionShop</h1>
+            <p class="hero-subtitle">@Resource.YourOne_stopShopForAllYourNeeds</p>
+            <a href="/Product" class="hero-cta">
+                @Resource.ExploreProducts
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </a>
+        </div>
+        <div class="hero-image-wrap">
+            <img src="images/FashionShopLogo.jpg" alt="Fashion Shop" class="hero-image" />
+        </div>
+    </section>
+
+    <!-- Newest Products -->
+    @if (Model != null && Model.Any())
+    {
+        <section class="new-arrivals">
+            <div class="section-header">
+                <div class="section-label">Just Dropped</div>
+                <h2 class="section-title">New Arrivals</h2>
+                <a href="/Product" class="section-link">View all <span>&rarr;</span></a>
+            </div>
+
+            <div class="products-grid">
+                @foreach (var product in Model)
+                {
+                    <article class="product-card">
+                        <a href="/Product/Details?id=@product.Id" class="product-card-link">
+
+                            <div class="product-image-wrap">
+                                @if (!string.IsNullOrEmpty(product.ImageUrl))
+                                {
+                                    <img src="@product.ImageUrl" alt="@product.Name" class="product-image" loading="lazy" />
+                                }
+                                else
+                                {
+                                    <div class="product-image-placeholder">
+                                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                                    </div>
+                                }
+
+                                @if (product.IsOnSale && product.DiscountPercentage.HasValue)
+                                {
+                                    <span class="sale-badge">-@product.DiscountPercentage%</span>
+                                }
+
+                            </div>
+
+                            <div class="product-info">
+                                <div class="product-meta">
+                                    <span class="product-type">@product.ClothingType?.Name</span>
+                                    <span class="product-gender">@product.Gender?.Name</span>
+                                </div>
+                                <h3 class="product-name">@product.Name</h3>
+                                <div class="product-pricing">
+                                    @if (product.IsOnSale && product.DiscountPercentage.HasValue)
+                                    {
+                                        <span class="price-original">@product.Price.ToString("C", new CultureInfo("en-US"))</span>
+                                        <span class="price-sale">@product.DiscountedPrice.ToString("C", new CultureInfo("en-US"))</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="price-regular">@product.Price.ToString("C", new CultureInfo("en-US"))</span>
+                                    }
+                                </div>
+                                @if (product.TotalStockQuantity > 0 && product.TotalStockQuantity <= 5)
+                                {
+                                    <p class="low-stock">Only @product.TotalStockQuantity left</p>
+                                }
+                            </div>
+
+                        </a>
+
+                        <button class="add-to-cart-btn" onclick="location.href='/ShoppingCart/Add/@product.Id'">
+                            Add to Cart
+                        </button>
+                    </article>
+                }
+            </div>
+        </section>
+    }
+
 </div>
 
 @section Scripts {

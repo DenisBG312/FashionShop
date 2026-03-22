@@ -2,21 +2,27 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Globalization;
 using OnlineShop.Web.Models;
+using Microsoft.EntityFrameworkCore;
+using OnlineShop.Data;
+using OnlineShop.Services.Data.Interfaces;
 
 namespace OnlineShop.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IProductService _productService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IProductService productService)
         {
             _logger = logger;
+            _productService = productService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var newestProducts = await _productService.GetNewestProductsAsync();
+            return View(newestProducts);
         }
 
         public IActionResult Error(int? statusCode = null)
